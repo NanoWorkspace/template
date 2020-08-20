@@ -1,0 +1,52 @@
+{
+  "bot": {
+    "name": "Nano",
+    "prefix": "nano ",
+    "clientOptions": {
+      "disableMentions": "everyone"
+    },
+    "embedOptions": {
+      "errorTitle": "❌ Oups...",
+      "successTitle": "✅ Et voilà!"
+    }
+  },
+  "name": "nano-template",
+  "author": "ghom",
+  "license": "ISC",
+  "version": "1.0.0",
+  "description": "Discord bot in TypeScript.",
+  "main": "dist/index.js",
+  "prettier": {
+    "trailingComma": "es5",
+    "tabWidth": 2,
+    "semi": false,
+    "singleQuote": false,
+    "useTabs": false
+  },
+  "scripts": {
+    "prettier": "prettier src --write",
+    "build": "git rm -r --ignore-unmatch -f ./dist && npm run prettier && tsc",
+    "start": "npm run build && node --trace-warnings .",
+    "push": "npm run prettier && git add * && git commit -m continue && git push origin master"
+  },
+  "keywords": [
+    "discord.js",
+    "bot",
+    "typescript",
+    "handler",
+    "command-handler"
+  ],
+  "devDependencies": {
+    "@types/node": "^14.0.27",
+    "@types/ws": "^7.2.6",
+    "prettier": "^2.0.5",
+    "typescript": "^3.9.7"
+  },
+  "dependencies": {
+    "better-sqlite-pool": "^0.3.0",
+    "better-sqlite3": "^7.1.0",
+    "discord.js": "^12.3.1",
+    "dotenv": "^8.2.0",
+    "enmap": "^5.6.1"
+  }
+}
