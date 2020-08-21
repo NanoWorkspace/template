@@ -21,14 +21,18 @@ const tweetUsers: CommandObject = {
 
     if (!user && action !== "list")
       return message.channel.send(
-        embed.setError("Vous devez entrer un num d'utilisateur Twitter.")
+        embed.setTemplate(
+          "Error",
+          "Vous devez entrer un num d'utilisateur Twitter."
+        )
       )
 
     switch (action) {
       case "add":
         Globals.db.push(message.guild.id, user, "authorizedTwitterUsers")
         message.channel.send(
-          embed.setSuccess(
+          embed.setTemplate(
+            "Success",
             `**${user}** a bien été ajouté à la liste d'utilisateurs dont les tweet sont autorisés.`
           )
         )
@@ -37,7 +41,8 @@ const tweetUsers: CommandObject = {
       case "remove":
         Globals.db.remove(message.guild.id, user, "authorizedTwitterUsers")
         message.channel.send(
-          embed.setSuccess(
+          embed.setTemplate(
+            "Success",
             `**${user}** a bien été retiré de la liste d'utilisateurs dont les tweet sont autorisés.`
           )
         )
@@ -57,7 +62,8 @@ const tweetUsers: CommandObject = {
 
       default:
         message.channel.send(
-          embed.setError(
+          embed.setTemplate(
+            "Error",
             "Vous devez préciser une action entre add, remove et list."
           )
         )

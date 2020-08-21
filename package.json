@@ -5,9 +5,20 @@
     "clientOptions": {
       "disableMentions": "everyone"
     },
-    "embedOptions": {
-      "errorTitle": "❌ Oups...",
-      "successTitle": "✅ Et voilà!"
+    "embedTemplates": {
+      "default": {
+        "author": {
+          "name": "{{ bot.name }}",
+          "iconURL": "{{ Globals.client.user.displayAvatarURL() }}"
+        },
+        "timestamp": null
+      },
+      "success": {
+        "title": "✅ Et voilà!"
+      },
+      "error": {
+        "title": "❌ Oups..."
+      }
     }
   },
   "name": "nano-template",

@@ -20,12 +20,16 @@ const evalCommand: CommandObject = {
       )(Globals)
 
       if (result !== undefined) {
-        await channel.send(embed.setSuccess(text.code(String(result))))
+        await channel.send(
+          embed.setTemplate("success", text.code(String(result)))
+        )
       } else {
-        await channel.send(embed.setSuccess("Le code a bien été exécuté."))
+        await channel.send(
+          embed.setTemplate("Success", "Le code a bien été exécuté.")
+        )
       }
     } catch (error) {
-      await channel.send(embed.setError(text.code(error.message)))
+      await channel.send(embed.setTemplate("error", text.code(error.message)))
     }
   },
 }

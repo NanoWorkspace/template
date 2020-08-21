@@ -13,7 +13,8 @@ const prefix: CommandObject = {
   call: async ({ message, args: { newPrefix } }) => {
     if (!message.guild) return
     Globals.db.set(message.guild.id, newPrefix, "prefix")
-    const embed = new Embed().setSuccess(
+    const embed = new Embed().setTemplate(
+      "Success",
       `Le préfixe a bien été modifié sur ce serveur.\nNouveau préfixe: \`${newPrefix}\``
     )
     await message.channel.send(embed)

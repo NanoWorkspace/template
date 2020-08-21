@@ -45,17 +45,19 @@ module.exports = async (message: Discord.Message) => {
   // check filters
   if (message.guild) {
     if (command.channelType === "dm")
-      return message.channel.send(embed.setError("Utilisable seulement en DM."))
+      return message.channel.send(
+        embed.setTemplate("Error", "Utilisable seulement en DM.")
+      )
     if (command.owner) {
       if (message.member !== message.guild.owner)
         return message.channel.send(
-          embed.setError("Utilisable seulement par un owner.")
+          embed.setTemplate("Error", "Utilisable seulement par un owner.")
         )
     }
     if (command.admin) {
       if (!message.member?.hasPermission("ADMINISTRATOR", { checkOwner: true }))
         return message.channel.send(
-          embed.setError("Utilisable seulement par un admin.")
+          embed.setTemplate("Error", "Utilisable seulement par un admin.")
         )
     }
     if (command.permissions) {
@@ -65,7 +67,8 @@ module.exports = async (message: Discord.Message) => {
         })
       )
         return message.channel.send(
-          embed.setError(
+          embed.setTemplate(
+            "error",
             "Utilisable seulement avec les permissions suivantes:" +
               text.code(command.permissions.join("\n"))
           )
@@ -79,7 +82,7 @@ module.exports = async (message: Discord.Message) => {
       command.admin
     )
       return message.channel.send(
-        embed.setError("Utilisable seulement dans un serveur.")
+        embed.setTemplate("Error", "Utilisable seulement dans un serveur.")
       )
   }
   if (command.users) {
@@ -89,14 +92,15 @@ module.exports = async (message: Discord.Message) => {
       })
     )
       return message.channel.send(
-        embed.setError(
-          "Utilisable seulement par les utilisateurs suivants:\n"
-        ) +
-          command.users
-            .map((user) => {
-              return Globals.client.users.resolve(user)?.username
-            })
-            .join("\n")
+        embed.setTemplate(
+          "Error",
+          "Utilisable seulement par les utilisateurs suivants:\n" +
+            command.users
+              .map((user) => {
+                return Globals.client.users.resolve(user)?.username
+              })
+              .join("\n")
+        )
       )
   }
 
@@ -117,7 +121,8 @@ module.exports = async (message: Discord.Message) => {
         const lastUsage = cooldown[message.author.id][command.name]
         if (command.cooldown > now - lastUsage) {
           return message.channel.send(
-            embed.setError(
+            embed.setTemplate(
+              "error",
               `Utilisable dans seulement \`${
                 command.cooldown - (now - lastUsage)
               }\` ms`

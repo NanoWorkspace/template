@@ -21,7 +21,9 @@ const autoRole: CommandObject = {
     const embed = new Embed()
 
     if (!role && action !== "list")
-      return message.channel.send(embed.setError("Vous devez cibler un rôle."))
+      return message.channel.send(
+        embed.setTemplate("Error", "Vous devez cibler un rôle.")
+      )
 
     const type = isBot ? "bot" : "user"
 
@@ -29,7 +31,8 @@ const autoRole: CommandObject = {
       case "add":
         Globals.db.push(message.guild.id, role.id, "autoRoles." + type)
         await message.channel.send(
-          embed.setSuccess(
+          embed.setTemplate(
+            "Success",
             `Le rôle **${role.name}** a bien été ajouté à la liste des rôles automatiques pour les **${type}s**.`
           )
         )
@@ -38,7 +41,8 @@ const autoRole: CommandObject = {
       case "remove":
         Globals.db.remove(message.guild.id, role.id, "autoRoles." + type)
         await message.channel.send(
-          embed.setSuccess(
+          embed.setTemplate(
+            "Success",
             `Le rôle **${role.name}** a bien été retiré de la liste des rôles automatiques pour les **${type}s**.`
           )
         )
@@ -61,7 +65,8 @@ const autoRole: CommandObject = {
 
       default:
         await message.channel.send(
-          embed.setError(
+          embed.setTemplate(
+            "Error",
             "❌ Vous devez préciser une action entre add, remove et list."
           )
         )
