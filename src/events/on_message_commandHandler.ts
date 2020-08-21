@@ -9,7 +9,8 @@ module.exports = async (message: Discord.Message) => {
     message.system ||
     !message.author ||
     message.author.bot ||
-    message.webhookID
+    message.webhookID ||
+    message.deleted
   )
     return
 

@@ -37,7 +37,7 @@
   "scripts": {
     "prettier": "prettier src --write",
     "build": "git rm -r --ignore-unmatch -f ./dist && npm run prettier && tsc",
-    "start": "npm run build && node --trace-warnings .",
+    "start": "npm run build && node .",
     "push": "npm run prettier && git add * && git commit -m continue && git push origin master"
   },
   "keywords": [

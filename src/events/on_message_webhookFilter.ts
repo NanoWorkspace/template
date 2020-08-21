@@ -8,25 +8,31 @@ module.exports = async (message: Discord.Message) => {
     // waiting embed loading
     await time.wait(5000)
 
+    if (message.deleted) return
+
     // twitter
     if (message.content.startsWith("http://twitter.com")) {
       const embed = message.embeds[0]
 
-      if (!embed || /^@\S+/.test(embed.description || "")) {
-        await message.delete().catch()
-      } else if (embed.author) {
-        const tweetUserMatch = /\(@(.+)\)/.exec(String(embed.author.name))
-        const tweetUser = tweetUserMatch ? tweetUserMatch[1] : null
-        if (
-          !tweetUser ||
-          Globals.db
-            .get(message.guild.id, "authorizedTwitterUsers")
-            .every((user: string) => user !== tweetUser)
-        ) {
-          await message.delete().catch()
+      try {
+        if (!embed || /^@\S+/.test(embed.description || "")) {
+          await message.delete()
+        } else if (embed.author) {
+          const tweetUserMatch = /\(@(.+)\)/.exec(String(embed.author.name))
+          const tweetUser = tweetUserMatch ? tweetUserMatch[1] : null
+          if (
+            !tweetUser ||
+            Globals.db
+              .get(message.guild.id, "authorizedTwitterUsers")
+              .every((user: string) => user !== tweetUser)
+          ) {
+            await message.delete()
+          }
+        } else {
+          await message.delete()
         }
-      } else {
-        await message.delete().catch()
+      } catch (error) {
+        console.log(error.message)
       }
     }
   }
