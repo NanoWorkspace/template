@@ -1,9 +1,9 @@
-import { CommandObject } from "../app/Command"
-import Types from "../app/ArgumentTypes"
+import Command from "../app/Command"
+import Types from "../utils/command"
 import Globals from "../app/Globals"
 import Embed from "../app/Embed"
 
-const tweetUsers: CommandObject = {
+const command = new Command({
   name: "Tweet Webhook Filter",
   regex: /tw(?:eet|itter)?/i,
   description:
@@ -69,6 +69,6 @@ const tweetUsers: CommandObject = {
         )
     }
   },
-}
+})
 
-module.exports = tweetUsers
+module.exports = command

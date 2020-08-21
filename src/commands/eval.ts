@@ -1,10 +1,10 @@
-import { CommandObject } from "../app/Command"
+import Command from "../app/Command"
 import Globals from "../app/Globals"
-import Types from "../app/ArgumentTypes"
 import Embed from "../app/Embed"
-import text from "../utils/text"
+import Types from "../utils/command"
+import Text from "../utils/text"
 
-const evalCommand: CommandObject = {
+const command = new Command({
   name: "Eval JS",
   regex: /eval|js/i,
   description: "Exécute un bout de code en back-end.",
@@ -21,7 +21,7 @@ const evalCommand: CommandObject = {
 
       if (result !== undefined) {
         await channel.send(
-          embed.setTemplate("success", text.code(String(result)))
+          embed.setTemplate("success", Text.code(String(result)))
         )
       } else {
         await channel.send(
@@ -29,9 +29,9 @@ const evalCommand: CommandObject = {
         )
       }
     } catch (error) {
-      await channel.send(embed.setTemplate("error", text.code(error.message)))
+      await channel.send(embed.setTemplate("error", Text.code(error.message)))
     }
   },
-}
+})
 
-module.exports = evalCommand
+module.exports = command

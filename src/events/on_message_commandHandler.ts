@@ -2,7 +2,7 @@ import Discord from "discord.js"
 import text from "../utils/text"
 import Globals from "../app/Globals"
 import Embed from "../app/Embed"
-import { resolveCommand } from "../app/Globals"
+import Command from "../app/Command"
 
 module.exports = async (message: Discord.Message) => {
   if (
@@ -25,7 +25,7 @@ module.exports = async (message: Discord.Message) => {
   } else return
 
   // command handler test
-  const { command, rest } = resolveCommand(content)
+  const { command, rest } = Command.resolve(content)
   if (!command) return
 
   content = rest as string

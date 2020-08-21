@@ -8,11 +8,11 @@ module.exports = async (message: Discord.Message) => {
     // waiting embed loading
     await time.wait(5000)
 
-    if (message.deleted) return
-
     // twitter
     if (message.content.startsWith("http://twitter.com")) {
       const embed = message.embeds[0]
+
+      if (!message.deleted) return
 
       try {
         if (!embed || /^@\S+/.test(embed.description || "")) {
@@ -31,9 +31,7 @@ module.exports = async (message: Discord.Message) => {
         } else {
           await message.delete()
         }
-      } catch (error) {
-        console.log(error.message)
-      }
+      } catch (error) {}
     }
   }
 }

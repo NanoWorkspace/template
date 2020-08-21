@@ -1,18 +1,18 @@
 import Discord from "discord.js"
-import { CommandObject } from "../app/Command"
 import Globals from "../app/Globals"
-import Types from "../app/ArgumentTypes"
+import Command from "../app/Command"
 import Embed from "../app/Embed"
-import text from "../utils/text"
+import Types from "../utils/command"
+import Text from "../utils/text"
 
-const help: CommandObject = {
+const command = new Command({
   name: "Help Menu",
   regex: /h(?:[aeu]?lp)?/i,
   description: "Affiche les commandes existantes",
   channelType: "guild",
   args: { command: Types.command },
   call: async ({ message, args }) => {
-    const command: CommandObject = args.command
+    const command: Command = args.command
 
     const embed = new Embed()
 
@@ -28,7 +28,7 @@ const help: CommandObject = {
         embed
           .setTitle(command.name)
           .setDescription(command.description || "Pas de description")
-          .addField("pattern:", text.code(command.regex.toString()), false)
+          .addField("pattern:", Text.code(command.regex.toString()), false)
         if (command.args)
           embed.addField(
             "arguments:",
@@ -42,7 +42,7 @@ const help: CommandObject = {
         if (command.permissions)
           embed.addField(
             "permissions:",
-            text.code(command.permissions.join("\n")),
+            Text.code(command.permissions.join("\n")),
             true
           )
         if (command.users)
@@ -62,7 +62,7 @@ const help: CommandObject = {
           embed.addField(
             "examples:",
             command.examples
-              .map((example) => text.code(example, "md"))
+              .map((example) => Text.code(example, "md"))
               .join(""),
             true
           )
@@ -71,6 +71,6 @@ const help: CommandObject = {
 
     await message.channel.send(embed)
   },
-}
+})
 
-module.exports = help
+module.exports = command

@@ -1,9 +1,9 @@
-import { CommandObject } from "../app/Command"
+import Command from "../app/Command"
 import Globals from "../app/Globals"
-import Types from "../app/ArgumentTypes"
 import Embed from "../app/Embed"
+import Types from "../utils/command"
 
-const prefix: CommandObject = {
+const command = new Command({
   name: "Prefix Manager",
   regex: /pr[eé]fix/i,
   description: "Change le prefix de Nano pour ce serveur",
@@ -19,6 +19,6 @@ const prefix: CommandObject = {
     )
     await message.channel.send(embed)
   },
-}
+})
 
-module.exports = prefix
+module.exports = command

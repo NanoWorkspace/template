@@ -1,9 +1,9 @@
-import Types from "../app/ArgumentTypes"
 import Globals from "../app/Globals"
 import Embed from "../app/Embed"
-import { CommandObject } from "../app/Command"
+import Command from "../app/Command"
+import Types from "../utils/command"
 
-const autoRole: CommandObject = {
+const command = new Command({
   name: "Auto-role Manager",
   regex: /ar|autorole/i,
   description:
@@ -72,6 +72,6 @@ const autoRole: CommandObject = {
         )
     }
   },
-}
+})
 
-module.exports = autoRole
+module.exports = command

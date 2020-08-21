@@ -1,9 +1,8 @@
-import { CommandArgument } from "./Command"
-import { resolveCommand } from "./Globals"
 import Discord from "discord.js"
+import Command, { CommandArgument } from "../app/Command"
 
 export const command: CommandArgument = (content) => {
-  const { command, rest } = resolveCommand(content)
+  const { command, rest } = Command.resolve(content)
   return { arg: command, rest }
 }
 
