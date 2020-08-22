@@ -1,4 +1,4 @@
-# Nano Template
+# Nano (なの) Template
 
 A Discord bot template in TypeScript
 
