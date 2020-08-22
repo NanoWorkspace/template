@@ -1,17 +1,21 @@
 import Discord from "discord.js"
 import fs from "fs"
 import path from "path"
+import Logger from "./Logger"
+
+Logger.load("file", __filename)
 
 export interface CommandOptions {
   name: string
   regex: RegExp
-  owner?: boolean
-  admin?: boolean
+  botOwner?: true
+  owner?: true
+  admin?: true
   permissions?: Discord.PermissionResolvable[]
   users?: Discord.UserResolvable[]
   channelType?: "dm" | "guild"
   cooldown?: number
-  typing?: boolean
+  typing?: true
   description?: string
   examples?: string[]
   args?: { [name: string]: CommandArgument }
@@ -52,6 +56,9 @@ export default class Command {
   }
   get regex() {
     return this.options.regex
+  }
+  get botOwner() {
+    return this.options.botOwner
   }
   get call() {
     return this.options.call

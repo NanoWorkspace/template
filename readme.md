@@ -12,21 +12,21 @@ A Discord bot template in TypeScript
 ### 2. Prepare project
 
 1. Go to your folder project and run `npm i`
-2. Make a `.env` file and place your token inside like this:  
-`TOKEN=Your_Discord_App_Token`
+2. Make a `.env` file and place your token inside like this: `TOKEN=Your_Discord_App_Token`
 3. Ajuste properties of `"bot"` entry in `package.json`
 4. Create and link your own GitHub repository.
 
 ### 3. Code your bot in TypeScript
 
 - Please do not code in the `index.ts`.
-- Please hard keep the existing files. The commands and the events too.
+- Please hard keep the existing files. 
+- Please keep the existing commands and events too.
 - Please use `src/app/Embed.ts` class to make embeds.
-- Add your own commands in `src/commands`.
-- To add events, you must respect the name structure:  
-`(on|once)_eventName_actionComment.ts`
+- Add your own commands in `src/commands/`.
+- Add your own events in `src/events/`.
 - Check the other commands and events for examples.
-- The Discord client is in the `src/app/Globals.ts` file.
+- The Discord client is in the `src/app/Globals.ts` file as `client`.
+- The ApplicationClient is fetched in the `src/app/Globals.ts` file as `bot`.
 
 ### 4. Scripts explanation
 

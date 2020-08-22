@@ -1,14 +1,18 @@
-const { bot } = require("../../package.json")
 import Discord from "discord.js"
 import Globals from "../app/Globals"
 
-module.exports = (guild: Discord.Guild) => {
+export function ensureGuild(guild: Discord.Guild) {
   Globals.db.ensure(guild.id, {
-    prefix: bot.prefix,
+    prefix: Globals.bot.prefix,
+    logChannel: null,
     autoRoles: {
       user: [],
       bot: [],
     },
     authorizedTwitterUsers: [],
   })
+}
+
+export default {
+  ensureGuild,
 }

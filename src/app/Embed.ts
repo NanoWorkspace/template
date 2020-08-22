@@ -1,15 +1,11 @@
-const { bot } = require("../../package.json")
-
 import Discord from "discord.js"
-import globals from "./Globals"
+import { bot } from "./Bot"
+import Logger from "./Logger"
 
-interface Templates {
-  default: Discord.MessageEmbedOptions
-  [k: string]: Discord.MessageEmbedOptions
-}
+Logger.load("file", __filename)
 
-export default class Embed extends Discord.MessageEmbed {
-  static templates: Templates = bot.embedTemplates
+class Embed extends Discord.MessageEmbed {
+  static templates = bot.embedTemplates
 
   constructor() {
     super()
@@ -17,9 +13,9 @@ export default class Embed extends Discord.MessageEmbed {
   }
 
   setTemplate(templateName: string, description?: string): Embed {
-    const Globals = globals
     const template = Embed.templates[templateName.toLowerCase()]
 
+    const Globals = require("./Globals")
     const templatingRegex = /\{\{\s*(.+)\s*}}/g
     const templatingReplacer = (fm: string, g: string) => eval(g)
 
@@ -45,17 +41,22 @@ export default class Embed extends Discord.MessageEmbed {
           // files
           this.attachFiles(value)
         }
-      } else if (typeof value === "object") {
+      } else if (value && typeof value === "object") {
         if (name === "author") {
           this.setAuthor(
+            // @ts-ignore
             value.name?.replace(templatingRegex, templatingReplacer),
+            // @ts-ignore
             value.iconURL?.replace(templatingRegex, templatingReplacer),
+            // @ts-ignore
             value.url
           )
         } else {
           // footer
           this.setFooter(
+            // @ts-ignore
             value.text.replace(templatingRegex, templatingReplacer),
+            // @ts-ignore
             value.iconURL?.replace(templatingRegex, templatingReplacer)
           )
         }
@@ -67,3 +68,5 @@ export default class Embed extends Discord.MessageEmbed {
     return this
   }
 }
+
+export default Embed

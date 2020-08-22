@@ -8,7 +8,7 @@ const command = new Command({
   name: "Eval JS",
   regex: /eval|js/i,
   description: "Exécute un bout de code en back-end.",
-  users: ["352176756922253321"],
+  botOwner: true,
   args: { code: Types.text },
   call: async ({ message, args: { code } }) => {
     const { guild, channel, client } = message

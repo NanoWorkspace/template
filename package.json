@@ -1,6 +1,5 @@
 {
   "bot": {
-    "name": "Nano",
     "prefix": "nano ",
     "clientOptions": {
       "disableMentions": "everyone"
@@ -8,7 +7,7 @@
     "embedTemplates": {
       "default": {
         "author": {
-          "name": "{{ bot.name }}",
+          "name": "{{ Globals.bot.name }}",
           "iconURL": "{{ Globals.client.user.displayAvatarURL() }}"
         },
         "timestamp": null
@@ -56,6 +55,7 @@
   "dependencies": {
     "better-sqlite-pool": "^0.3.0",
     "better-sqlite3": "^7.1.0",
+    "chalk": "^4.1.0",
     "discord.js": "^12.3.1",
     "dotenv": "^8.2.0",
     "enmap": "^5.6.1"
