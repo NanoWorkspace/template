@@ -1,4 +1,6 @@
-# Nano (なの) Template
+![nano banner](img/banner.jpg)
+
+# Nano (なの) Template ![](img/logo.png)
 
 A Discord bot template in TypeScript
 
