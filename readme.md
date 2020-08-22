@@ -1,8 +1,24 @@
 ![nano banner](img/banner.jpg)
 
-# Nano (なの) Template ![](img/logo.png)
+# Nano (なの) Template ![](img/logo.png) ![GitHub forks](https://img.shields.io/github/forks/CamilleAbella/NanoTemplate?color=black&logo=github&style=for-the-badge) ![GitHub stars](https://img.shields.io/github/stars/CamilleAbella/NanoTemplate?color=black&logo=github&style=for-the-badge) ![GitHub watchers](https://img.shields.io/github/watchers/CamilleAbella/NanoTemplate?color=black&logo=github&style=for-the-badge)
+
+![GitHub top language](https://img.shields.io/github/languages/top/CamilleAbella/NanoTemplate?color=%23BDB76B&style=plastic)
+![GitHub search hit counter](https://img.shields.io/github/search/CamilleAbella/NanoTemplate/todo?color=%23BDB76B&label=todo%20count&style=plastic)
+![GitHub repo size](https://img.shields.io/github/repo-size/CamilleAbella/NanoTemplate?color=%23BDB76B&label=size&style=plastic)
+![GitHub All Releases](https://img.shields.io/github/downloads/CamilleAbella/NanoTemplate/total?color=%23BDB76B&style=plastic)
+![GitHub issues](https://img.shields.io/github/issues/CamilleAbella/NanoTemplate?color=%23BDB76B&style=plastic)
+![GitHub release (latest by date including pre-releases)](https://img.shields.io/github/v/release/CamilleAbella/NanoTemplate?color=%23BDB76B&include_prereleases&style=plastic)
 
 A Discord bot template in TypeScript
+
+## Dependencies
+
+![GitHub package.json dependency version (prod)](https://img.shields.io/github/package-json/dependency-version/CamilleAbella/NanoTemplate/discord.js?color=orange&style=plastic)
+![GitHub package.json dependency version (prod)](https://img.shields.io/github/package-json/dependency-version/CamilleAbella/NanoTemplate/enmap?color=orange&style=plastic)
+![GitHub package.json dependency version (prod)](https://img.shields.io/github/package-json/dependency-version/CamilleAbella/NanoTemplate/chalk?color=orange&style=plastic)
+![GitHub package.json dependency version (prod)](https://img.shields.io/github/package-json/dependency-version/CamilleAbella/NanoTemplate/dotenv?color=orange&style=plastic)
+![GitHub package.json dependency version (prod)](https://img.shields.io/github/package-json/dependency-version/CamilleAbella/NanoTemplate/better-sqlite3?color=orange&style=plastic)
+![GitHub package.json dependency version (prod)](https://img.shields.io/github/package-json/dependency-version/CamilleAbella/NanoTemplate/better-sqlite-pool?color=orange&style=plastic)
 
 ## Template usage
 
