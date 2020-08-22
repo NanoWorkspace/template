@@ -23,7 +23,7 @@
   "name": "nano-template",
   "author": "ghom",
   "license": "ISC",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "Discord bot in TypeScript.",
   "main": "dist/index.js",
   "prettier": {
