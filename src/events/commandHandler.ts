@@ -42,7 +42,7 @@ new Event<"message">({
       for (const name in command.args) {
         const { arg, rest } = await command.args[name](tempContent, message)
         args[name] = arg
-        tempContent = rest || ""
+        tempContent = rest || tempContent
       }
     }
 

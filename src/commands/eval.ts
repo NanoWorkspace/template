@@ -1,10 +1,10 @@
 import Command from "../app/Command"
 import Globals from "../app/Globals"
 import Embed from "../app/Embed"
-import Types from "../utils/command"
+import Types from "../utils/types"
 import Text from "../utils/text"
 
-const command = new Command({
+new Command({
   name: "Eval JS",
   regex: /eval|js/i,
   description: "Exécute un bout de code en back-end.",
@@ -33,5 +33,3 @@ const command = new Command({
     }
   },
 })
-
-module.exports = command

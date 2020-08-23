@@ -19,7 +19,7 @@ export interface CommandOptions {
   description?: string
   examples?: string[]
   args?: { [name: string]: CommandArgument }
-  call: (event: CommandEvent) => void
+  call: (event: CommandEvent) => Promise<any> | any
 }
 
 export interface CommandEvent {
@@ -38,6 +38,7 @@ export default class Command {
     [user: string]: { [commandName: string]: number }
   } = {}
 
+  /** Contains all loaded commands */
   static commands: Discord.Collection<
     string,
     Command
@@ -59,9 +60,6 @@ export default class Command {
   }
   get botOwner() {
     return this.options.botOwner
-  }
-  get call() {
-    return this.options.call
   }
   get owner() {
     return this.options.owner
@@ -92,6 +90,10 @@ export default class Command {
   }
   get args() {
     return this.options.args
+  }
+
+  async call(event: CommandEvent) {
+    await this.options.call(event)
   }
 
   static resolve(resolvable: string): { command?: Command; rest?: string } {

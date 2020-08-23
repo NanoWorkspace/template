@@ -2,13 +2,13 @@ import Discord from "discord.js"
 import Globals from "../app/Globals"
 import Command from "../app/Command"
 import Embed from "../app/Embed"
-import Types from "../utils/command"
+import Types from "../utils/types"
 import Text from "../utils/text"
 
-const command = new Command({
+new Command({
   name: "Help Menu",
   regex: /h(?:[aeu]?lp)?/i,
-  description: "Affiche les commandes existantes",
+  description: "Affiche les commandes existantes.",
   channelType: "guild",
   args: { command: Types.command },
   call: async ({ message, args }) => {
@@ -72,5 +72,3 @@ const command = new Command({
     await message.channel.send(embed)
   },
 })
-
-module.exports = command

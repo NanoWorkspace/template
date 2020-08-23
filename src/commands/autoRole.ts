@@ -1,9 +1,9 @@
 import Globals from "../app/Globals"
 import Embed from "../app/Embed"
 import Command from "../app/Command"
-import Types from "../utils/command"
+import Types from "../utils/types"
 
-const command = new Command({
+new Command({
   name: "Auto-role Manager",
   regex: /ar|autorole/i,
   description:
@@ -20,10 +20,12 @@ const command = new Command({
 
     const embed = new Embed()
 
-    if (!role && action !== "list")
-      return message.channel.send(
+    if (!role && action !== "list") {
+      await message.channel.send(
         embed.setTemplate("Error", "Vous devez cibler un rôle.")
       )
+      return
+    }
 
     const type = isBot ? "bot" : "user"
 
@@ -73,5 +75,3 @@ const command = new Command({
     }
   },
 })
-
-module.exports = command

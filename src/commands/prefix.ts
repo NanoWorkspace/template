@@ -1,12 +1,12 @@
 import Command from "../app/Command"
 import Globals from "../app/Globals"
 import Embed from "../app/Embed"
-import Types from "../utils/command"
+import Types from "../utils/types"
 
-const command = new Command({
+new Command({
   name: "Prefix Manager",
   regex: /pr[eé]fix/i,
-  description: "Change le prefix de Nano pour ce serveur",
+  description: "Change le prefix de Nano pour ce serveur.",
   channelType: "guild",
   admin: true,
   args: { newPrefix: Types.text },
@@ -20,5 +20,3 @@ const command = new Command({
     await message.channel.send(embed)
   },
 })
-
-module.exports = command

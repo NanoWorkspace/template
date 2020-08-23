@@ -1,9 +1,9 @@
 import Command from "../app/Command"
-import Types from "../utils/command"
+import Types from "../utils/types"
 import Globals from "../app/Globals"
 import Embed from "../app/Embed"
 
-const command = new Command({
+new Command({
   name: "Tweet Webhook Filter",
   regex: /tw(?:eet|itter)?/i,
   description:
@@ -19,13 +19,15 @@ const command = new Command({
 
     const embed = new Embed()
 
-    if (!user && action !== "list")
-      return message.channel.send(
+    if (!user && action !== "list") {
+      await message.channel.send(
         embed.setTemplate(
           "Error",
           "Vous devez entrer un num d'utilisateur Twitter."
         )
       )
+      return
+    }
 
     switch (action) {
       case "add":
@@ -70,5 +72,3 @@ const command = new Command({
     }
   },
 })
-
-module.exports = command
