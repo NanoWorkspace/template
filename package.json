@@ -10,13 +10,16 @@
           "name": "{{ Globals.bot.name }}",
           "iconURL": "{{ Globals.client.user.displayAvatarURL() }}"
         },
+        "color": 16119260,
         "timestamp": null
       },
       "success": {
-        "title": "✅ Et voilà!"
+        "title": "✅ Et voilà!",
+        "color": 6730823
       },
       "error": {
-        "title": "❌ Oups..."
+        "title": "❌ Oups...",
+        "color": 16711680
       }
     }
   },
