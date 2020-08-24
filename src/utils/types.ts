@@ -38,7 +38,7 @@ async function discordMentionable(
       }
     }
   }
-  const { arg: w } = await kebab(content, message)
+  const { arg: w } = await word(content, message)
   if (w) {
     if (collection === "users") {
       item = message.client.users.cache.find((u) =>
@@ -79,16 +79,29 @@ export const command: CommandArgument = (content) => {
   return { arg: command, rest }
 }
 
-export const text: CommandArgument = (content) => {
+export const rest: CommandArgument = (content) => {
   return { arg: content.trim(), rest: "" }
 }
 
-export const word: CommandArgument = (content) => {
-  return justByRegex(/^(\w+)/, content)
+export const number: CommandArgument = (content) => {
+  const regexNumber = /^(-?\d+)(?:\D|$)/
+  const match = regexNumber.exec(content)
+  if (match) {
+    const number = Number(match[1])
+    if (!Number.isNaN(number)) {
+      return {
+        arg: number,
+        rest: content.replace(regexNumber, "").trim(),
+      }
+    }
+  }
+  return {
+    arg: null,
+  }
 }
 
-export const kebab: CommandArgument = (content) => {
-  return justByRegex(/^([\w-]+)/, content)
+export const word: CommandArgument = (content) => {
+  return justByRegex(/^(\S+)(?:\s|$)/, content)
 }
 
 export const snowflake: CommandArgument = (content) => {
@@ -157,7 +170,7 @@ export const json: CommandArgument = (content) => {
 
 export default {
   command,
-  text,
+  rest,
   word,
   action,
   boolean,
@@ -167,4 +180,5 @@ export default {
   role,
   member,
   snowflake,
+  number,
 }

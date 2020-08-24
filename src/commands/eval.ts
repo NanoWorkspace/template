@@ -9,7 +9,7 @@ new Command({
   regex: /eval|js/i,
   description: "Exécute un bout de code en back-end.",
   botOwner: true,
-  args: { code: Types.text },
+  args: { code: Types.rest },
   call: async ({ message, args: { code } }) => {
     const { guild, channel, client } = message
     const embed = new Embed()

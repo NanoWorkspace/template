@@ -9,7 +9,7 @@ new Command({
   description: "Change le prefix de Nano pour ce serveur.",
   channelType: "guild",
   admin: true,
-  args: { newPrefix: Types.text },
+  args: { newPrefix: Types.rest },
   call: async ({ message, args: { newPrefix } }) => {
     if (!message.guild) return
     Globals.db.set(message.guild.id, newPrefix, "prefix")

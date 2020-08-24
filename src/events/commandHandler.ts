@@ -71,7 +71,10 @@ new Event<"message">({
       if (command.permissions) {
         if (
           command.permissions.some((permission) => {
-            return message.member?.permissions.missing(permission)
+            return !message.member?.hasPermission(permission, {
+              checkAdmin: true,
+              checkOwner: true,
+            })
           })
         )
           return message.channel.send(

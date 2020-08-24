@@ -12,7 +12,7 @@ new Command({
   admin: true,
   args: {
     action: Types.action,
-    user: Types.text,
+    user: Types.rest,
   },
   call: async ({ message, args: { action, user } }) => {
     if (!message.guild) return
