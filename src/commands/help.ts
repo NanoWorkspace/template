@@ -39,28 +39,30 @@ new Command({
         if (command.args) {
           function groupToString(group: CommandArgumentGroup) {
             return (
-              "`" +
+              "- " +
               Object.keys(group)
                 .map((name) => {
                   const arg = group[name]
-                  return `<${name}${arg.optional ? "?" : ""}${
-                    arg.default !== undefined ? `=${arg.default}` : ""
-                  }>`
+                  return `[${name}${arg.optional ? "?" : ""}${
+                    arg.default !== undefined ? ` = ${arg.default}` : ""
+                  }]`
                 })
-                .join(" ") +
-              "`"
+                .join(" ")
             )
           }
 
           embed.addField(
             "arguments:",
-            Array.isArray(command.args)
-              ? command.args
-                  .map((group, index) => {
-                    return `option **${index + 1}**: ${groupToString(group)}`
-                  })
-                  .join("\n")
-              : groupToString(command.args),
+            Text.code(
+              Array.isArray(command.args)
+                ? command.args
+                    .map((group, index) => {
+                      return groupToString(group)
+                    })
+                    .join("\n")
+                : groupToString(command.args),
+              "yaml"
+            ),
             false
           )
         }
