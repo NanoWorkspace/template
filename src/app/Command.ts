@@ -18,8 +18,12 @@ export interface CommandOptions {
   typing?: true
   description?: string
   examples?: string[]
-  args?: { [name: string]: CommandArgument }
+  args?: CommandArgumentGroup | CommandArgumentGroup[]
   call: (event: CommandEvent) => Promise<any> | any
+}
+
+export interface CommandArgumentGroup {
+  [name: string]: CommandArgument
 }
 
 export interface CommandEvent {
@@ -27,10 +31,20 @@ export interface CommandEvent {
   args: { [name: string]: any }
 }
 
-export type CommandArgument = (
-  content: string,
-  message: Discord.Message
-) => Promise<{ arg: any; rest?: string }> | { arg: any; rest?: string }
+export interface CommandArgument {
+  optional?: true
+  default?: any
+  type: CommandArgumentType
+}
+
+export type CommandArgumentType =
+  | ((
+      content: string,
+      message?: Discord.Message
+    ) => Promise<{ arg: any; rest?: string }> | { arg: any; rest?: string })
+  | string
+  | number
+  | (string | number)[]
 
 export default class Command {
   /** Contains timestamps of last commands usage for each user */
@@ -94,6 +108,49 @@ export default class Command {
 
   async call(event: CommandEvent) {
     await this.options.call(event)
+  }
+
+  async parseArgs(message: Discord.Message, content: string) {
+    const args: { [name: string]: any } = {}
+    if (this.args) {
+      let commandArgs: CommandArgumentGroup = {}
+
+      function scalar(name: string, value: string | number): boolean {
+        if (content.includes(String(value))) {
+          content = content.replace(String(value), "").trim()
+          args[name] = value
+          return true
+        }
+        return false
+      }
+
+      if (Array.isArray(this.args)) {
+        for (const group of this.args) {
+          commandArgs = { ...group }
+        }
+      } else {
+        commandArgs = this.args
+      }
+
+      for (const name in commandArgs) {
+        const { type, default: _default } = commandArgs[name]
+
+        if (typeof type === "function") {
+          const { arg, rest } = await type(content, message)
+          args[name] = arg
+          content = rest || content
+        } else if (Array.isArray(type)) {
+          for (const option of type) {
+            if (scalar(name, option)) break
+          }
+        } else {
+          scalar(name, type)
+        }
+
+        if (args[name] === null) args[name] = _default
+      }
+    }
+    return args
   }
 
   static resolve(resolvable: string): { command?: Command; rest?: string } {

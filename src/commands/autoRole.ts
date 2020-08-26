@@ -11,16 +11,24 @@ new Command({
   channelType: "guild",
   admin: true,
   args: {
-    isBot: Types.boolean,
-    action: Types.action,
-    role: Types.role,
+    bot: {
+      default: false,
+      type: Types.boolean,
+    },
+    action: {
+      type: Types.action,
+    },
+    role: {
+      optional: true,
+      type: Types.role,
+    },
   },
   call: async ({ message, args: { isBot, action, role } }) => {
     if (!message.guild) return
 
     const embed = new Embed()
 
-    if (!role && action !== "list") {
+    if (action && action !== "list" && !role) {
       await message.channel.send(
         embed.setTemplate("Error", "Vous devez cibler un rôle.")
       )
@@ -69,7 +77,7 @@ new Command({
         await message.channel.send(
           embed.setTemplate(
             "Error",
-            "❌ Vous devez préciser une action entre add, remove et list."
+            "Vous devez préciser une action entre `add`, `remove` et `list`."
           )
         )
     }

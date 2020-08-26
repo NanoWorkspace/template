@@ -1,7 +1,7 @@
 import Discord from "discord.js"
-import { bot } from "./Bot"
-import { client } from "./Client"
-import { db } from "./Database"
+import bot from "./Bot"
+import client from "./Client"
+import db from "./Database"
 import Event from "./Event"
 import Command from "./Command"
 import Logger from "./Logger"
@@ -17,10 +17,9 @@ export const owners: Discord.Collection<
   Discord.User
 > = new Discord.Collection()
 
-export default {
+const Globals = {
   bot: bot,
   custom,
-  own: custom,
   db,
   client,
   owners,
@@ -29,14 +28,5 @@ export default {
   commands: Command.commands,
 }
 
-module.exports = {
-  bot: bot,
-  custom,
-  own: custom,
-  db,
-  client,
-  owners,
-  events: Event.events,
-  cooldown: Command.cooldown,
-  commands: Command.commands,
-}
+export default Globals
+module.exports = Globals

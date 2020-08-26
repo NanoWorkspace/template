@@ -11,8 +11,8 @@ new Command({
   channelType: "guild",
   admin: true,
   args: {
-    action: Types.action,
-    user: Types.rest,
+    action: { type: Types.action },
+    user: { type: Types.rest },
   },
   call: async ({ message, args: { action, user } }) => {
     if (!message.guild) return

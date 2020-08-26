@@ -1,4 +1,3 @@
-import Discord from "discord.js"
 import Globals from "../app/Globals"
 import Text from "../utils/text"
 import Embed from "../app/Embed"
@@ -20,7 +19,7 @@ new Event<"message">({
       return
 
     // check prefix
-    let prefix = "nano ",
+    let prefix = Globals.bot.prefix,
       content
     if (message.guild) {
       prefix = Globals.db.get(message.guild.id, "prefix")
@@ -33,18 +32,8 @@ new Event<"message">({
     const { command, rest } = Command.resolve(content)
     if (!command) return
 
-    content = rest as string
-
     // command arguments parsing
-    const args: { [name: string]: any } = {}
-    if (command.args) {
-      let tempContent = content
-      for (const name in command.args) {
-        const { arg, rest } = await command.args[name](tempContent, message)
-        args[name] = arg
-        tempContent = rest || tempContent
-      }
-    }
+    const args = await command.parseArgs(message, rest || "")
 
     const embed = new Embed()
 

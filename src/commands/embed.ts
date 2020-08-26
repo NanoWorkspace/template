@@ -8,11 +8,21 @@ new Command({
   name: "Embed Utils",
   regex: /e(?:mbed)?/i,
   description: "Gère la création et la décomposition d'embeds.",
-  args: {
-    embedOptions: Types.json,
-    channel: Types.channel,
-    messageID: Types.snowflake,
-  },
+  args: [
+    {
+      embedOptions: {
+        type: Types.json,
+      },
+    },
+    {
+      channel: {
+        type: Types.channel,
+      },
+      messageID: {
+        type: Types.snowflake,
+      },
+    },
+  ],
   async call({ message, args: { embedOptions, channel, messageID } }) {
     if (!message.guild) return
 

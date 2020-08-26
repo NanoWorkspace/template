@@ -9,14 +9,32 @@ new Command({
   description: "Change le prefix de Nano pour ce serveur.",
   channelType: "guild",
   admin: true,
-  args: { newPrefix: Types.rest },
-  call: async ({ message, args: { newPrefix } }) => {
+  args: [
+    {
+      reset: {
+        type: "reset",
+      },
+    },
+    {
+      newPrefix: {
+        type: Types.rest,
+      },
+    },
+  ],
+  call: async ({ message, args: { reset, newPrefix } }) => {
     if (!message.guild) return
+
+    const embed = new Embed()
+
+    if (reset) newPrefix = Globals.bot.prefix
+
     Globals.db.set(message.guild.id, newPrefix, "prefix")
-    const embed = new Embed().setTemplate(
-      "Success",
-      `Le préfixe a bien été modifié sur ce serveur.\nNouveau préfixe: \`${newPrefix}\``
+
+    await message.channel.send(
+      embed.setTemplate(
+        "Success",
+        `Le préfixe a bien été modifié sur ce serveur.\nNouveau préfixe: \`${newPrefix}\``
+      )
     )
-    await message.channel.send(embed)
   },
 })

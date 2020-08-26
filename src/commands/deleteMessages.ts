@@ -10,27 +10,15 @@ new Command({
   cooldown: 5000,
   channelType: "guild",
   permissions: ["MANAGE_MESSAGES"],
-  args: { count: Types.number },
+  args: { count: { type: Types.numberBetween(1, 99) } },
   call: async ({ message, args: { count } }) => {
-    const embed = new Embed()
-
-    if (count === null)
+    if (!count)
       return await message.channel.send(
-        embed.setTemplate(
+        new Embed().setTemplate(
           "error",
-          "Vous devez donner un nombre de messages a effacer."
+          "Vous devez donner un nombre de messages a effacer entre `1` et `99`."
         )
       )
-
-    if (count < 1)
-      return await message.channel.send(
-        embed.setTemplate(
-          "error",
-          "Votre nombre de message à effacer doit être positif."
-        )
-      )
-
-    if (count > 99) count = 99
 
     await message.delete()
 

@@ -15,4 +15,7 @@ export interface Bot extends Partial<Discord.ClientApplication> {
   embedTemplates: EmbedTemplates
 }
 
-export const bot: Bot = require("../../package.json").bot
+const bot: Bot = require("../../package.json").bot
+
+export default bot
+module.exports = bot
