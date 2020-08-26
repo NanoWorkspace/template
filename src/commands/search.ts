@@ -9,7 +9,7 @@ new Command({
   description: "Create a link to a search engine from your search.",
   args: {
     searchEngine: {
-      default: "google",
+      defaultIndex: 0,
       type: [
         /google|ggl?/,
         /yandex|yd/,

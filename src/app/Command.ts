@@ -35,13 +35,14 @@ export interface CommandEvent {
 export interface CommandArgument {
   optional?: true
   default?: any
+  defaultIndex?: number
   type: CommandArgumentType
 }
 
 export type CommandArgumentType =
   | ((
       content: string,
-      message?: Discord.Message
+      message: Discord.Message
     ) => Promise<{ arg: any; rest?: string }> | { arg: any; rest?: string })
   | string
   | number
@@ -114,9 +115,9 @@ export default class Command {
   }
 
   async parseArgs(message: Discord.Message, content: string) {
-    const args: { [name: string]: any } = {}
+    let args: { [name: string]: any } = {}
     if (this.args) {
-      let commandArgs: CommandArgumentGroup = {}
+      let groups: CommandArgumentGroup[] = []
 
       function scalar(name: string, value: string | number | RegExp): boolean {
         if (value instanceof RegExp) {
@@ -136,50 +137,46 @@ export default class Command {
       }
 
       if (Array.isArray(this.args)) {
-        for (const group of this.args) {
-          commandArgs = { ...group }
-        }
+        groups = this.args
       } else {
-        commandArgs = this.args
+        groups = [this.args]
       }
 
-      for (const name in commandArgs) {
-        const { type, default: _default } = commandArgs[name]
+      for (const group of groups) {
+        for (const name in group) {
+          const { type, default: _default, defaultIndex, optional } = group[
+            name
+          ]
 
-        if (typeof type === "function") {
-          const { arg, rest } = await type(content, message)
-          args[name] = arg
-          content = rest || content
-        } else if (Array.isArray(type)) {
-          let i = 0
-          for (const option of type) {
-            if (scalar(name, option)) {
-              args[name + "Index"] = i
+          if (typeof type === "function") {
+            const { arg, rest } = await type(content, message)
+            args[name] = arg
+            content = rest || content
+          } else if (Array.isArray(type)) {
+            let i = 0
+            for (const option of type) {
+              if (scalar(name, option)) {
+                args[name + "Index"] = i
+                break
+              }
+              i++
+            }
+          } else {
+            scalar(name, type)
+          }
+
+          if (args[name] === null) {
+            if (_default !== undefined) {
+              args[name] = _default
+            } else if (defaultIndex !== undefined) {
+              args[name + "Index"] = defaultIndex
+            } else if (!optional && groups.indexOf(group) < groups.length - 1) {
+              // clean args and pass to next group
+              args = {}
               break
             }
-            i++
           }
-          if (args[name] === null) {
-            if (~type.indexOf(_default)) {
-              args[name + "Index"] = type.indexOf(_default)
-            } else {
-              i = 0
-              for (const item of type) {
-                if (item instanceof RegExp) {
-                  if (item.test(_default)) {
-                    args[name + "Index"] = i
-                    break
-                  }
-                }
-                i++
-              }
-            }
-          }
-        } else {
-          scalar(name, type)
         }
-
-        if (args[name] === null) args[name] = _default
       }
     }
     return args

@@ -18,14 +18,14 @@ export const rest: CommandArgumentType = (content) => {
 }
 
 export const number: CommandArgumentType = (content) => {
-  const regexNumber = /^(-?\d+)(?:\D|$)/
-  const match = regexNumber.exec(content)
+  const regex = /^(-?\d+)(?:\D|$)/
+  const match = regex.exec(content)
   if (match) {
     const number = Number(match[1])
     if (!Number.isNaN(number)) {
       return {
         arg: number,
-        rest: content.replace(regexNumber, "").trim(),
+        rest: content.replace(regex, "").trim(),
       }
     }
   }
@@ -36,6 +36,7 @@ export const number: CommandArgumentType = (content) => {
 
 export const numberBetween = (start: number, stop: number) => {
   const fn: CommandArgumentType = async (content) => {
+    // @ts-ignore
     const { arg: num, rest } = await number(content)
     if (num < start || num > stop) {
       return { arg: null }
@@ -78,18 +79,18 @@ export const user: CommandArgumentType = async (content, message) => {
 }
 
 export const action: CommandArgumentType = (content) => {
-  const regexps: { [k: string]: RegExp } = {
+  const regex: { [k: string]: RegExp } = {
     edit: /^(?:edit|patch|change)/i,
     get: /^get\s+/i,
     add: /^(?:add|new|post)\s+/i,
     remove: /^(?:remove|del(?:ete)?|rm)\s+/i,
     list: /^(?:list|ls|show)/i,
   }
-  for (const key in regexps) {
-    if (regexps[key].test(content)) {
+  for (const key in regex) {
+    if (regex[key].test(content)) {
       return {
         arg: key,
-        rest: content.replace(regexps[key], "").trim(),
+        rest: content.replace(regex[key], "").trim(),
       }
     }
   }
@@ -107,13 +108,13 @@ export const boolean: CommandArgumentType = (content) => {
 }
 
 export const json: CommandArgumentType = (content) => {
-  const regexJSON = /^(?:```(?:json)?\s+(.+)\s*```(?:[^`]|$)|(.+)$)?/is
+  const regex = /^(?:```(?:json)?\s+(.+)\s*```(?:[^`]|$)|(.+)$)?/is
   try {
-    const [, g1, g2] = regexJSON.exec(content) as RegExpExecArray
+    const [, g1, g2] = regex.exec(content) as RegExpExecArray
     const json = JSON.parse(g1 || g2)
     return {
       arg: json,
-      rest: content.replace(regexJSON, "").trim(),
+      rest: content.replace(regex, "").trim(),
     }
   } catch (error) {}
   return {
@@ -122,12 +123,29 @@ export const json: CommandArgumentType = (content) => {
 }
 
 export const code: CommandArgumentType = (content) => {
-  const regexCode = /^(?:```(?:[a-z]+)?\s+(.+)\s*```(?:[^`]|$)|(.+)$)?/is
-  const [, g1, g2] = regexCode.exec(content) as RegExpExecArray
+  const regex = /^(?:```(?:[a-z]+)?\s+(.+)\s*```(?:[^`]|$)|(.+)$)?/is
+  const [, g1, g2] = regex.exec(content) as RegExpExecArray
   return {
     arg: g1 || g2,
-    rest: content.replace(regexCode, "").trim(),
+    rest: content.replace(regex, "").trim(),
   }
+}
+
+export const emoji: CommandArgumentType = (content, message) => {
+  let regex = /^<a?:\S+?:(\d{17,20})>/i
+  const match = regex.exec(content)
+  if (match) {
+    const emoji = message.client.emojis.cache.get(match[1])
+    if (emoji) {
+      return {
+        arg: emoji,
+        rest: content.replace(regex, "").trim(),
+      }
+    } else {
+      return word(content, message)
+    }
+  }
+  return { arg: null }
 }
 
 async function discordMentionable(
@@ -145,9 +163,9 @@ async function discordMentionable(
       rest: content.replace(`${item}`, "").trim(),
     }
   }
-  const regexID = /^(\d{17,20})(?:\D|$)/
-  if (regexID.test(content)) {
-    const [, id] = regexID.exec(content) as RegExpExecArray
+  const regex = /^(\d{17,20})(?:\D|$)/
+  if (regex.test(content)) {
+    const [, id] = regex.exec(content) as RegExpExecArray
     if (collection === "users") {
       item = message.client.users.resolve(id)
     } else {
@@ -212,4 +230,5 @@ export default {
   snowflake,
   number,
   numberBetween,
+  emoji,
 }

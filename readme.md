@@ -5,7 +5,7 @@
 # Nano (なの) Template ![](img/logo.png)
 
 ![GitHub top language](https://img.shields.io/github/languages/top/CamilleAbella/NanoTemplate?color=%23BDB76B&style=plastic)
-![GitHub search hit counter](https://img.shields.io/github/search/CamilleAbella/NanoTemplate/todo?color=%23BDB76B&label=todo%20count&style=plastic)
+[![GitHub search todo](https://img.shields.io/github/search/CamilleAbella/NanoTemplate/todo?color=%23BDB76B&label=todo%20count&style=plastic)](https://github.com/CamilleAbella/NanoTemplate/search?q=todo&unscoped_q=todo)
 ![GitHub repo size](https://img.shields.io/github/repo-size/CamilleAbella/NanoTemplate?color=%23BDB76B&label=size&style=plastic)
 ![GitHub All Releases](https://img.shields.io/github/downloads/CamilleAbella/NanoTemplate/total?color=%23BDB76B&style=plastic)
 ![GitHub issues](https://img.shields.io/github/issues/CamilleAbella/NanoTemplate?color=%23BDB76B&style=plastic)
