@@ -1,9 +1,8 @@
 import Database from "../utils/database"
 import Globals from "../app/Globals"
 import Event from "../app/Event"
-import Discord from "discord.js"
 
-new Event<"ready">({
+new Event({
   name: "ready",
   caller: "once",
   description: "Update db on client is ready",
@@ -12,14 +11,14 @@ new Event<"ready">({
   },
 })
 
-new Event<"guildCreate">({
+new Event({
   name: "guildCreate",
   caller: "on",
   description: "Update db on guild is create",
   call: Database.ensureGuild,
 })
 
-new Event<"guildDelete">({
+new Event({
   name: "guildDelete",
   caller: "on",
   description: "Update db on guild is delete",

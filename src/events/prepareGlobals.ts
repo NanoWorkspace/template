@@ -2,7 +2,7 @@ import Discord from "discord.js"
 import Event from "../app/Event"
 import Globals from "../app/Globals"
 
-new Event<"ready">({
+new Event({
   name: "ready",
   description: "Prepare globals on client is ready",
   caller: "once",

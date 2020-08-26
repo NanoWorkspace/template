@@ -1,9 +1,8 @@
-import Discord from "discord.js"
 import Globals from "../app/Globals"
 import Time from "../utils/time"
 import Event from "../app/Event"
 
-new Event<"message">({
+new Event({
   name: "message",
   description: "Filter webhooks on message create",
   caller: "on",

@@ -1,7 +1,7 @@
 import Event from "../app/Event"
 import Globals from "../app/Globals"
 
-new Event<"guildMemberAdd">({
+new Event({
   name: "guildMemberAdd",
   caller: "on",
   description: "Add role auto on member add",

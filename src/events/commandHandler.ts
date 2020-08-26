@@ -4,7 +4,7 @@ import Embed from "../app/Embed"
 import Command from "../app/Command"
 import Event from "../app/Event"
 
-new Event<"message">({
+new Event({
   name: "message",
   description: "Handle commands on message create",
   caller: "on",

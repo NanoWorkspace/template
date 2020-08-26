@@ -3,7 +3,7 @@ import Globals from "../app/Globals"
 import Logger from "../app/Logger"
 import Event from "../app/Event"
 
-new Event<"ready">({
+new Event({
   name: "ready",
   caller: "once",
   description: "Log globals info on client is ready",
