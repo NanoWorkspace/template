@@ -5,7 +5,7 @@ import Types from "../utils/types"
 
 new Command({
   name: "Prefix Manager",
-  regex: /pr[eé]fix/i,
+  pattern: /pr[eé]fix/i,
   description: "Change le prefix de Nano pour ce serveur.",
   channelType: "guild",
   admin: true,

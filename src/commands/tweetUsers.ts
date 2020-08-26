@@ -5,7 +5,7 @@ import Embed from "../app/Embed"
 
 new Command({
   name: "Tweet Webhook Filter",
-  regex: /tw(?:eet|itter)?/i,
+  pattern: /tw(?:eet|itter)?/i,
   description:
     "Gère l'ajout d'utilisateurs dont les tweet webhooks sont autorisés.",
   channelType: "guild",

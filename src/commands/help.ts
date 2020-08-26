@@ -7,9 +7,8 @@ import Text from "../utils/text"
 
 new Command({
   name: "Help Menu",
-  regex: /h(?:[aeu]?lp)?/i,
+  pattern: /h(?:[aeu]?lp)?/i,
   description: "Affiche les commandes existantes.",
-  channelType: "guild",
   args: { command: { type: Types.command } },
   call: async ({ message, args }) => {
     const command: Command = args.command
@@ -31,7 +30,11 @@ new Command({
         embed
           .setTitle(command.name)
           .setDescription(command.description || "Pas de description")
-          .addField("pattern:", Text.code(command.regex.toString()), false)
+          .addField(
+            "pattern:",
+            Text.code(command.originalPattern.toString()),
+            false
+          )
 
         if (command.args) {
           function groupToString(group: CommandArgumentGroup) {

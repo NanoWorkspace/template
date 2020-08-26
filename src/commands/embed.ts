@@ -6,7 +6,7 @@ import Embed from "../app/Embed"
 
 new Command({
   name: "Embed Utils",
-  regex: /e(?:mbed)?/i,
+  pattern: /e(?:mbed)?/i,
   description: "Gère la création et la décomposition d'embeds.",
   args: [
     {

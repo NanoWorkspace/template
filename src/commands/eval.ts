@@ -6,7 +6,7 @@ import Text from "../utils/text"
 
 new Command({
   name: "Eval JS",
-  regex: /eval|js/i,
+  pattern: /eval|js/i,
   description: "Exécute un bout de code en back-end.",
   botOwner: true,
   args: { code: { type: Types.code } },

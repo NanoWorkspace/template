@@ -5,7 +5,7 @@ import Types from "../utils/types"
 
 new Command({
   name: "Auto-role Manager",
-  regex: /ar|autorole/i,
+  pattern: /ar|autorole/i,
   description:
     "Gère l'ajout de rôles automatiques pour les bots et les utilisateurs.",
   channelType: "guild",

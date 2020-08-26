@@ -20,13 +20,21 @@ new Event<"message">({
 
     // check prefix
     let prefix = Globals.bot.prefix,
-      content
-    if (message.guild) {
-      prefix = Globals.db.get(message.guild.id, "prefix")
+      content = message.content
+    if (message.channel.type === "dm") {
+      if (message.content.startsWith(prefix)) {
+        content = message.content.replace(prefix, "").trim()
+      }
+    } else {
+      if (message.guild) {
+        prefix = Globals.db.get(message.guild.id, "prefix")
+      }
+      if (message.content.startsWith(prefix)) {
+        content = message.content.replace(prefix, "").trim()
+      } else {
+        return
+      }
     }
-    if (message.content.startsWith(prefix)) {
-      content = message.content.replace(prefix, "").trim()
-    } else return
 
     // command handler test
     const { command, rest } = Command.resolve(content)
@@ -84,10 +92,11 @@ new Event<"message">({
         command.permissions ||
         command.owner ||
         command.admin
-      )
+      ) {
         return message.channel.send(
           embed.setTemplate("Error", "Utilisable seulement dans un serveur.")
         )
+      }
     }
     if (command.botOwner) {
       if (Globals.owners.every((user) => user !== message.author)) {

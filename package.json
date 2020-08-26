@@ -61,6 +61,7 @@
     "chalk": "^4.1.0",
     "discord.js": "^12.3.1",
     "dotenv": "^8.2.0",
-    "enmap": "^5.6.1"
+    "enmap": "^5.6.1",
+    "querystring": "^0.2.0"
   }
 }
