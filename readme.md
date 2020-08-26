@@ -15,12 +15,13 @@ A Discord bot template in TypeScript
 
 ## Dependencies
 
-![GitHub package.json dependency version (prod)](https://img.shields.io/github/package-json/dependency-version/CamilleAbella/NanoTemplate/discord.js?color=orange&style=plastic)
-![GitHub package.json dependency version (prod)](https://img.shields.io/github/package-json/dependency-version/CamilleAbella/NanoTemplate/enmap?color=orange&style=plastic)
-![GitHub package.json dependency version (prod)](https://img.shields.io/github/package-json/dependency-version/CamilleAbella/NanoTemplate/chalk?color=orange&style=plastic)
-![GitHub package.json dependency version (prod)](https://img.shields.io/github/package-json/dependency-version/CamilleAbella/NanoTemplate/dotenv?color=orange&style=plastic)
-![GitHub package.json dependency version (prod)](https://img.shields.io/github/package-json/dependency-version/CamilleAbella/NanoTemplate/better-sqlite3?color=orange&style=plastic)
-![GitHub package.json dependency version (prod)](https://img.shields.io/github/package-json/dependency-version/CamilleAbella/NanoTemplate/better-sqlite-pool?color=orange&style=plastic)
+![discord.js](https://img.shields.io/github/package-json/dependency-version/CamilleAbella/NanoTemplate/discord.js?color=orange&style=plastic)
+![enmap](https://img.shields.io/github/package-json/dependency-version/CamilleAbella/NanoTemplate/enmap?color=orange&style=plastic)
+![chalk](https://img.shields.io/github/package-json/dependency-version/CamilleAbella/NanoTemplate/chalk?color=orange&style=plastic)
+![dotenv](https://img.shields.io/github/package-json/dependency-version/CamilleAbella/NanoTemplate/dotenv?color=orange&style=plastic)
+![better-sqlite3](https://img.shields.io/github/package-json/dependency-version/CamilleAbella/NanoTemplate/better-sqlite3?color=orange&style=plastic)
+![better-sqlite-pool](https://img.shields.io/github/package-json/dependency-version/CamilleAbella/NanoTemplate/better-sqlite-pool?color=orange&style=plastic)
+![querystring](https://img.shields.io/github/package-json/dependency-version/CamilleAbella/NanoTemplate/querystring?color=orange&style=plastic)
 
 ## Template usage
 

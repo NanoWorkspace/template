@@ -1,6 +1,8 @@
 import chalk from "chalk"
 import Discord from "discord.js"
 
+// todo: make Logger as class and allow custom template for logs
+
 const { bot } = require("../../package.json")
 
 function space() {
@@ -15,7 +17,16 @@ function load(type: string, ...args: any[]) {
   )
 }
 
-function error(err: Error) {}
+function error(err: Error, ...args: any[]) {
+  console.error(
+    chalk.blackBright.bgRed.bold(" " + err.name + " "),
+    chalk.redBright(err.message),
+    ...args
+  )
+}
+
+space()
+error(new Error("une erreur est survenue"), "essayez de faire plutot comme ça.")
 
 space()
 load("file", __filename)
@@ -23,6 +34,7 @@ load("file", __filename)
 export default {
   load,
   space,
+  error,
   ready() {
     space()
     console.log(
