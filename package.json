@@ -10,16 +10,31 @@
           "name": "{{ Globals.bot.name }}",
           "iconURL": "{{ Globals.client.user.displayAvatarURL() }}"
         },
-        "color": "#f0ddb1",
-        "timestamp": null
+        "color": "#f0ddb1"
       },
       "success": {
-        "title": "✅ Et voilà!",
+        "author": {
+          "name": "Success!  (ง `ω´)۶",
+          "iconURL": "{{ Globals.client.user.displayAvatarURL() }}"
+        },
+        "image": "https://64.media.tumblr.com/7ff7a1fe3721ad25fbc7637e7cf5176d/tumblr_n6feedzYkM1rbnx7io1_500.gif",
         "color": "#70ff96"
       },
       "error": {
-        "title": "❌ Oups...",
+        "author": {
+          "name": "Error...  ⊂(⊙д⊙)つ",
+          "iconURL": "{{ Globals.client.user.displayAvatarURL() }}"
+        },
+        "image": "https://i.kym-cdn.com/photos/images/original/000/652/857/fca.gif",
         "color": "#ff5959"
+      },
+      "log": {
+        "author": {
+          "name": "{{ Globals.bot.name }} logs",
+          "iconURL": "{{ Globals.client.user.displayAvatarURL() }}"
+        },
+        "timestamp": null,
+        "color": "#ccffff"
       }
     }
   },

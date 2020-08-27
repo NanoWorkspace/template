@@ -6,6 +6,9 @@ Logger.load("file", __filename)
 
 export interface EmbedTemplates {
   default: Discord.MessageEmbedOptions
+  success: Discord.MessageEmbedOptions
+  error: Discord.MessageEmbedOptions
+  log: Discord.MessageEmbedOptions
   [k: string]: Discord.MessageEmbedOptions
 }
 
@@ -20,6 +23,9 @@ class Embed extends Discord.MessageEmbed {
   }
   static success(description?: string) {
     return new Embed().setTemplate("success", description)
+  }
+  static default(description?: string) {
+    return new Embed(description)
   }
 
   constructor(description?: string) {

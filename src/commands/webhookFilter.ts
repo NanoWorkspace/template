@@ -30,8 +30,7 @@ new Command({
       case 1:
         Globals.db.push(message.guild.id, user, "authorizedTwitterUsers")
         message.channel.send(
-          embed.setTemplate(
-            "Success",
+          Embed.success(
             `**${user}** a bien été ajouté à la liste d'utilisateurs dont les tweet sont autorisés.`
           )
         )
@@ -40,15 +39,14 @@ new Command({
       case 2:
         Globals.db.remove(message.guild.id, user, "authorizedTwitterUsers")
         message.channel.send(
-          embed.setTemplate(
-            "Success",
+          Embed.success(
             `**${user}** a bien été retiré de la liste d'utilisateurs dont les tweet sont autorisés.`
           )
         )
         break
 
       case 0:
-        embed
+        const embed = new Embed()
           .setTitle("Liste des utilisateurs dont les tweet sont autorisés.")
           .setDescription(
             Globals.db
@@ -61,8 +59,7 @@ new Command({
 
       default:
         message.channel.send(
-          embed.setTemplate(
-            "Error",
+          Embed.error(
             "Vous devez préciser une action entre add, remove et list."
           )
         )
