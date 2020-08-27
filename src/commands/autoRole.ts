@@ -1,7 +1,7 @@
 import Globals from "../app/Globals"
 import Embed from "../app/Embed"
 import Command from "../app/Command"
-import Types from "../utils/types"
+import Types from "../utils/ArgumentTypes"
 
 new Command({
   name: "Auto-role Manager",

@@ -1,7 +1,7 @@
 import Discord from "discord.js"
-import bot from "./Bot"
-import client from "./Client"
-import db from "./Database"
+import bot from "../globals/bot"
+import client from "../globals/client"
+import db from "../globals/db"
 import Event from "./Event"
 import Command from "./Command"
 import Logger from "./Logger"
@@ -18,7 +18,7 @@ export const owners: Discord.Collection<
 > = new Discord.Collection()
 
 const Globals = {
-  bot: bot,
+  bot,
   custom,
   db,
   client,

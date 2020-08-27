@@ -1,5 +1,5 @@
 import Discord from "discord.js"
-import Logger from "./Logger"
+import Logger from "../app/Logger"
 
 Logger.load("file", __filename)
 

@@ -1,7 +1,7 @@
 import Discord, { TextChannel } from "discord.js"
 import Command from "../app/Command"
-import Types from "../utils/types"
-import Text from "../utils/text"
+import Types from "../utils/ArgumentTypes"
+import Text from "../utils/Text"
 import Embed from "../app/Embed"
 
 new Command({

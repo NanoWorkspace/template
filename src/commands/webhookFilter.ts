@@ -1,5 +1,5 @@
 import Command from "../app/Command"
-import Types from "../utils/types"
+import Types from "../utils/ArgumentTypes"
 import Globals from "../app/Globals"
 import Embed from "../app/Embed"
 

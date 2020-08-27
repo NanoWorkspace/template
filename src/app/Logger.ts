@@ -54,7 +54,7 @@ export default {
       chalk.gray(description),
       guild.name
     )
-    const { db } = require("./Database")
+    const { db } = require("../globals/db")
     const logChannelID = db.get(guild.id, "logChannel")
     if (logChannelID) {
       const logChannel = guild.channels.resolve(logChannelID)

@@ -2,7 +2,8 @@ import Discord from "discord.js"
 import fs from "fs"
 import path from "path"
 import Logger from "./Logger"
-import Text from "../utils/text"
+import Text from "../utils/Text"
+import ArgumentTypes from "../utils/ArgumentTypes"
 
 Logger.load("file", __filename)
 
@@ -13,6 +14,7 @@ export interface CommandOptions {
   owner?: true
   admin?: true
   permissions?: Discord.PermissionResolvable[]
+  botPermissions?: Discord.PermissionResolvable[]
   users?: Discord.UserResolvable[]
   channelType?: "dm" | "guild"
   cooldown?: number
@@ -61,6 +63,8 @@ export default class Command {
     string,
     Command
   > = new Discord.Collection()
+
+  static types = ArgumentTypes
 
   public readonly originalPattern: RegExp
 

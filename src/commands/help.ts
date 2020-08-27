@@ -2,8 +2,8 @@ import Discord from "discord.js"
 import Globals from "../app/Globals"
 import Command, { CommandArgumentGroup } from "../app/Command"
 import Embed from "../app/Embed"
-import Types from "../utils/types"
-import Text from "../utils/text"
+import Types from "../utils/ArgumentTypes"
+import Text from "../utils/Text"
 
 new Command({
   name: "Help Menu",

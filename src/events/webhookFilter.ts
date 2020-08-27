@@ -1,5 +1,5 @@
 import Globals from "../app/Globals"
-import Time from "../utils/time"
+import Time from "../utils/Time"
 import Event from "../app/Event"
 
 new Event({

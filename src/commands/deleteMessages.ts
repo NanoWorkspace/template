@@ -1,4 +1,4 @@
-import Types from "../utils/types"
+import Types from "../utils/ArgumentTypes"
 import Command from "../app/Command"
 import Embed from "../app/Embed"
 import Discord from "discord.js"

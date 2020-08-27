@@ -1,7 +1,7 @@
 import Command from "../app/Command"
 import Globals from "../app/Globals"
 import Embed from "../app/Embed"
-import Types from "../utils/types"
+import Types from "../utils/ArgumentTypes"
 
 new Command({
   name: "Prefix Manager",

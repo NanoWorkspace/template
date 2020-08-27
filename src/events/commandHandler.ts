@@ -1,5 +1,5 @@
 import Globals from "../app/Globals"
-import Text from "../utils/text"
+import Text from "../utils/Text"
 import Embed from "../app/Embed"
 import Command from "../app/Command"
 import Event from "../app/Event"

@@ -1,7 +1,7 @@
 import Discord from "discord.js"
 import Globals from "../app/Globals"
 
-export async function messageAwaiter(
+export async function awaiter(
   filter: (message: Discord.Message) => Promise<boolean> | boolean,
   options: {
     maxTime?: number
@@ -34,6 +34,9 @@ export async function messageAwaiter(
   return message
 }
 
-export default {
-  messageAwaiter,
+const Message = {
+  awaiter,
 }
+
+export default Message
+module.exports = Message

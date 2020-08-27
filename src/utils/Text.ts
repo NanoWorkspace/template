@@ -6,7 +6,10 @@ export function improvePattern(pattern: RegExp): RegExp {
   return new RegExp(`^(?:${pattern.source})(?:\\s+|$)`, pattern.flags)
 }
 
-export default {
+const Text = {
   improvePattern,
   code,
 }
+
+export default Text
+module.exports = Text

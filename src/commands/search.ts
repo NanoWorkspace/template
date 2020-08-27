@@ -1,6 +1,6 @@
 import querystring from "querystring"
 import Command from "../app/Command"
-import Types from "../utils/types"
+import Types from "../utils/ArgumentTypes"
 import Embed from "../app/Embed"
 
 new Command({

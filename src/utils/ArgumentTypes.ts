@@ -195,7 +195,8 @@ function justByRegex(
   return { arg: null }
 }
 
-export default {
+/** Filters to use for command arguments type checking */
+const ArgumentTypes = {
   command,
   rest,
   word,
@@ -212,3 +213,6 @@ export default {
   emoji,
   text,
 }
+
+export default ArgumentTypes
+module.exports = ArgumentTypes

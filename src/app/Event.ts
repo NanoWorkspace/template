@@ -1,7 +1,7 @@
 import fs from "fs"
 import path from "path"
 import Discord from "discord.js"
-import client from "./Client"
+import client from "../globals/client"
 import Logger from "./Logger"
 
 Logger.load("file", __filename)

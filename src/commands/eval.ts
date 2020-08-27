@@ -1,8 +1,8 @@
 import Command from "../app/Command"
 import Globals from "../app/Globals"
 import Embed from "../app/Embed"
-import Types from "../utils/types"
-import Text from "../utils/text"
+import Types from "../utils/ArgumentTypes"
+import Text from "../utils/Text"
 
 new Command({
   name: "Eval JS",
