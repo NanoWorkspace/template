@@ -4,6 +4,8 @@ import Logger from "./Logger"
 
 Logger.load("file", __filename)
 
+// todo: use Embed.(error|success) for each embed usage.
+
 class Embed extends Discord.MessageEmbed {
   static templates = bot.embedTemplates
 

@@ -13,6 +13,7 @@ export interface CommandOptions {
   botOwner?: true
   owner?: true
   admin?: true
+  moderator?: true
   permissions?: Discord.PermissionResolvable[]
   botPermissions?: Discord.PermissionResolvable[]
   users?: Discord.UserResolvable[]
@@ -194,6 +195,7 @@ export default class Command {
         // if last group is good, break
         if (!error) break
       }
+      // todo: add auto error message for fail arguments (for all group or best group)
     }
     return args
   }

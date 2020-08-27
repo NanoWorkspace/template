@@ -46,6 +46,10 @@ new Event({
 
     const embed = new Embed()
 
+    // todo: check bot permissions
+    // todo: check ignoredChannels
+    // todo: check ignoredUsers
+
     // check filters
     if (message.guild) {
       if (command.channelType === "dm")
