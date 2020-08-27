@@ -19,14 +19,9 @@ new Command({
   call: async ({ message, args: { actionIndex, user } }) => {
     if (!message.guild) return
 
-    const embed = new Embed()
-
     if (!user && actionIndex === 0) {
       await message.channel.send(
-        embed.setTemplate(
-          "Error",
-          "Vous devez entrer un num d'utilisateur Twitter."
-        )
+        Embed.error("Vous devez entrer un num d'utilisateur Twitter.")
       )
       return
     }

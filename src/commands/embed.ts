@@ -26,35 +26,28 @@ new Command({
   async call({ message, args: { embedOptions, channel, messageID } }) {
     if (!message.guild) return
 
-    const embed = new Embed()
-
     if (channel && messageID) {
       const gotMessage = await (channel as TextChannel).messages.fetch(
         messageID
       )
       if (!gotMessage) {
         return await message.channel.send(
-          embed.setTemplate(
-            "error",
-            `Ce message n'existe pas dans le salon ${channel}.`
-          )
+          Embed.error(`Ce message n'existe pas dans le salon ${channel}.`)
         )
       }
       if (gotMessage.embeds.length === 0) {
         return await message.channel.send(
-          embed.setTemplate("error", `Ce message ne possède pas d'embed...`)
+          Embed.error(`Ce message ne possède pas d'embed...`)
         )
       } else if (gotMessage.embeds.length === 1) {
         await message.channel.send(
-          embed.setTemplate(
-            "Success",
+          Embed.success(
             `Voici ci-dessous l'embed de ce message au format JSON.`
           )
         )
       } else {
         await message.channel.send(
-          embed.setTemplate(
-            "Success",
+          Embed.success(
             `Voici ci-dessous les \`${gotMessage.embeds.length}\` embeds de ce message au format JSON.`
           )
         )
@@ -72,12 +65,11 @@ new Command({
       try {
         await message.channel.send(new Discord.MessageEmbed(embedOptions))
       } catch (error) {
-        await message.channel.send(embed.setTemplate("Error", error.message))
+        await message.channel.send(Embed.error(error.message))
       }
     } else {
       await message.channel.send(
-        embed.setTemplate(
-          "Error",
+        Embed.error(
           "Vous devez écrire ou coller un embed au format JSON.\nSinon ciblez un salon et un message dont vous voulez analyser les embeds."
         )
       )

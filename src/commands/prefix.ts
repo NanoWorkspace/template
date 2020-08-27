@@ -24,15 +24,12 @@ new Command({
   call: async ({ message, args: { reset, newPrefix } }) => {
     if (!message.guild) return
 
-    const embed = new Embed()
-
     if (reset) newPrefix = Globals.bot.prefix
 
     Globals.db.set(message.guild.id, newPrefix, "prefix")
 
     await message.channel.send(
-      embed.setTemplate(
-        "Success",
+      Embed.success(
         `Le préfixe a bien été modifié sur ce serveur.\nNouveau préfixe: \`${newPrefix}\``
       )
     )

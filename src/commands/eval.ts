@@ -12,7 +12,6 @@ new Command({
   args: { code: { type: Types.code } },
   call: async ({ message, args: { code } }) => {
     const { guild, channel, client } = message
-    const embed = new Embed()
 
     try {
       let result = await eval(
@@ -20,16 +19,12 @@ new Command({
       )(Globals)
 
       if (result !== undefined) {
-        await channel.send(
-          embed.setTemplate("success", Text.code(String(result)))
-        )
+        await channel.send(Embed.success(Text.code(String(result))))
       } else {
-        await channel.send(
-          embed.setTemplate("Success", "Le code a bien été exécuté.")
-        )
+        await channel.send(Embed.success("Le code a bien été exécuté."))
       }
     } catch (error) {
-      await channel.send(embed.setTemplate("error", Text.code(error.message)))
+      await channel.send(Embed.error(Text.code(error.message)))
     }
   },
 })

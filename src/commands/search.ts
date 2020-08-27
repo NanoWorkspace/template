@@ -25,7 +25,7 @@ new Command({
   call: async ({ message, args: { searchEngineIndex, search } }) => {
     if (!search)
       return await message.channel.send(
-        new Embed().setTemplate("error", "Vous devez entrer une recherche...")
+        Embed.error("Vous devez entrer une recherche...")
       )
 
     let baseUrl = "https://www.google.com/search"

@@ -60,9 +60,9 @@ export default {
       const logChannel = guild.channels.resolve(logChannelID)
       if (logChannel instanceof Discord.TextChannel) {
         const Embed = require("./Embed")
-        const embed = new Embed()
-          .setTemplate("log", description)
-          .setTitle(`${type.toUpperCase()} | ${title}`)
+        const embed = Embed.log(description).setTitle(
+          `${type.toUpperCase()} | ${title}`
+        )
         logChannel.send(embed).catch(error)
       }
     }

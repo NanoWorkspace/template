@@ -14,8 +14,7 @@ new Command({
   call: async ({ message, args: { count } }) => {
     if (!count)
       return await message.channel.send(
-        new Embed().setTemplate(
-          "error",
+        Embed.error(
           "Vous devez donner un nombre de messages a effacer entre `1` et `99`."
         )
       )

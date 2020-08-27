@@ -44,8 +44,6 @@ new Event({
     // command arguments parsing
     const args = await command.parseArgs(message, rest || "")
 
-    const embed = new Embed()
-
     // todo: check bot permissions
     // todo: check ignoredChannels
     // todo: check ignoredUsers
@@ -53,13 +51,11 @@ new Event({
     // check filters
     if (message.guild) {
       if (command.channelType === "dm")
-        return message.channel.send(
-          embed.setTemplate("Error", "Utilisable seulement en DM.")
-        )
+        return message.channel.send(Embed.error("Utilisable seulement en DM."))
       if (command.owner) {
         if (message.member !== message.guild.owner)
           return message.channel.send(
-            embed.setTemplate("Error", "Utilisable seulement par un owner.")
+            Embed.error("Utilisable seulement par un owner.")
           )
       }
       if (command.admin) {
@@ -67,7 +63,7 @@ new Event({
           !message.member?.hasPermission("ADMINISTRATOR", { checkOwner: true })
         )
           return message.channel.send(
-            embed.setTemplate("Error", "Utilisable seulement par un admin.")
+            Embed.error("Utilisable seulement par un admin.")
           )
       }
       if (command.permissions) {
@@ -80,15 +76,12 @@ new Event({
           })
         )
           return message.channel.send(
-            embed
-              .setTemplate(
-                "error",
-                "Vous n'avez pas les permissions pour utiliser cette commande."
-              )
-              .addField(
-                "Permissions requises:",
-                Text.code(command.permissions.join("\n"))
-              )
+            Embed.error(
+              "Vous n'avez pas les permissions pour utiliser cette commande."
+            ).addField(
+              "Permissions requises:",
+              Text.code(command.permissions.join("\n"))
+            )
           )
       }
     } else {
@@ -99,22 +92,19 @@ new Event({
         command.admin
       ) {
         return message.channel.send(
-          embed.setTemplate("Error", "Utilisable seulement dans un serveur.")
+          Embed.error("Utilisable seulement dans un serveur.")
         )
       }
     }
     if (command.botOwner) {
       if (Globals.owners.every((user) => user !== message.author)) {
         return message.channel.send(
-          embed
-            .setTemplate(
-              "error",
-              "Vous devez êtes l'un des propriétaires du bot pour utiliser cette commande."
-            )
-            .addField(
-              "Voici les propriétaires actuels:",
-              Text.code(Globals.owners.map((user) => user.tag).join("\n"))
-            )
+          Embed.error(
+            "Vous devez êtes l'un des propriétaires du bot pour utiliser cette commande."
+          ).addField(
+            "Voici les propriétaires actuels:",
+            Text.code(Globals.owners.map((user) => user.tag).join("\n"))
+          )
         )
       }
     }
@@ -125,21 +115,18 @@ new Event({
         })
       )
         return message.channel.send(
-          embed
-            .setTemplate(
-              "Error",
-              "Vous n'êtes pas autorisés a utiliser cette commande."
+          Embed.error(
+            "Vous n'êtes pas autorisés a utiliser cette commande."
+          ).addField(
+            "Utilisateurs autorisés:",
+            Text.code(
+              command.users
+                .map((user) => {
+                  return Globals.client.users.resolve(user)?.tag
+                })
+                .join("\n")
             )
-            .addField(
-              "Utilisateurs autorisés:",
-              Text.code(
-                command.users
-                  .map((user) => {
-                    return Globals.client.users.resolve(user)?.tag
-                  })
-                  .join("\n")
-              )
-            )
+          )
         )
     }
 
@@ -160,8 +147,7 @@ new Event({
           const lastUsage = cooldown[message.author.id][command.name]
           if (command.cooldown > now - lastUsage) {
             return message.channel.send(
-              embed.setTemplate(
-                "error",
+              Embed.error(
                 `Utilisable dans seulement \`${
                   command.cooldown - (now - lastUsage)
                 }\` ms`
