@@ -16,19 +16,19 @@ new Command({
       type: Types.boolean,
     },
     action: {
-      type: Types.action,
+      type: ["list", "add", /rm|remove|del(?:ete)?/i],
     },
     role: {
       optional: true,
       type: Types.role,
     },
   },
-  call: async ({ message, args: { isBot, action, role } }) => {
+  call: async ({ message, args: { isBot, actionIndex, role } }) => {
     if (!message.guild) return
 
     const embed = new Embed()
 
-    if (action && action !== "list" && !role) {
+    if (actionIndex === 0 && !role) {
       await message.channel.send(
         embed.setTemplate("Error", "Vous devez cibler un rôle.")
       )
@@ -37,8 +37,8 @@ new Command({
 
     const type = isBot ? "bot" : "user"
 
-    switch (action) {
-      case "add":
+    switch (actionIndex) {
+      case 1:
         Globals.db.push(message.guild.id, role.id, "autoRoles." + type)
         await message.channel.send(
           embed.setTemplate(
@@ -48,7 +48,7 @@ new Command({
         )
         break
 
-      case "remove":
+      case 2:
         Globals.db.remove(message.guild.id, role.id, "autoRoles." + type)
         await message.channel.send(
           embed.setTemplate(
@@ -58,7 +58,7 @@ new Command({
         )
         break
 
-      case "list":
+      case 0:
         embed
           .setTitle(`Liste des rôles automatiques pour les ${type}s`)
           .setDescription(

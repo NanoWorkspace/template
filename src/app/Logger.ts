@@ -26,9 +26,6 @@ function error(err: Error, ...args: any[]) {
 }
 
 space()
-error(new Error("une erreur est survenue"), "essayez de faire plutot comme ça.")
-
-space()
 load("file", __filename)
 
 export default {

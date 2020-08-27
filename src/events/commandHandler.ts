@@ -3,6 +3,7 @@ import Text from "../utils/text"
 import Embed from "../app/Embed"
 import Command from "../app/Command"
 import Event from "../app/Event"
+import Logger from "../app/Logger"
 
 new Event({
   name: "message",
@@ -170,14 +171,23 @@ new Event({
 
     // start typing
     if (command.typing) {
-      message.channel.startTyping()
+      message.channel.startTyping().catch()
     }
 
-    // launch command
-    await command.call({
-      message,
-      args,
-    })
+    try {
+      // launch command
+      await command.call({
+        message,
+        args,
+      })
+    } catch (error) {
+      Logger.error(error, `Commande: ${command.name}`)
+      await message.channel.send(
+        Embed.error(`${error.name}: ${error.message}`).setFooter(
+          "View error logs for more information"
+        )
+      )
+    }
 
     // stop typing
     if (command.typing) {

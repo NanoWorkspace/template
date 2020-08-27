@@ -6,6 +6,7 @@ new Event({
   caller: "on",
   description: "Give a role to a member on message reaction add",
   call: async (messageReaction, user) => {
+    if (user.bot) return
     const guild = messageReaction.message.guild
     if (guild) {
       const role = await ReactionRoleMessage.fetchRole(guild, messageReaction)
@@ -20,6 +21,7 @@ new Event({
   caller: "on",
   description: "Remove a role from a member on message reaction remove",
   call: async (messageReaction, user) => {
+    if (user.bot) return
     const guild = messageReaction.message.guild
     if (guild) {
       const role = await ReactionRoleMessage.fetchRole(guild, messageReaction)

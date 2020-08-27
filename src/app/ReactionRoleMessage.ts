@@ -1,5 +1,8 @@
 import Discord from "discord.js"
 import Globals from "./Globals"
+import Logger from "./Logger"
+
+Logger.load("file", __filename)
 
 export interface ReactionRoleMessageOptions {
   id: string
@@ -45,12 +48,14 @@ export default class ReactionRoleMessage {
   }
 
   async add(emoji: Discord.EmojiResolvable, role: Discord.Role) {
+    const message = await this.fetchMessage(true)
     const options: ReactionRoleOptions = {
       roleID: role.id,
       emojiID: ReactionRoleMessage.emojiToID(emoji),
     }
     Globals.db.push(this.guild.id, options, `${this.key}.reactionRoles`)
     this.reactionRoles.push(new ReactionRole(options, this))
+    await message.react(emoji)
   }
 
   async remove(emoji: Discord.EmojiResolvable) {

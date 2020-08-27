@@ -20,7 +20,7 @@ new Command({
       },
     },
     {
-      remove: { type: /de(?:lete)|rm|remove/i },
+      remove: { type: /del(?:ete)|rm|remove/i },
       reactionRoleID: { type: Types.snowflake },
       emoji: {
         optional: true,
@@ -34,7 +34,7 @@ new Command({
       emoji: { type: Types.emoji },
     },
     {
-      edit: { type: "edit" },
+      edit: { type: /[eé]dit/i },
       reactionRoleID: { type: Types.snowflake },
       text: { type: Types.text },
     },
@@ -53,6 +53,14 @@ new Command({
       reactionRoleID,
     },
   }) {
+    if (!create && !remove && !add && !edit) {
+      return await message.channel.send(
+        Embed.error(
+          "Vous devez renseigner une action parmi les quatre possibles."
+        )
+      )
+    }
+
     let reactionRoleMessage: ReactionRoleMessage | null = null
 
     if (reactionRoleID) {
@@ -71,7 +79,7 @@ new Command({
       const id = Discord.SnowflakeUtil.generate()
       const prefix = Globals.db.get(message.guild?.id as string, "prefix")
       const embed = new Embed(
-        `Faites la commande \`${prefix}rero edit ${id} "ton texte"\` pour ajouter du texte.`
+        `Faites la commande \`${prefix}rero edit ${id} "texte"\` pour ajouter du texte.`
       )
         .setTitle("Reaction-Roles System")
         .setFooter("Reaction-role message ID: " + id)

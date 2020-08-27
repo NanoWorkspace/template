@@ -62,7 +62,10 @@ new Command({
 
       for (const gotEmbed of gotMessage.embeds) {
         await message.channel.send(
-          Text.code(JSON.stringify(gotEmbed.toJSON(), null, 2), "json")
+          Text.code(
+            JSON.stringify(gotEmbed.toJSON(), null, 2).replace(/`/g, "\\`"),
+            "json"
+          )
         )
       }
     } else if (embedOptions) {

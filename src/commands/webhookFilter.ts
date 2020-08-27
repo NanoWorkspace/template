@@ -11,15 +11,17 @@ new Command({
   channelType: "guild",
   admin: true,
   args: {
-    action: { type: Types.action },
+    action: {
+      type: ["list", "add", /rm|remove|del(?:ete)?/i],
+    },
     user: { type: Types.rest },
   },
-  call: async ({ message, args: { action, user } }) => {
+  call: async ({ message, args: { actionIndex, user } }) => {
     if (!message.guild) return
 
     const embed = new Embed()
 
-    if (!user && action !== "list") {
+    if (!user && actionIndex === 0) {
       await message.channel.send(
         embed.setTemplate(
           "Error",
@@ -29,8 +31,8 @@ new Command({
       return
     }
 
-    switch (action) {
-      case "add":
+    switch (actionIndex) {
+      case 1:
         Globals.db.push(message.guild.id, user, "authorizedTwitterUsers")
         message.channel.send(
           embed.setTemplate(
@@ -40,7 +42,7 @@ new Command({
         )
         break
 
-      case "remove":
+      case 2:
         Globals.db.remove(message.guild.id, user, "authorizedTwitterUsers")
         message.channel.send(
           embed.setTemplate(
@@ -50,7 +52,7 @@ new Command({
         )
         break
 
-      case "list":
+      case 0:
         embed
           .setTitle("Liste des utilisateurs dont les tweet sont autorisés.")
           .setDescription(

@@ -115,9 +115,10 @@ export default class Command {
   }
 
   async parseArgs(message: Discord.Message, content: string) {
+    const baseContent = content
     let args: { [name: string]: any } = {}
     if (this.args) {
-      let groups: CommandArgumentGroup[] = []
+      let groups: CommandArgumentGroup[]
 
       function scalar(name: string, value: string | number | RegExp): boolean {
         if (value instanceof RegExp) {
@@ -125,7 +126,7 @@ export default class Command {
           const match = pattern.exec(content)
           if (match) {
             content = content.replace(pattern, "").trim()
-            args[name] = match[1] || match[0]
+            args[name] = match[2] || match[1] || match[0]
             return true
           }
         } else if (content.startsWith(String(value))) {
@@ -143,6 +144,8 @@ export default class Command {
       }
 
       for (const group of groups) {
+        let error = false
+
         for (const name in group) {
           const { type, default: _default, defaultIndex, optional } = group[
             name
@@ -165,18 +168,27 @@ export default class Command {
             scalar(name, type)
           }
 
-          if (args[name] === null) {
+          if (args[name] === null || args[name] === undefined) {
             if (_default !== undefined) {
               args[name] = _default
             } else if (defaultIndex !== undefined) {
               args[name + "Index"] = defaultIndex
-            } else if (!optional && groups.indexOf(group) < groups.length - 1) {
-              // clean args and pass to next group
-              args = {}
-              break
+            } else if (optional) {
+              args[name] = null
+            } else {
+              error = true
             }
           }
+
+          // if error, clean args and break
+          if (error && groups.indexOf(group) < groups.length - 1) {
+            args = {}
+            content = baseContent
+            break
+          }
         }
+        // if last group is good, break
+        if (!error) break
       }
     }
     return args
