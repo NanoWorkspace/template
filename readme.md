@@ -5,7 +5,7 @@
 # Nano (なの) Template ![](img/logo.png)
 
 ![GitHub top language](https://img.shields.io/github/languages/top/CamilleAbella/NanoTemplate?color=%23BDB76B&style=plastic)
-[![GitHub search todo](https://img.shields.io/github/search/CamilleAbella/NanoTemplate/todo?color=%23BDB76B&label=todo%20count&style=plastic)](https://github.com/CamilleAbella/NanoTemplate/search?q=todo&unscoped_q=todo)
+[![GitHub search todo](https://img.shields.io/github/search/CamilleAbella/NanoTemplate/todo?color=%23BDB76B&label=todo%20count&style=plastic)](https://github.com/CamilleAbella/NanoTemplate/search?l=TypeScript&q=todo)
 ![GitHub repo size](https://img.shields.io/github/repo-size/CamilleAbella/NanoTemplate?color=%23BDB76B&label=size&style=plastic)
 ![GitHub All Releases](https://img.shields.io/github/downloads/CamilleAbella/NanoTemplate/total?color=%23BDB76B&style=plastic)
 ![GitHub issues](https://img.shields.io/github/issues/CamilleAbella/NanoTemplate?color=%23BDB76B&style=plastic)
@@ -64,5 +64,22 @@ A Discord bot template in TypeScript
 
   // Fallback push script in case time is short.
   "push": "npm run prettier && git add * && git commit -m continue && git push origin master"
+}
+```
+
+### 5. Package.json extension definitions
+
+```typescript
+interface NanoPackageJSON extends PackageJSON {
+    bot: {
+      prefix: string
+      clientOptions: Discord.ClientOptions
+      embedTemplates: EmbedTemplates
+    }
+}
+
+interface EmbedTemplates {
+  default: Discord.MessageEmbedOptions
+  [k: string]: Discord.MessageEmbedOptions
 }
 ```

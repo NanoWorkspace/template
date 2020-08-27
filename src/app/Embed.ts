@@ -6,6 +6,11 @@ Logger.load("file", __filename)
 
 // todo: use Embed.(error|success) for each embed usage.
 
+export interface EmbedTemplates {
+  default: Discord.MessageEmbedOptions
+  [k: string]: Discord.MessageEmbedOptions
+}
+
 class Embed extends Discord.MessageEmbed {
   static templates = bot.embedTemplates
 

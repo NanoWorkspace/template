@@ -1,12 +1,8 @@
 import Discord from "discord.js"
 import Logger from "../app/Logger"
+import { EmbedTemplates } from "../app/Embed"
 
 Logger.load("file", __filename)
-
-export interface EmbedTemplates {
-  default: Discord.MessageEmbedOptions
-  [k: string]: Discord.MessageEmbedOptions
-}
 
 export interface Bot extends Partial<Discord.ClientApplication> {
   prefix: string
