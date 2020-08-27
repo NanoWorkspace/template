@@ -125,6 +125,29 @@ export const emoji: CommandArgumentType = (content, message) => {
   return { arg: null }
 }
 
+export function arrayFrom(
+  ...types: CommandArgumentType[]
+): CommandArgumentType {
+  return async (content, message) => {
+    const output = []
+    let result: { arg: any; rest?: string } = { arg: null }
+    do {
+      for (const type of types) {
+        if (typeof type === "function") {
+          result = await type(content, message)
+          if (result.arg !== null) {
+            content = result.rest as string
+            output.push(result.arg)
+            break
+          }
+        }
+        // todo: manage other type than "function" of CommandArgumentType.
+      }
+    } while (result.arg !== null)
+    return { arg: output, rest: content.trim() }
+  }
+}
+
 async function discordMentionable(
   collection: DiscordMentionableName,
   content: string,
@@ -212,6 +235,7 @@ const ArgumentTypes = {
   numberBetween,
   emoji,
   text,
+  arrayFrom,
 }
 
 export default ArgumentTypes
