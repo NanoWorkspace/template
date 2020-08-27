@@ -10,6 +10,7 @@ export function ensureGuild(guild: Discord.Guild) {
       bot: [],
     },
     authorizedTwitterUsers: [],
+    reactionRoleMessages: {},
   })
 }
 

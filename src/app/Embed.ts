@@ -7,9 +7,16 @@ Logger.load("file", __filename)
 class Embed extends Discord.MessageEmbed {
   static templates = bot.embedTemplates
 
-  constructor() {
+  static error(description?: string) {
+    return new Embed().setTemplate("error", description)
+  }
+  static success(description?: string) {
+    return new Embed().setTemplate("success", description)
+  }
+
+  constructor(description?: string) {
     super()
-    this.setTemplate("default")
+    this.setTemplate("default", description)
   }
 
   setTemplate(templateName: string, description?: string): Embed {

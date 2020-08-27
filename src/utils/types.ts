@@ -78,33 +78,8 @@ export const user: CommandArgumentType = async (content, message) => {
   return await discordMentionable("users", content, message as Discord.Message)
 }
 
-export const action: CommandArgumentType = (content) => {
-  const regex: { [k: string]: RegExp } = {
-    edit: /^(?:edit|patch|change)/i,
-    get: /^get\s+/i,
-    add: /^(?:add|new|post)\s+/i,
-    remove: /^(?:remove|del(?:ete)?|rm)\s+/i,
-    list: /^(?:list|ls|show)/i,
-  }
-  for (const key in regex) {
-    if (regex[key].test(content)) {
-      return {
-        arg: key,
-        rest: content.replace(regex[key], "").trim(),
-      }
-    }
-  }
-  return {
-    arg: null,
-  }
-}
-
 export const boolean: CommandArgumentType = (content) => {
-  const regex = /^(?:o(?:ui)?|y(?:es)?|true)/i
-  return {
-    arg: regex.test(content),
-    rest: content.replace(regex, "").trim(),
-  }
+  return justByRegex(/^(?:o(?:ui)?|y(?:es)?|true)/i, content)
 }
 
 export const json: CommandArgumentType = (content) => {
@@ -122,13 +97,15 @@ export const json: CommandArgumentType = (content) => {
   }
 }
 
+export const text: CommandArgumentType = (content) => {
+  return justByRegex(/^(?:"(.+?[^\\])"|(\S+))/is, content)
+}
+
 export const code: CommandArgumentType = (content) => {
-  const regex = /^(?:```(?:[a-z]+)?\s+(.+)\s*```(?:[^`]|$)|(.+)$)?/is
-  const [, g1, g2] = regex.exec(content) as RegExpExecArray
-  return {
-    arg: g1 || g2,
-    rest: content.replace(regex, "").trim(),
-  }
+  return justByRegex(
+    /^(?:```(?:[a-z]+)?\s+(.+)\s*```(?:[^`]|$)|(.+)$)/is,
+    content
+  )
 }
 
 export const emoji: CommandArgumentType = (content, message) => {
@@ -209,8 +186,11 @@ function justByRegex(
 ): { arg: any; rest?: string } {
   const match = regex.exec(content)
   if (match) {
-    const [, group] = match
-    return { arg: group, rest: content.replace(regex, "").trim() }
+    const [fm, g1, g2, g3, g4, g5] = match
+    return {
+      arg: g1 || g2 || g3 || g4 || g5 || fm,
+      rest: content.replace(regex, "").trim(),
+    }
   }
   return { arg: null }
 }
@@ -219,7 +199,6 @@ export default {
   command,
   rest,
   word,
-  action,
   boolean,
   json,
   code,
@@ -231,4 +210,5 @@ export default {
   number,
   numberBetween,
   emoji,
+  text,
 }
