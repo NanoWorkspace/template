@@ -1,5 +1,7 @@
 import Discord from "discord.js"
 import Command, { CommandArgumentType } from "../app/Command"
+import Globals from "../app/Globals"
+import Text from "./Text"
 
 type DiscordMentionableName = "channels" | "roles" | "members" | "users"
 type DiscordMentionable =
@@ -18,7 +20,7 @@ export const rest: CommandArgumentType = (content) => {
 }
 
 export const number: CommandArgumentType = (content) => {
-  const regex = /^(-?\d+)(?:\D|$)/
+  const regex = Text.improvePattern(/(-?\d+)/)
   const match = regex.exec(content)
   if (match) {
     const number = Number(match[1])
@@ -47,11 +49,11 @@ export const numberBetween = (start: number, stop: number) => {
 }
 
 export const word: CommandArgumentType = (content) => {
-  return justByRegex(/^(\S+)(?:\s|$)/, content)
+  return justByRegex(/(\w+)/, content)
 }
 
 export const snowflake: CommandArgumentType = (content) => {
-  return justByRegex(/^(\d{17,20})(?:\D|$)/, content)
+  return justByRegex(/(\d{15,25})/, content)
 }
 
 export const role: CommandArgumentType = async (content, message) => {
@@ -79,11 +81,11 @@ export const user: CommandArgumentType = async (content, message) => {
 }
 
 export const boolean: CommandArgumentType = (content) => {
-  return justByRegex(/^(?:o(?:ui)?|y(?:es)?|true)/i, content)
+  return justByRegex(/(?:o(?:ui)?|y(?:es)?|true)/i, content)
 }
 
 export const json: CommandArgumentType = (content) => {
-  const regex = /^(?:```(?:json)?\s+(.+)\s*```(?:[^`]|$)|(.+)$)?/is
+  const regex = Text.improvePattern(/```(?:json)?\s+(.+)\s*```|(.+)/is)
   try {
     const [, g1, g2] = regex.exec(content) as RegExpExecArray
     const json = JSON.parse(g1 || g2)
@@ -98,19 +100,17 @@ export const json: CommandArgumentType = (content) => {
 }
 
 export const text: CommandArgumentType = (content) => {
-  return justByRegex(/^(?:"(.+?[^\\])"|(\S+))/is, content)
+  return justByRegex(/(?:"(.+?[^\\])"|(\S+))/is, content)
 }
 
 export const code: CommandArgumentType = (content) => {
-  return justByRegex(
-    /^(?:```(?:[a-z]+)?\s+(.+)\s*```(?:[^`]|$)|(.+)$)/is,
-    content
-  )
+  return justByRegex(/(?:```(?:[a-z]+)?\s+(.+)\s*```|(.+))/is, content)
 }
 
-export const emoji: CommandArgumentType = (content, message) => {
-  let regex = /^<a?:\S+?:(\d{17,20})>/i
-  const match = regex.exec(content)
+/** Return an emoji or an unicode suite as arg. */
+export const emoji: CommandArgumentType = async (content, message) => {
+  let regex = Text.improvePattern(/<a?:\S+?:(\d{17,20})>/i)
+  let match = regex.exec(content)
   if (match) {
     const emoji = message.client.emojis.cache.get(match[1])
     if (emoji) {
@@ -118,11 +118,30 @@ export const emoji: CommandArgumentType = (content, message) => {
         arg: emoji,
         rest: content.replace(regex, "").trim(),
       }
-    } else {
-      return word(content, message)
     }
   }
-  return { arg: null }
+  regex = Text.improvePattern(/(:\w+:)/i)
+  match = regex.exec(content)
+  if (match) {
+    const emoji = match[1]
+    const user = await Globals.client.users.fetch("352176756922253321")
+    const msg = await user.send("\\" + emoji)
+    const unicode = msg.content
+    if (emoji !== unicode) {
+      return {
+        arg: unicode,
+        rest: content.replace(regex, "").trim(),
+      }
+    }
+  }
+  const emoji = content.trim()
+  if (emoji.length < 2) {
+    return {
+      arg: null,
+    }
+  }
+
+  return { arg: emoji, rest: "" }
 }
 
 export function arrayFrom(
@@ -153,6 +172,7 @@ async function discordMentionable(
   content: string,
   message: Discord.Message
 ): Promise<{ arg: any; rest?: string }> {
+  // Try mention
   // @ts-ignore
   let item: DiscordMentionable | undefined | null = message.mentions[
     collection
@@ -161,12 +181,15 @@ async function discordMentionable(
     message.mentions[collection]?.delete(item.id)
     return {
       arg: item,
-      rest: content.replace(`${item}`, "").trim(),
+      rest: content.replace(item.toString(), "").trim(),
     }
   }
-  const regex = /^(\d{17,20})(?:\D|$)/
-  if (regex.test(content)) {
-    const [, id] = regex.exec(content) as RegExpExecArray
+
+  // Try Snowflake
+  const regex = Text.improvePattern(/(\d{17,20})/)
+  const match = regex.exec(content)
+  if (match) {
+    const [, id] = match
     if (collection === "users") {
       // @ts-ignore
       item = message.client.users.resolve(id)
@@ -177,30 +200,36 @@ async function discordMentionable(
     if (item) {
       return {
         arg: item,
-        rest: content.replace(item.id, "").trim(),
+        rest: content.replace(regex, "").trim(),
       }
     }
   }
+
+  // Try name
   // @ts-ignore
-  const { arg: w } = await word(content)
-  if (w) {
+  const { arg: txt } = await text(content)
+  if (txt) {
     if (collection === "users") {
-      item = message.client.users.cache.find((u) =>
-        u.username.toLowerCase().includes(w.toLowerCase())
-      )
+      item = message.client.users.cache.find((u) => {
+        return u.username.toLowerCase().includes(txt.toLowerCase())
+      })
     } else {
       // @ts-ignore
-      item = message.guild?.[collection]?.cache.find((i) =>
-        (i.displayName || i.name).toLowerCase().includes(w.toLowerCase())
-      )
+      item = message.guild?.[collection]?.cache.find((i) => {
+        return (i.displayName || i.name)
+          .toLowerCase()
+          .includes(txt.toLowerCase())
+      })
     }
     if (item) {
       return {
         arg: item,
-        rest: content.replace(w, "").trim(),
+        rest: content.replace(txt, "").trim(),
       }
     }
   }
+
+  // abort
   return {
     arg: null,
   }
@@ -210,12 +239,13 @@ function justByRegex(
   regex: RegExp,
   content: string
 ): { arg: any; rest?: string } {
-  const match = regex.exec(content)
+  const pattern = Text.improvePattern(regex)
+  const match = pattern.exec(content)
   if (match) {
     const [fm, g1, g2, g3, g4, g5] = match
     return {
       arg: g1 || g2 || g3 || g4 || g5 || fm,
-      rest: content.replace(regex, "").trim(),
+      rest: content.replace(pattern, "").trim(),
     }
   }
   return { arg: null }

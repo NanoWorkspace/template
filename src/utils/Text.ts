@@ -3,7 +3,7 @@ export const code = (text: string, lang: string = "js") => {
 }
 
 export function improvePattern(pattern: RegExp): RegExp {
-  return new RegExp(`^(?:${pattern.source})(?:\\s+|$)`, pattern.flags)
+  return new RegExp(`^(?:${pattern.source})(?:\\s|$)`, pattern.flags)
 }
 
 const Text = {

@@ -43,12 +43,15 @@ new Command({
               Object.keys(group)
                 .map((name) => {
                   const arg = group[name]
-                  const hooks = arg.optional || arg.default || arg.defaultIndex
+                  const hooks: boolean =
+                    arg.optional ||
+                    arg.default !== undefined ||
+                    arg.defaultIndex !== undefined
                   return `${hooks ? "[" : ""}${name}${
                     arg.default !== undefined ? `: ${arg.default}` : ""
                   }${
                     arg.defaultIndex !== undefined
-                      ? `: ${arg.defaultIndex}`
+                      ? `: index(${arg.defaultIndex})`
                       : ""
                   }${hooks ? "]" : ""}`
                 })

@@ -17,7 +17,7 @@ new Command({
     },
     {
       newPrefix: {
-        type: Types.rest,
+        type: Types.text,
       },
     },
   ],

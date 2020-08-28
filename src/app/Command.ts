@@ -125,23 +125,6 @@ export default class Command {
     if (this.args) {
       let groups: CommandArgumentGroup[]
 
-      function scalar(name: string, value: string | number | RegExp): boolean {
-        if (value instanceof RegExp) {
-          const pattern = Text.improvePattern(value)
-          const match = pattern.exec(content)
-          if (match) {
-            content = content.replace(pattern, "").trim()
-            args[name] = match[2] || match[1] || match[0]
-            return true
-          }
-        } else if (content.startsWith(String(value))) {
-          content = content.replace(String(value), "").trim()
-          args[name] = value
-          return true
-        }
-        return false
-      }
-
       if (Array.isArray(this.args)) {
         groups = this.args
       } else {
@@ -150,6 +133,28 @@ export default class Command {
 
       const errorMessages: string[][] = []
       let error = false
+
+      const scalar = function (
+        v: string | number | RegExp,
+        c: string
+      ): { arg: any; rest?: string } {
+        if (v instanceof RegExp) {
+          const p = Text.improvePattern(v)
+          const m = p.exec(c)
+          if (m) {
+            return {
+              arg: m[2] || m[1] || m[0],
+              rest: c.replace(p, "").trim(),
+            }
+          }
+        } else if (c.startsWith(String(v))) {
+          return {
+            arg: v,
+            rest: c.replace(String(v), "").trim(),
+          }
+        }
+        return { arg: null }
+      }
 
       for (const group of groups) {
         const groupErrorMessage: string[] = []
@@ -164,18 +169,24 @@ export default class Command {
           if (typeof type === "function") {
             const { arg, rest } = await type(content, message)
             args[name] = arg
-            content = rest || content
+            content = rest === undefined ? content : rest
           } else if (Array.isArray(type)) {
             let i = 0
             for (const option of type) {
-              if (scalar(name, option)) {
+              const result = scalar(option, content)
+              if (result.arg !== null) {
+                content = result.rest as string
                 args[name + "Index"] = i
                 break
               }
               i++
             }
           } else {
-            scalar(name, type)
+            const result = scalar(type, content)
+            if (result.arg !== null) {
+              content = result.rest as string
+              args[name] = result.arg
+            }
           }
 
           if (args[name] === null || args[name] === undefined) {

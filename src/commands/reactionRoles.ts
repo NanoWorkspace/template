@@ -7,7 +7,7 @@ import Globals from "../app/Globals"
 
 new Command({
   name: "Reaction-Roles Manager",
-  pattern: /rr|rero|reaction\s?role/i,
+  pattern: /rr|rero|reaction[\s-]?role/i,
   description: "Gère la création et la suppression de réaction-rôles",
   admin: true,
   channelType: "guild",
@@ -20,7 +20,7 @@ new Command({
       },
     },
     {
-      remove: { type: /del(?:ete)|rm|remove/i },
+      remove: { type: /del(?:ete)?|rm|remove/i },
       reactionRoleID: { type: Types.snowflake },
       emoji: {
         optional: true,
