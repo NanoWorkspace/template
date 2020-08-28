@@ -1,44 +1,8 @@
 {
-  "bot": {
-    "prefix": "nano ",
-    "clientOptions": {
-      "disableMentions": "everyone"
-    },
-    "embedTemplates": {
-      "default": {
-        "author": {
-          "name": "{{ Globals.bot.name }}",
-          "iconURL": "{{ Globals.client.user.displayAvatarURL() }}"
-        },
-        "color": "#f0ddb1"
-      },
-      "success": {
-        "author": {
-          "name": "Success!  (ง `ω´)۶"
-        },
-        "image": "https://64.media.tumblr.com/7ff7a1fe3721ad25fbc7637e7cf5176d/tumblr_n6feedzYkM1rbnx7io1_500.gif",
-        "color": "#70ff96"
-      },
-      "error": {
-        "author": {
-          "name": "Error...  ⊂(⊙д⊙)つ"
-        },
-        "image": "https://i.kym-cdn.com/photos/images/original/000/652/857/fca.gif",
-        "color": "#ff5959"
-      },
-      "log": {
-        "author": {
-          "name": "{{ Globals.bot.name }} logs"
-        },
-        "timestamp": null,
-        "color": "#ccffff"
-      }
-    }
-  },
   "name": "nano-template",
   "author": "ghom",
   "license": "ISC",
-  "version": "v1.4.0-alpha",
+  "version": "v1.5.0-alpha",
   "description": "Discord bot in TypeScript.",
   "main": "dist/index.js",
   "prettier": {
@@ -51,7 +15,6 @@
   "scripts": {
     "prettier": "prettier src --write",
     "build": "git rm -r --ignore-unmatch -f ./dist && npm run prettier && tsc",
-    "type": "npx typescript-json-schema ./tsconfig.json NanoConfig --out ./nano.config.schema.json",
     "start": "npm run build && node .",
     "push": "npm run prettier && git add * && git commit -m continue && git push origin master"
   },
@@ -66,7 +29,7 @@
     "@types/node": "^14.0.27",
     "@types/ws": "^7.2.6",
     "prettier": "^2.0.5",
-    "typescript": "3.9.7"
+    "typescript": "4.0.2"
   },
   "dependencies": {
     "better-sqlite-pool": "0.3.0",

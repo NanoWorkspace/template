@@ -13,7 +13,7 @@ export interface EmbedTemplates {
 }
 
 class Embed extends Discord.MessageEmbed {
-  static templates = bot.embedTemplates
+  static templates = bot.embedTemplates || ({} as EmbedTemplates)
 
   static log(description?: string) {
     return new Embed().setTemplate("log", description)

@@ -153,6 +153,7 @@ async function discordMentionable(
   content: string,
   message: Discord.Message
 ): Promise<{ arg: any; rest?: string }> {
+  // @ts-ignore
   let item: DiscordMentionable | undefined | null = message.mentions[
     collection
   ]?.first()
@@ -167,8 +168,10 @@ async function discordMentionable(
   if (regex.test(content)) {
     const [, id] = regex.exec(content) as RegExpExecArray
     if (collection === "users") {
+      // @ts-ignore
       item = message.client.users.resolve(id)
     } else {
+      // @ts-ignore
       item = message.guild?.[collection]?.resolve(id)
     }
     if (item) {

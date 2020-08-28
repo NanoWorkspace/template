@@ -1,0 +1,36 @@
+{
+  "prefix": "nano ",
+  "clientOptions": {
+    "disableMentions": "everyone"
+  },
+  "embedTemplates": {
+    "default": {
+      "author": {
+        "name": "{{ Globals.bot.name }}",
+        "iconURL": "{{ Globals.client.user.displayAvatarURL() }}"
+      },
+      "color": "#f0ddb1"
+    },
+    "success": {
+      "author": {
+        "name": "Success!  (ง `ω´)۶"
+      },
+      "image": "https://64.media.tumblr.com/7ff7a1fe3721ad25fbc7637e7cf5176d/tumblr_n6feedzYkM1rbnx7io1_500.gif",
+      "color": "#70ff96"
+    },
+    "error": {
+      "author": {
+        "name": "Error...  ⊂(⊙д⊙)つ"
+      },
+      "image": "https://i.kym-cdn.com/photos/images/original/000/652/857/fca.gif",
+      "color": "#ff5959"
+    },
+    "log": {
+      "author": {
+        "name": "{{ Globals.bot.name }} logs"
+      },
+      "timestamp": null,
+      "color": "#ccffff"
+    }
+  }
+}

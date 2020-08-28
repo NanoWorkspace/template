@@ -3,7 +3,7 @@ import Discord from "discord.js"
 
 // todo: allow custom template for logs
 
-const { bot } = require("../../package.json")
+const bot = require("../../nano.config.json")
 
 abstract class Logger {
   static space() {

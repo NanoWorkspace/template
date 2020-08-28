@@ -6,15 +6,16 @@ Logger.load("file", __filename)
 
 export interface NanoConfig {
   prefix: string
-  clientOptions: Discord.ClientOptions
-  embedTemplates: EmbedTemplates
+  token?: string
+  clientOptions?: Discord.ClientOptions
+  embedTemplates?: EmbedTemplates
 }
 
 export interface Bot extends Partial<Discord.ClientApplication>, NanoConfig {
   team?: Discord.Team
 }
 
-const bot: Bot = require("../../package.json").bot
+const bot: Bot = require("../../nano.config.json")
 
 export default bot
 module.exports = bot
