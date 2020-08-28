@@ -4,6 +4,8 @@ import { EmbedTemplates } from "../app/Embed"
 
 Logger.load("file", __filename)
 
+// todo: nano.config.ts
+
 export interface Bot extends Partial<Discord.ClientApplication> {
   prefix: string
   team?: Discord.Team

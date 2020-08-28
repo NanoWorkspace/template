@@ -8,8 +8,10 @@ Logger.load("file", __filename)
 
 interface GuildData {
   prefix: string
-  moderatorRole?: Discord.Snowflake
-  logChannel?: Discord.Snowflake
+  moderatorRoleID?: Discord.Snowflake
+  logChannelID?: Discord.Snowflake
+  moderatorRole?: Discord.Role
+  logChannel?: Discord.TextChannel
   ignoredChannels: Discord.Snowflake[]
   ignoredUser: Discord.Snowflake[]
   autoRoles: {
@@ -40,8 +42,15 @@ class Database extends Enmap {
     this.ensure(guild.id, data)
   }
 
-  getGuild(guild: Discord.Guild): GuildData {
-    return this.get(guild.id)
+  async getGuild(guild: Discord.Guild): Promise<GuildData> {
+    const data: GuildData = this.get(guild.id)
+    if (data.logChannelID)
+      data.logChannel = guild.channels.cache.get(
+        data.logChannelID
+      ) as Discord.TextChannel
+    if (data.moderatorRoleID)
+      data.moderatorRole = guild.roles.cache.get(data.moderatorRoleID)
+    return data
   }
 }
 
