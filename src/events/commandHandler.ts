@@ -42,7 +42,30 @@ new Event({
     if (!command) return
 
     // command arguments parsing
-    const args = await command.parseArgs(message, rest || "")
+    let args = {}
+    try {
+      args = await command.parseArgs(message, rest || "")
+    } catch (error) {
+      const errorMessages = JSON.parse(error.message) as string[][]
+      return await message.channel.send(
+        Embed.error(
+          Text.code(
+            "MISSING ARGUMENTS:\n" +
+              errorMessages.map((group) => `- ${group.join(" ")}`).join("\n"),
+            "yaml"
+          )
+        )
+          .setAuthor(
+            `Command Argument Error (${command.name})`,
+            Globals.client.user?.displayAvatarURL()
+          )
+          .setFooter(
+            `Please type "${prefix}help ${content
+              .replace(rest as string, "")
+              .trim()}" for usage detail.`
+          )
+      )
+    }
 
     // todo: check bot permissions
     // todo: check ignoredChannels

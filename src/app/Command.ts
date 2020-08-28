@@ -148,8 +148,13 @@ export default class Command {
         groups = [this.args]
       }
 
+      const errorMessages: string[][] = []
+      let error = false
+
       for (const group of groups) {
-        let error = false
+        const groupErrorMessage: string[] = []
+        const groupIndex = groups.indexOf(group)
+        error = false
 
         for (const name in group) {
           const { type, default: _default, defaultIndex, optional } = group[
@@ -182,20 +187,28 @@ export default class Command {
               args[name] = null
             } else {
               error = true
+              groupErrorMessage.push(name)
             }
           }
 
           // if error, clean args and break
-          if (error && groups.indexOf(group) < groups.length - 1) {
-            args = {}
-            content = baseContent
-            break
+          if (error) {
+            if (groupIndex < groups.length - 1) {
+              args = {}
+              content = baseContent
+              groupErrorMessage.push("# aborted")
+              break
+            } else {
+              // last group
+            }
           }
         }
+        errorMessages.push(groupErrorMessage)
+
         // if last group is good, break
         if (!error) break
       }
-      // todo: add auto error message for fail arguments (for all group or best group)
+      if (error) throw new Error(JSON.stringify(errorMessages))
     }
     return args
   }

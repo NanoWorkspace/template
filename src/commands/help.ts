@@ -9,7 +9,7 @@ new Command({
   name: "Help Menu",
   pattern: /h(?:[aeu]?lp)?/i,
   description: "Affiche les commandes existantes.",
-  args: { command: { type: Types.command } },
+  args: { command: { type: Types.command, optional: true } },
   call: async ({ message, args }) => {
     const command: Command = args.command
 
@@ -43,9 +43,14 @@ new Command({
               Object.keys(group)
                 .map((name) => {
                   const arg = group[name]
-                  return `[${name}${arg.optional ? "?" : ""}${
-                    arg.default !== undefined ? ` = ${arg.default}` : ""
-                  }]`
+                  const hooks = arg.optional || arg.default || arg.defaultIndex
+                  return `${hooks ? "[" : ""}${name}${
+                    arg.default !== undefined ? `: ${arg.default}` : ""
+                  }${
+                    arg.defaultIndex !== undefined
+                      ? `: ${arg.defaultIndex}`
+                      : ""
+                  }${hooks ? "]" : ""}`
                 })
                 .join(" ")
             )
@@ -54,13 +59,14 @@ new Command({
           embed.addField(
             "arguments:",
             Text.code(
-              Array.isArray(command.args)
-                ? command.args
-                    .map((group, index) => {
-                      return groupToString(group)
-                    })
-                    .join("\n")
-                : groupToString(command.args),
+              "# required [optional] [optional: defaultValue]\n" +
+                (Array.isArray(command.args)
+                  ? command.args
+                      .map((group, index) => {
+                        return groupToString(group)
+                      })
+                      .join("\n")
+                  : groupToString(command.args)),
               "yaml"
             ),
             false
