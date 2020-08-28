@@ -34,7 +34,7 @@ A Discord bot template in TypeScript
 
 1. Go to your folder project and run `npm i`.
 2. Make a `.env` file and place your token inside like this: `TOKEN=Your_Discord_App_Token`.
-3. Open `nano.config.json` as Nano Config using `nano.config.schema.json` from your IDE.
+3. Open `nano.config.json` as Nano Config using `nano.config.schema.json` json-schema from your IDE.
 4. Adjust properties in `nano.config.json`.
 5. Create and link your own GitHub repository.
 
