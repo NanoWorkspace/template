@@ -4,13 +4,14 @@ import { EmbedTemplates } from "../app/Embed"
 
 Logger.load("file", __filename)
 
-// todo: nano.config.ts
-
-export interface Bot extends Partial<Discord.ClientApplication> {
+export interface NanoConfig {
   prefix: string
-  team?: Discord.Team
   clientOptions: Discord.ClientOptions
   embedTemplates: EmbedTemplates
+}
+
+export interface Bot extends Partial<Discord.ClientApplication>, NanoConfig {
+  team?: Discord.Team
 }
 
 const bot: Bot = require("../../package.json").bot

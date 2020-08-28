@@ -51,6 +51,7 @@
   "scripts": {
     "prettier": "prettier src --write",
     "build": "git rm -r --ignore-unmatch -f ./dist && npm run prettier && tsc",
+    "type": "npx typescript-json-schema ./tsconfig.json NanoConfig --out ./nano.config.schema.json",
     "start": "npm run build && node .",
     "push": "npm run prettier && git add * && git commit -m continue && git push origin master"
   },
