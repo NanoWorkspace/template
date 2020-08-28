@@ -173,8 +173,8 @@ new Event({
     } catch (error) {
       Logger.error(error, `Commande: ${command.name}`)
       await message.channel.send(
-        Embed.error(`${error.name}: ${error.message}`).setFooter(
-          "View error logs for more information"
+        Embed.error(Text.code(`${error.name}: ${error.message}`)).setFooter(
+          "Check console error logs for more information."
         )
       )
     }

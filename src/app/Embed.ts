@@ -67,19 +67,23 @@ class Embed extends Discord.MessageEmbed {
           if (name === "author") {
             this.setAuthor(
               // @ts-ignore
-              value.name?.replace(templatingRegex, templatingReplacer),
+              value.name?.replace(templatingRegex, templatingReplacer) ||
+                this.author?.name,
               // @ts-ignore
-              value.iconURL?.replace(templatingRegex, templatingReplacer),
+              value.iconURL?.replace(templatingRegex, templatingReplacer) ||
+                this.author?.iconURL,
               // @ts-ignore
-              value.url
+              value.url || this.author?.url
             )
           } else {
             // footer
             this.setFooter(
               // @ts-ignore
-              value.text.replace(templatingRegex, templatingReplacer),
+              value.text.replace(templatingRegex, templatingReplacer) ||
+                this.footer?.text,
               // @ts-ignore
-              value.iconURL?.replace(templatingRegex, templatingReplacer)
+              value.iconURL?.replace(templatingRegex, templatingReplacer) ||
+                this.footer?.iconURL
             )
           }
         }

@@ -36,7 +36,7 @@ abstract class Logger {
     )
   }
 
-  static log(guild: Discord.Guild, ...values: (number | string)[]) {
+  static mod(guild: Discord.Guild, ...values: (number | string)[]) {
     console.log(chalk.cyanBright("log"), values[0], ...values.map(chalk.gray))
     require("../globals/db")
       .getGuild(guild)
