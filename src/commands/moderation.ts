@@ -26,7 +26,7 @@ new Command({
 })
 
 new Command({
-  name: "Kick Member",
+  name: "Ban Member",
   pattern: /ban/i,
   args: {
     member: { type: Command.types.member },
