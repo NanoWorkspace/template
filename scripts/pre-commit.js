@@ -17,7 +17,7 @@ async function updatePackage() {
     // commit message
     const pattern = /^(git commit -m ).+$/
     const [, command] = pattern.exec(PACKAGE.scripts.commit)
-    PACKAGE.scripts.commit = `${command}patch to ${PACKAGE.version}`
+    PACKAGE.scripts.commit = `${command}"patch to ${PACKAGE.version}"`
   }
 
   await fs.writeFile(path.join(ROOT, "package.json"), JSON.stringify(PACKAGE))
