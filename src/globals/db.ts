@@ -13,7 +13,7 @@ interface GuildData {
   moderatorRole?: Discord.Role
   logChannel?: Discord.TextChannel
   ignoredChannels: Discord.Snowflake[]
-  ignoredUser: Discord.Snowflake[]
+  ignoredUsers: Discord.Snowflake[]
   autoRoles: {
     user: Discord.Snowflake[]
     bot: Discord.Snowflake[]
@@ -31,7 +31,7 @@ class Database extends Enmap {
     const data: GuildData = {
       prefix: bot.prefix,
       ignoredChannels: [],
-      ignoredUser: [],
+      ignoredUsers: [],
       autoRoles: {
         user: [],
         bot: [],

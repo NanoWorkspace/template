@@ -68,8 +68,6 @@ new Event({
     }
 
     // todo: check bot permissions
-    // todo: check ignoredChannels
-    // todo: check ignoredUsers
 
     // check filters
     if (message.guild) {
@@ -106,6 +104,17 @@ new Event({
               Text.code(command.permissions.join("\n"))
             )
           )
+      }
+      // check ignored
+      const ignoredChannels = Globals.db.get(
+        message.guild.id,
+        "ignoredChannels"
+      )
+      if (ignoredChannels.includes(message.channel.id)) return
+
+      if (!Globals.bot.owners.has(message.author.id)) {
+        const ignoredUsers = Globals.db.get(message.guild.id, "ignoredUsers")
+        if (ignoredUsers.includes(message.author.id)) return
       }
     } else {
       if (
