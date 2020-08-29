@@ -61,9 +61,5 @@ A Discord bot template in TypeScript
 
   // Build and start directly the bot for debugging.
   start: "npm run build && node .",
-
-  // Fallback commit or push scripts in case time is short.
-  commit: "npm run prettier && git add * && git commit -m continue",
-  push: "npm run commit && git push origin master",
 }
 ```
