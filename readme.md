@@ -15,11 +15,11 @@ A Discord bot template in TypeScript
 
 ## Dependencies
 
-![discord.js](https://img.shields.io/github/package-json/dependency-version/CamilleAbella/NanoTemplate/discord.js?color=orange&style=plastic)
-![enmap](https://img.shields.io/github/package-json/dependency-version/CamilleAbella/NanoTemplate/enmap?color=orange&style=plastic)
-![chalk](https://img.shields.io/github/package-json/dependency-version/CamilleAbella/NanoTemplate/chalk?color=orange&style=plastic)
-![dotenv](https://img.shields.io/github/package-json/dependency-version/CamilleAbella/NanoTemplate/dotenv?color=orange&style=plastic)
 ![better-sqlite3](https://img.shields.io/github/package-json/dependency-version/CamilleAbella/NanoTemplate/better-sqlite3?color=orange&style=plastic)
+![chalk](https://img.shields.io/github/package-json/dependency-version/CamilleAbella/NanoTemplate/chalk?color=orange&style=plastic)
+![discord.js](https://img.shields.io/github/package-json/dependency-version/CamilleAbella/NanoTemplate/discord.js?color=orange&style=plastic)
+![dotenv](https://img.shields.io/github/package-json/dependency-version/CamilleAbella/NanoTemplate/dotenv?color=orange&style=plastic)
+![enmap](https://img.shields.io/github/package-json/dependency-version/CamilleAbella/NanoTemplate/enmap?color=orange&style=plastic)
 ![querystring](https://img.shields.io/github/package-json/dependency-version/CamilleAbella/NanoTemplate/querystring?color=orange&style=plastic)
 
 ## Template usage
@@ -27,7 +27,7 @@ A Discord bot template in TypeScript
 ### 1. Clone the project
 
 - Replace the `Nano` word by your own bot name and run it:  
-``git clone --depth 0 -b master https://github.com/CamilleAbella/NanoTemplate.git Nano``
+  `git clone --depth 0 -b master https://github.com/CamilleAbella/NanoTemplate.git Nano`
 
 ### 2. Prepare project
 
@@ -40,7 +40,7 @@ A Discord bot template in TypeScript
 ### 3. Code your bot in TypeScript
 
 - Please do not code in the `index.ts`.
-- Please hard keep the existing files. 
+- Please hard keep the existing files.
 - Please keep the existing commands and events too.
 - Please use `src/app/Embed.ts` class to make embeds.
 - Add your own commands in `src/commands/`.
@@ -54,16 +54,16 @@ A Discord bot template in TypeScript
 ```json5
 {
   // Prettify the code automatically on build or push action.
-  "prettier": "prettier src --write",
-  
+  prettier: "prettier src --write",
+
   // Create the local "dist" runnable folder for deployment.
-  "build": "git rm -r --ignore-unmatch -f ./dist && npm run prettier && tsc",
+  build: "git rm -r --ignore-unmatch -f ./dist && npm run prettier && tsc",
 
   // Build and start directly the bot for debugging.
-  "start": "npm run build && node .",
+  start: "npm run build && node .",
 
   // Fallback commit or push scripts in case time is short.
-  "commit": "npm run prettier && git add * && git commit -m continue",
-  "push": "npm run commit && git push origin master"
+  commit: "npm run prettier && git add * && git commit -m continue",
+  push: "npm run commit && git push origin master",
 }
 ```

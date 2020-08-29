@@ -20,7 +20,7 @@
         "description": {
           "type": "string"
         },
-        "url":  {
+        "url": {
           "type": "string"
         },
         "timestamp": {
@@ -34,7 +34,7 @@
           "type": "array",
           "items": {
             "type": "object",
-            "required": ["name","value"],
+            "required": ["name", "value"],
             "properties": {
               "name": {
                 "type": "string"
@@ -45,7 +45,7 @@
             }
           }
         },
-        "author":  {
+        "author": {
           "type": "object",
           "required": ["name"],
           "properties": {
@@ -55,7 +55,7 @@
             "url": {
               "type": "string"
             },
-            "iconURL":  {
+            "iconURL": {
               "type": "string"
             },
             "proxyIconURL": {
@@ -101,7 +101,7 @@
       "type": "object",
       "properties": {
         "shards": {
-          "type": ["number","array","string"],
+          "type": ["number", "array", "string"],
           "pattern": "^auto$",
           "items": {
             "type": "number"
@@ -123,7 +123,7 @@
           "type": "boolean"
         },
         "disableMentions": {
-          "enum": ["none","all","everyone"]
+          "enum": ["none", "all", "everyone"]
         },
         "allowedMentions": {
           "type": "object",
@@ -131,7 +131,7 @@
             "parse": {
               "type": "array",
               "items": {
-                "enum": ["roles","users","everyone"]
+                "enum": ["roles", "users", "everyone"]
               }
             },
             "roles": {
@@ -151,7 +151,7 @@
         "partials": {
           "type": "array",
           "items": {
-            "enum": ["USER","CHANNEL","GUILD_MEMBER","MESSAGE","REACTION"]
+            "enum": ["USER", "CHANNEL", "GUILD_MEMBER", "MESSAGE", "REACTION"]
           }
         },
         "restWsBridgeTimeout": {
@@ -172,20 +172,20 @@
         "presence": {
           "type": "object",
           "properties": {
-            "status":  {
-              "enum": ["online","idle","dnd","invisible"]
+            "status": {
+              "enum": ["online", "idle", "dnd", "invisible"]
             },
             "afk": {
               "type": "boolean"
             },
-            "activity":  {
+            "activity": {
               "type": "object",
               "properties": {
                 "name": {
                   "type": "string"
                 },
                 "type": {
-                  "type": ["string","number"],
+                  "type": ["string", "number"],
                   "pattern": "^(?:PLAYING|STREAMING|LISTENING|WATCHING|CUSTOM_STATUS)$"
                 },
                 "url": {
@@ -194,7 +194,7 @@
               }
             },
             "shardID": {
-              "type": ["array","number"],
+              "type": ["array", "number"],
               "items": {
                 "type": "number"
               }
