@@ -1,22 +1,63 @@
+import Discord from "discord.js"
 import Command from "../app/Command"
-import bot from "../globals/bot"
+import Embed from "../app/Embed"
+import Globals from "../app/Globals"
+import Text from "../utils/Text"
 
 new Command({
   name: "Ignore Manager",
   pattern: /ign?(?:ore)?/i,
-  description: `Gère les utilisateurs et les salons ignorés par ${bot.name}.`,
+  description: `Gère les utilisateurs et les salons ignorés par ${Globals.bot.name}.`,
   admin: true,
-  args: {
-    action: {
-      defaultIndex: 0,
-      type: ["add", /rm|remove/i, /ls|list/i],
+  channelType: "guild",
+  args: [
+    {
+      action: {
+        defaultIndex: 0,
+        type: ["add", /rm|remove/],
+      },
+      items: {
+        type: Command.types.arrayFrom(
+          Command.types.user,
+          Command.types.channel
+        ),
+      },
     },
-    items: {
-      optional: true,
-      type: Command.types.arrayFrom(Command.types.user, Command.types.channel),
+    {
+      list: {
+        type: /ls|list/i,
+      },
     },
-  },
-  call: ({ message, args: { action, items } }) => {
-    // todo: code ignore-command body
+  ],
+  call: async ({ message, args: { actionIndex, items, list } }) => {
+    const guild = message.guild as Discord.Guild
+
+    if (list) {
+      const ignoredChannels = Globals.db.get(
+        guild.id,
+        "ignoredChannels"
+      ) as Discord.TextChannel[]
+      const ignoredUsers = Globals.db.get(
+        guild.id,
+        "ignoredUsers"
+      ) as Discord.User[]
+
+      return await message.channel.send(
+        Embed.default("Voici la liste des ignorés.")
+          .addField("Users", ignoredUsers.join(" "))
+          .addField("Channels", ignoredChannels.join(" "))
+      )
+    }
+
+    for (const item of items) {
+      // @ts-ignore
+      Globals.db[!!actionIndex ? "remove" : "add"](
+        guild.id,
+        item.id,
+        item instanceof Discord.User ? "ignoredUsers" : "ignoredChannels"
+      )
+    }
+
+    await message.channel.send(Embed.success())
   },
 })
