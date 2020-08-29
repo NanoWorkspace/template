@@ -120,13 +120,13 @@ new Event({
       }
     }
     if (command.botOwner) {
-      if (Globals.owners.every((user) => user !== message.author)) {
+      if (Globals.bot.owners.every((user) => user !== message.author)) {
         return message.channel.send(
           Embed.error(
             "Vous devez êtes l'un des propriétaires du bot pour utiliser cette commande."
           ).addField(
             "Voici les propriétaires actuels:",
-            Text.code(Globals.owners.map((user) => user.tag).join("\n"))
+            Text.code(Globals.bot.owners.map((user) => user.tag).join("\n"))
           )
         )
       }
@@ -158,7 +158,7 @@ new Event({
       // just narrowing test for TypeScript
       if (!command.name) return
 
-      const { cooldown } = Globals
+      const { cooldown } = Command
       const now = Date.now()
 
       if (!cooldown.hasOwnProperty(message.author.id)) {

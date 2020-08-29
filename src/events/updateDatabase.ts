@@ -2,7 +2,7 @@ import Event from "../app/Event"
 import Globals from "../app/Globals"
 
 new Event({
-  name: "ready",
+  name: "nanoReady",
   caller: "once",
   description: "Update db on client is ready",
   call: () => {

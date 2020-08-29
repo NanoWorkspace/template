@@ -13,9 +13,12 @@ export interface NanoConfig {
 
 export interface Bot extends Partial<Discord.ClientApplication>, NanoConfig {
   team?: Discord.Team
+  owners: Discord.Collection<Discord.Snowflake, Discord.User>
 }
 
 const bot: Bot = require("../../nano.config.json")
+
+bot.owners = new Discord.Collection()
 
 export default bot
 module.exports = bot

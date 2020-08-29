@@ -1,6 +1,4 @@
 import Discord from "discord.js"
-import fs from "fs"
-import path from "path"
 import Logger from "./Logger"
 import Text from "../utils/Text"
 import ArgumentTypes from "../utils/ArgumentTypes"
@@ -231,7 +229,3 @@ export default class Command {
     return {}
   }
 }
-
-fs.readdirSync(path.join(__dirname, "..", "commands")).forEach((fileName) => {
-  require(path.join(__dirname, "..", "commands", fileName))
-})

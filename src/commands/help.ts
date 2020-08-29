@@ -17,9 +17,9 @@ new Command({
 
     if (!command) {
       embed.setTitle("Commandes").addFields(
-        (Globals.owners.has(message.author.id)
-          ? Globals.commands
-          : Globals.commands.filter((c) => !c.botOwner)
+        (Globals.bot.owners.has(message.author.id)
+          ? Command.commands
+          : Command.commands.filter((c) => !c.botOwner)
         ).map((c) => ({
           name: c.name,
           value: c.description || "Pas de description",
@@ -51,7 +51,8 @@ new Command({
                     arg.default !== undefined ? `: ${arg.default}` : ""
                   }${
                     arg.defaultIndex !== undefined
-                      ? `: index(${arg.defaultIndex})`
+                      ? // @ts-ignore
+                        `: ${arg.type[arg.defaultIndex]}`
                       : ""
                   }${hooks ? "]" : ""}`
                 })

@@ -2,15 +2,16 @@ import chalk from "chalk"
 import Globals from "../app/Globals"
 import Logger from "../app/Logger"
 import Event from "../app/Event"
+import Command from "../app/Command"
 
 new Event({
-  name: "ready",
+  name: "nanoReady",
   caller: "once",
-  description: "Log globals info on client is ready",
+  description: "Log globals info on nano is ready",
   call: () => {
     // events
     Logger.space()
-    Globals.events.forEach((listeners, name) => {
+    Event.events.forEach((listeners, name) => {
       listeners.forEach((event) => {
         Logger.load(
           "event",
@@ -23,7 +24,7 @@ new Event({
 
     // commands
     Logger.space()
-    Globals.commands.forEach((command) => {
+    Command.commands.forEach((command) => {
       Logger.load("command", command.name, chalk.gray(command.description))
     })
 
