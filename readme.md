@@ -61,9 +61,10 @@ A Discord bot template in TypeScript
   "build": "git rm -r --ignore-unmatch -f ./dist && npm run prettier && tsc",
 
   // Build and start directly the bot for debugging.
-  "start": "npm run build && node --trace-warnings .",
+  "start": "npm run build && node .",
 
   // Fallback push script in case time is short.
-  "push": "npm run prettier && git add * && git commit -m continue && git push origin master"
+  "commit": "npm run prettier && git add * && git commit -m continue",
+  "push": "npm run commit && git push origin master"
 }
 ```

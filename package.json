@@ -16,7 +16,8 @@
     "prettier": "prettier src --write",
     "build": "git rm -r --ignore-unmatch -f ./dist && npm run prettier && tsc",
     "start": "npm run build && node .",
-    "push": "npm run prettier && git add * && git commit -m continue && git push origin master"
+    "commit": "npm run prettier && git add * && git commit -m continue",
+    "push": "npm run commit && git push origin master"
   },
   "keywords": [
     "discord.js",
