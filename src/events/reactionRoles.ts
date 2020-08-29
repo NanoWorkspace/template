@@ -1,5 +1,15 @@
+import Discord from "discord.js"
 import Event from "../app/Event"
 import ReactionRoleMessage from "../app/ReactionRoleMessage"
+
+new Event({
+  name: "messageDelete",
+  caller: "on",
+  description: "Delete reaction-rôle message associated on message delete",
+  call: async (message) => {
+    ReactionRoleMessage.getByMessage(message as Discord.Message)?.delete()
+  },
+})
 
 new Event({
   name: "messageReactionAdd",

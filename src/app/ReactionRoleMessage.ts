@@ -104,6 +104,15 @@ export default class ReactionRoleMessage {
     return collection
   }
 
+  static getByMessage(
+    message: Discord.Message
+  ): ReactionRoleMessage | undefined {
+    if (!message.guild) return undefined
+    return this.collection(message.guild).find((rrm) => {
+      return rrm.options.messageID === message.id
+    })
+  }
+
   static async fetchRole(
     guild: Discord.Guild,
     messageReaction: Discord.MessageReaction
