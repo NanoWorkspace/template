@@ -6,7 +6,7 @@ import Types from "../utils/ArgumentTypes"
 new Command({
   name: "Prefix Manager",
   pattern: /pr[eé]fix/i,
-  description: "Change le prefix de Nano pour ce serveur.",
+  description: `Change le prefix de ${Globals.bot.name} pour ce serveur.`,
   channelType: "guild",
   admin: true,
   args: [

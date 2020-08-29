@@ -1,7 +1,7 @@
 import querystring from "querystring"
 import Command from "../app/Command"
-import Types from "../utils/ArgumentTypes"
 import Embed from "../app/Embed"
+import Types from "../utils/ArgumentTypes"
 
 new Command({
   name: "Search Engine",

@@ -1,14 +1,12 @@
 import Discord from "discord.js"
 import Command from "../app/Command"
 import Embed from "../app/Embed"
-import bot from "../globals/bot"
-import db from "../globals/db"
-import Text from "../utils/Text"
+import Globals from "../app/Globals"
 
 new Command({
   name: "Ignore Manager",
   pattern: /ign?(?:ore)?/i,
-  description: `Gère les utilisateurs et les salons ignorés par ${bot.name}.`,
+  description: `Gère les utilisateurs et les salons ignorés par ${Globals.bot.name}.`,
   admin: true,
   channelType: "guild",
   args: [
@@ -34,11 +32,14 @@ new Command({
     const guild = message.guild as Discord.Guild
 
     if (list) {
-      const ignoredChannels = db.get(
+      const ignoredChannels = Globals.db.get(
         guild.id,
         "ignoredChannels"
       ) as Discord.TextChannel[]
-      const ignoredUsers = db.get(guild.id, "ignoredUsers") as Discord.User[]
+      const ignoredUsers = Globals.db.get(
+        guild.id,
+        "ignoredUsers"
+      ) as Discord.User[]
 
       return await message.channel.send(
         Embed.default("Voici la liste des ignorés.")

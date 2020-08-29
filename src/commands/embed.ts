@@ -1,4 +1,4 @@
-import Discord, { TextChannel } from "discord.js"
+import Discord from "discord.js"
 import Command from "../app/Command"
 import Types from "../utils/ArgumentTypes"
 import Text from "../utils/Text"
@@ -27,7 +27,7 @@ new Command({
     if (!message.guild) return
 
     if (channel && messageID) {
-      const gotMessage = await (channel as TextChannel).messages.fetch(
+      const gotMessage = await (channel as Discord.TextChannel).messages.fetch(
         messageID
       )
       if (!gotMessage) {
