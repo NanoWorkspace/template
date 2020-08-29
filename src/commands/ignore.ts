@@ -50,7 +50,7 @@ new Command({
 
     for (const item of items) {
       // @ts-ignore
-      db[!!actionIndex ? "remove" : "add"](
+      Globals.db[!!actionIndex ? "remove" : "add"](
         guild.id,
         item.id,
         item instanceof Discord.User ? "ignoredUsers" : "ignoredChannels"
