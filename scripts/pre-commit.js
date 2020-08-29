@@ -7,11 +7,18 @@ const ROOT = path.join(__dirname, "..")
 const PROMISES = []
 
 async function updatePackage() {
-  const pattern = /^v(\d+)\.(\d+)\.(\d+)-(.+)$/
-
-  const [, version, release, patch, state] = pattern.exec(PACKAGE.version)
-
-  PACKAGE.version = `v${version}.${release}.${Number(patch) + 1}-${state}`
+  {
+    // version
+    const pattern = /^v(\d+)\.(\d+)\.(\d+)-(.+)$/
+    const [, version, release, patch, state] = pattern.exec(PACKAGE.version)
+    PACKAGE.version = `v${version}.${release}.${Number(patch) + 1}-${state}`
+  }
+  {
+    // commit message
+    const pattern = /^(git commit -m ).+$/
+    const [, command] = pattern.exec(PACKAGE.scripts.commit)
+    PACKAGE.scripts.commit = `${command}patch to ${PACKAGE.version}`
+  }
 
   await fs.writeFile(path.join(ROOT, "package.json"), JSON.stringify(PACKAGE))
 
