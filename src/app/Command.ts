@@ -42,16 +42,23 @@ export interface CommandArgument {
   type: CommandArgumentType
 }
 
+export type CommandArgumentTypeResult =
+  | Promise<CommandArgumentTypeResolvedResult>
+  | CommandArgumentTypeResolvedResult
+
+export type CommandArgumentTypeResolvedResult = { arg: any; rest?: string }
+
+export type CommandArgumentTypeFunction = (
+  content: string,
+  message: Discord.Message
+) => CommandArgumentTypeResult
+
 export type CommandArgumentType =
-  | ((
-      content: string,
-      message: Discord.Message
-    ) => Promise<{ arg: any; rest?: string }> | { arg: any; rest?: string })
+  | CommandArgumentTypeFunction
   | string
   | number
   | RegExp
-  | (string | number | RegExp)[]
-  | Array<string | number | RegExp>
+  | (CommandArgumentTypeFunction | string | number | RegExp)[]
 
 export interface GroupStatus {
   index?: CommandArgument
@@ -147,10 +154,10 @@ export default class Command {
       const status: GroupStatus[] = []
       let error = false
 
-      const scalar = function (
-        v: string | number | RegExp,
+      const resolve = async function (
+        v: string | number | RegExp | CommandArgumentTypeFunction,
         c: string
-      ): { arg: any; rest?: string } {
+      ): Promise<CommandArgumentTypeResolvedResult> {
         if (v instanceof RegExp) {
           const p = Text.improvePattern(v)
           const m = p.exec(c)
@@ -160,6 +167,8 @@ export default class Command {
               rest: c.replace(p, "").trim(),
             }
           }
+        } else if (typeof v === "function") {
+          return v(c, message)
         } else if (c.startsWith(String(v))) {
           return {
             arg: v,
@@ -194,25 +203,20 @@ export default class Command {
             name,
           }
 
-          if (typeof type === "function") {
-            const result = await type(content, message)
-            if (result.arg !== null) {
-              args[name] = result.arg
-              content = result.rest as string
-            }
-          } else if (Array.isArray(type)) {
+          if (Array.isArray(type)) {
             let i = 0
             for (const option of type) {
-              const result = scalar(option, content)
+              const result = await resolve(option, content)
               if (result.arg !== null) {
                 content = result.rest as string
+                args[name] = result.arg
                 args[name + "Index"] = i
                 break
               }
               i++
             }
           } else {
-            const result = scalar(type, content)
+            const result = await resolve(type, content)
             if (result.arg !== null) {
               content = result.rest as string
               args[name] = result.arg

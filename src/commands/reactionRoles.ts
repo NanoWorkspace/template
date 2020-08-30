@@ -5,6 +5,7 @@ import Embed from "../app/Embed"
 import ReactionRoleMessage from "../app/ReactionRoleMessage"
 import Globals from "../app/Globals"
 import Text from "../utils/Text"
+import { type } from "os"
 
 new Command({
   name: "Reaction-Roles Manager",
@@ -53,7 +54,7 @@ new Command({
         type: /[eé]dit/i,
       },
       reactionRoleID: { type: Types.snowflake },
-      text: { type: Types.text },
+      edition: { type: [Types.json, Types.text] },
     },
     {
       list: {
@@ -73,7 +74,7 @@ new Command({
       role,
       edit,
       emoji,
-      text,
+      edition,
       reactionRoleID,
       list,
     },
@@ -147,14 +148,18 @@ new Command({
     } else if (add) {
       await reactionRoleMessage?.add(emoji, role)
     } else if (edit) {
-      if (!text)
+      if (!edition)
         return await message.channel.send(
           Embed.error(
-            "Vous devez entrer le texte qui replacera la description actuelle du message de réaction-role."
+            "Vous devez entrer le texte qui remplacera la description actuelle du message de réaction-role."
           )
         )
 
-      await reactionRoleMessage?.edit(text)
+      try {
+        await reactionRoleMessage?.edit(edition)
+      } catch (error) {
+        return await message.channel.send(Embed.error(error.message))
+      }
     }
     await message.channel.send(Embed.success())
   },

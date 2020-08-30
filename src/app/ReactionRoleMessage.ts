@@ -40,10 +40,16 @@ export default class ReactionRoleMessage {
     return ReactionRoleMessage.keyFromID(this.id)
   }
 
-  async edit(text: string) {
+  async edit(value: string | Discord.MessageEmbedOptions) {
     const message = await this.fetchMessage()
-    const embed = new Discord.MessageEmbed(message.embeds[0].toJSON())
-    embed.setDescription(text)
+    let embed: Discord.MessageEmbed
+    if (typeof value === "string") {
+      embed = new Discord.MessageEmbed(message.embeds[0].toJSON())
+      embed.setDescription(value)
+    } else {
+      embed = new Discord.MessageEmbed(value)
+      embed.setFooter(message.embeds[0].footer?.text)
+    }
     await message.edit(embed)
   }
 

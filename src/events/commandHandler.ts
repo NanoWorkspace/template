@@ -32,6 +32,7 @@ new Event({
       if (message.guild) {
         prefix = Globals.db.get(message.guild.id, "prefix")
       }
+      if (Globals.bot.debug) prefix = Globals.client.user?.id || prefix
       if (message.content.startsWith(basePrefix)) {
         content = message.content.replace(basePrefix, "").trim()
       } else if (message.content.startsWith(prefix)) {
@@ -40,8 +41,6 @@ new Event({
         return
       }
     }
-
-    if (Globals.bot.debug) prefix = Globals.client.user?.id || prefix
 
     // command handler test
     const { command, rest } = Command.resolve(content)
