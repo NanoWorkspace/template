@@ -6,16 +6,23 @@ import ArgumentTypes from "../utils/ArgumentTypes"
 Logger.load("file", __filename)
 
 export interface CommandOptions {
+  /** Help-menu name of command (organic title, not a slug or a camelCase). */
   name: string
+  /** All of the command aliases are inside this regex. */
   pattern: RegExp
+  /** Can be used only by bot owners ? */
   botOwner?: true
+  /** Can be used only by guild owner ? */
   owner?: true
+  /** Can be used only by admins and guild owner ? */
   admin?: true
+  /** Can be used only by moderators, admins and guild owner ? */
   moderator?: true
   permissions?: Discord.PermissionResolvable[]
   botPermissions?: Discord.PermissionResolvable[]
   users?: Discord.UserResolvable[]
   channelType?: "dm" | "guild"
+  /** Set a cooldown in milliseconds for the command. */
   cooldown?: number
   typing?: true
   description?: string
@@ -38,9 +45,9 @@ export interface CommandArgument {
   default?: any
   defaultIndex?: number
   description?: string
-  /** Is displayed on help-menu, use this if real type isn't UX */
+  /** It is displayed on the help-menu, use that if real type isn't good for UX. */
   typeName?: string
-  /** Define if argument is a group identifier */
+  /** Define if argument is a group identifier. */
   index?: boolean
   type: CommandArgumentType
 }

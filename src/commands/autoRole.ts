@@ -16,6 +16,7 @@ new Command({
       type: Types.boolean,
     },
     action: {
+      typeName: "[list,add,remove]",
       type: ["list", "add", /rm|remove|del(?:ete)?/i],
     },
     role: {

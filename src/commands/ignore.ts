@@ -13,9 +13,11 @@ new Command({
     {
       action: {
         defaultIndex: 0,
+        typeName: "[add,remove]",
         type: ["add", /rm|remove/],
       },
       items: {
+        typeName: "...[user,channel]",
         type: Command.types.arrayFrom(
           Command.types.user,
           Command.types.channel

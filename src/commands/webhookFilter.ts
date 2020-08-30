@@ -12,6 +12,7 @@ new Command({
   admin: true,
   args: {
     action: {
+      typeName: "[list,add,remove]",
       type: ["list", "add", /rm|remove|del(?:ete)?/i],
     },
     user: {

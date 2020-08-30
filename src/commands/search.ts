@@ -10,10 +10,11 @@ new Command({
   args: {
     searchEngine: {
       defaultIndex: 0,
+      typeName: "[ggl,yd,wp,ddg,bind,yt,ph]",
       type: [
         /google|ggl?/,
         /yandex|yd/,
-        /wiki(?:p[ée]dia)?|wp/,
+        /wiki(?:p[ée]dia)?|wp|wk/,
         /duckduckgo|ddg/,
         "bing",
         /youtube|yt/,

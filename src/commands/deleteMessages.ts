@@ -10,7 +10,12 @@ new Command({
   cooldown: 5000,
   channelType: "guild",
   permissions: ["MANAGE_MESSAGES"],
-  args: { count: { type: Types.numberBetween(1, 99) } },
+  args: {
+    count: {
+      typeName: "[1...99]",
+      type: Types.numberBetween(1, 99),
+    },
+  },
   call: async ({ message, args: { count } }) => {
     if (!count)
       return await message.channel.send(

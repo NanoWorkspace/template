@@ -46,6 +46,8 @@ new Command({
             return null
           }
 
+          // todo: transform arrayOf function into "...[type,type2,etc]"
+
           function groupToString(group: CommandArgumentGroup) {
             return Object.keys(group)
               .map((name) => {
@@ -99,7 +101,7 @@ new Command({
             "arguments:",
             Array.isArray(command.args)
               ? command.args
-                  .map((group, index) => {
+                  .map((group) => {
                     return Text.code(groupToString(group), "yaml")
                   })
                   .join(" ")
@@ -110,7 +112,13 @@ new Command({
           embed.addField(
             "args docs:",
             Text.code(
-              "- arg: type # normal\n~ arg: type # optional\n~ arg: type = default # with default\n- arg: [type1,type2,type3] # enumerator\n\n",
+              [
+                "- arg: type # normal",
+                "~ arg: type # optional",
+                "~ arg: type = default # with default",
+                "- arg: [type1,type2,type3] # enumerator",
+                "- arg: ...type # list of type",
+              ].join("\n"),
               "yaml"
             )
           )

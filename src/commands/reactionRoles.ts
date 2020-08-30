@@ -28,7 +28,7 @@ new Command({
       remove: {
         index: true,
         description: "Remove RR message or emoji",
-        typeName: "delete or remove",
+        typeName: "[delete,remove]",
         type: /del(?:ete)?|rm|remove/i,
       },
       reactionRoleID: { type: Types.snowflake },
