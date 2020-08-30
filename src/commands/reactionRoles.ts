@@ -4,6 +4,7 @@ import Command from "../app/Command"
 import Embed from "../app/Embed"
 import ReactionRoleMessage from "../app/ReactionRoleMessage"
 import Globals from "../app/Globals"
+import Text from "../utils/Text"
 
 new Command({
   name: "Reaction-Roles Manager",
@@ -54,6 +55,13 @@ new Command({
       reactionRoleID: { type: Types.snowflake },
       text: { type: Types.text },
     },
+    {
+      list: {
+        index: true,
+        description: "List reaction-role messages",
+        type: /list|ls/i,
+      },
+    },
   ],
   async call({
     message,
@@ -67,14 +75,32 @@ new Command({
       emoji,
       text,
       reactionRoleID,
+      list,
     },
   }) {
-    if (!create && !remove && !add && !edit) {
-      return await message.channel.send(
-        Embed.error(
-          "Vous devez renseigner une action parmi les quatre possibles."
-        )
+    if (list) {
+      const reactionRoleMessages = ReactionRoleMessage.getByGuild(
+        message.guild as Discord.Guild
       )
+      const embed = Embed.default().setAuthorName(
+        "Voici une liste des Reaction-Role de ce serveur"
+      )
+      reactionRoleMessages.forEach((rrm) => {
+        embed.addField(
+          `ID: ${rrm.id}`,
+          Text.code(
+            [
+              `Channel name: ${rrm.channel.name}`,
+              `Channel ID: ${rrm.channel.id}`,
+              `Message ID: ${rrm.options.messageID}`,
+              `Reaction roles: ${rrm.reactionRoles.length}`,
+            ].join("\n"),
+            "yaml"
+          ),
+          true
+        )
+      })
+      return await message.channel.send(embed)
     }
 
     let reactionRoleMessage: ReactionRoleMessage | null = null

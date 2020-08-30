@@ -90,7 +90,7 @@ export default class ReactionRoleMessage {
     Globals.db.set(guild.id, options, ReactionRoleMessage.keyFromID(options.id))
   }
 
-  static collection(
+  static getByGuild(
     guild: Discord.Guild
   ): Discord.Collection<Discord.Snowflake, ReactionRoleMessage> {
     const data = Globals.db.get(guild.id, "reactionRoleMessages")
@@ -108,7 +108,7 @@ export default class ReactionRoleMessage {
     message: Discord.Message
   ): ReactionRoleMessage | undefined {
     if (!message.guild) return undefined
-    return this.collection(message.guild).find((rrm) => {
+    return this.getByGuild(message.guild).find((rrm) => {
       return rrm.options.messageID === message.id
     })
   }
@@ -117,7 +117,7 @@ export default class ReactionRoleMessage {
     guild: Discord.Guild,
     messageReaction: Discord.MessageReaction
   ): Promise<Discord.Role | null> {
-    const reactionRoleMessages = ReactionRoleMessage.collection(guild)
+    const reactionRoleMessages = ReactionRoleMessage.getByGuild(guild)
     for (const reactionRoleMessage of reactionRoleMessages.array()) {
       const message = await reactionRoleMessage.fetchMessage(false)
       if (message.id === messageReaction.message.id) {
