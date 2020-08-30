@@ -10,6 +10,10 @@ abstract class Logger {
     console.log("")
   }
 
+  static log(title: string, ...values: any[]) {
+    console.log(chalk.green(title), ...values)
+  }
+
   static load(type: string, ...args: any[]) {
     console.log(
       chalk.green("load"),

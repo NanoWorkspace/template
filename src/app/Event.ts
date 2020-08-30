@@ -4,10 +4,13 @@ import client from "../globals/client"
 
 Logger.load("file", __filename)
 
-export type EventName = keyof Discord.ClientEvents | "nanoReady"
-export type EventParams<K extends EventName> = (Discord.ClientEvents & {
+export type EventName = keyof CustomEvents
+export type EventParams<K extends EventName> = CustomEvents[K]
+
+export interface CustomEvents extends Discord.ClientEvents {
   nanoReady: []
-})[K]
+  webhookFilter: [Discord.Message, string]
+}
 
 export interface EventOptions<K extends EventName> {
   caller: "on" | "once"

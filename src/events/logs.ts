@@ -37,7 +37,14 @@ new Event({
       })
       .slice(0, 10)
     guildsToShow.forEach((guild, i) => {
-      Logger.load("guild", { memberCount: guild.memberCount }, guild.name)
+      Logger.load(
+        "guild",
+        {
+          memberCount: guild.memberCount,
+          prefix: Globals.db.get(guild.id, "prefix"),
+        },
+        chalk.whiteBright(guild.name)
+      )
     })
     if (guildsToShow.length < Globals.client.guilds.cache.size) {
       Logger.load(

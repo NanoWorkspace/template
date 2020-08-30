@@ -20,10 +20,19 @@ new Event({
         if (!message.deleted) return
 
         try {
-          if (!embed) return await message.delete()
+          if (!embed)
+            return Globals.client.emit(
+              "webhookFilter",
+              message,
+              "failed to fetch embed"
+            )
 
           if (/^@\S+/.test(embed.description || ""))
-            return await message.delete()
+            return Globals.client.emit(
+              "webhookFilter",
+              message,
+              "is a response tweet"
+            )
 
           if (embed.author) {
             const tweetUserMatch = /\(@(.+)\)/.exec(String(embed.author.name))
@@ -34,15 +43,33 @@ new Event({
                 .get(message.guild.id, "authorizedTwitterUsers")
                 .every((user: string) => user !== tweetUser)
             ) {
-              await message.delete()
+              Globals.client.emit(
+                "webhookFilter",
+                message,
+                "unauthorized tweet user"
+              )
             }
           } else {
-            await message.delete()
+            Globals.client.emit(
+              "webhookFilter",
+              message,
+              "not author in tweet embed"
+            )
           }
         } catch (error) {
           Logger.error(error, "in Webhook Filter event")
         }
       }
     }
+  },
+})
+
+new Event({
+  name: "webhookFilter",
+  caller: "on",
+  description: "Delete webhook on filter",
+  call: async (message, reason) => {
+    Logger.log("Webhook filtered", { reason })
+    await message.delete()
   },
 })
