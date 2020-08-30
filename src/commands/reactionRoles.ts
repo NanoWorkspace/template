@@ -5,7 +5,6 @@ import Embed from "../app/Embed"
 import ReactionRoleMessage from "../app/ReactionRoleMessage"
 import Globals from "../app/Globals"
 import Text from "../utils/Text"
-import { type } from "os"
 
 new Command({
   name: "Reaction-Roles Manager",
@@ -83,24 +82,28 @@ new Command({
       const reactionRoleMessages = ReactionRoleMessage.getByGuild(
         message.guild as Discord.Guild
       )
-      const embed = Embed.default().setAuthorName(
-        "Voici une liste des Reaction-Role de ce serveur"
-      )
-      reactionRoleMessages.forEach((rrm) => {
-        embed.addField(
-          `ID: ${rrm.id}`,
-          Text.code(
-            [
-              `Channel name: ${rrm.channel.name}`,
-              `Channel ID: ${rrm.channel.id}`,
-              `Message ID: ${rrm.options.messageID}`,
-              `Reaction roles: ${rrm.reactionRoles.length}`,
-            ].join("\n"),
-            "yaml"
-          ),
-          true
-        )
-      })
+      const embed = Embed.default(
+        `Voici une liste des 10 plus récents Reaction-Role messages de ce serveur (sur ${reactionRoleMessages.size})`
+      ).setAuthorName("Reaction-Role Manager - List")
+      reactionRoleMessages
+        .array()
+        .reverse()
+        .slice(0, 10)
+        .forEach((rrm) => {
+          embed.addField(
+            `ID: ${rrm.id}`,
+            Text.code(
+              [
+                `Channel name: ${rrm.channel.name}`,
+                `Channel ID: ${rrm.channel.id}`,
+                `Message ID: ${rrm.options.messageID}`,
+                `Reaction roles: ${rrm.reactionRoles.length}`,
+              ].join("\n"),
+              "yaml"
+            ),
+            false
+          )
+        })
       return await message.channel.send(embed)
     }
 

@@ -38,6 +38,7 @@ export interface CommandArgument {
   default?: any
   defaultIndex?: number
   description?: string
+  typeName?: string
   index?: boolean
   type: CommandArgumentType
 }

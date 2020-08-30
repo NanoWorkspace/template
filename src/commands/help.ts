@@ -37,42 +37,58 @@ new Command({
           )
 
         if (command.args) {
+          function getKeyOf(value: any, object: any): string | null {
+            for (const key in object) {
+              if (object[key] === value) {
+                return key
+              }
+            }
+            return null
+          }
+
           function groupToString(group: CommandArgumentGroup) {
-            return (
-              "- " +
-              Object.keys(group)
-                .map((name) => {
-                  const arg = group[name]
-                  const hooks: boolean =
-                    arg.optional ||
-                    arg.default !== undefined ||
-                    arg.defaultIndex !== undefined
-                  return `${hooks ? "[" : ""}${name}${
-                    arg.default !== undefined ? `: ${arg.default}` : ""
-                  }${
-                    arg.defaultIndex !== undefined
-                      ? // @ts-ignore
-                        `: ${arg.type[arg.defaultIndex]}`
-                      : ""
-                  }${hooks ? "]" : ""}`
-                })
-                .join(" ")
-            )
+            return Object.keys(group)
+              .map((name) => {
+                const arg = group[name]
+                const hooks: boolean =
+                  arg.optional ||
+                  arg.default !== undefined ||
+                  arg.defaultIndex !== undefined
+                return `- ${hooks ? "[" : ""}${name}: ${
+                  arg.typeName ||
+                  (typeof arg.type === "function"
+                    ? getKeyOf(arg.type, Types) || "?"
+                    : Array.isArray(arg.type)
+                    ? "enum"
+                    : arg.type instanceof RegExp
+                    ? `/${arg.type.source}/`
+                    : String(arg.type))
+                }${arg.default !== undefined ? `=${arg.default}` : ""}${
+                  arg.defaultIndex !== undefined
+                    ? // @ts-ignore
+                      `=${arg.type[arg.defaultIndex]}`
+                    : ""
+                }${hooks ? "]" : ""}${
+                  arg.description ? ` # ${arg.description}` : ""
+                }`
+              })
+              .join("\n")
           }
 
           embed.addField(
             "arguments:",
             Text.code(
-              "# required [optional] [optional: defaultValue]\n" +
-                (Array.isArray(command.args)
-                  ? command.args
-                      .map((group, index) => {
-                        return groupToString(group)
-                      })
-                      .join("\n")
-                  : groupToString(command.args)),
+              "# arg: type\n# [optional: type]\n# [optional: type=defaultValue]\n\n",
               "yaml"
-            ),
+            ) +
+              " " +
+              (Array.isArray(command.args)
+                ? command.args
+                    .map((group, index) => {
+                      return Text.code(groupToString(group), "yaml")
+                    })
+                    .join(" ")
+                : (Text.code(groupToString(command.args)), "yaml")),
             false
           )
         }

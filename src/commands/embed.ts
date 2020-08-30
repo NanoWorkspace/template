@@ -11,6 +11,7 @@ new Command({
   args: [
     {
       embedOptions: {
+        description: "Example: https://leovoel.github.io/embed-visualizer/",
         type: Types.json,
       },
     },
