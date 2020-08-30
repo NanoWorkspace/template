@@ -94,8 +94,6 @@ new Event({
       )
     }
 
-    // todo: check bot permissions
-
     // check filters
     if (message.guild) {
       if (command.channelType === "dm")
@@ -125,10 +123,28 @@ new Event({
         )
           return message.channel.send(
             Embed.error(
-              "Vous n'avez pas les permissions pour utiliser cette commande."
+              "Vous n'avez pas les permissions nécessaires à l'utilisation cette commande."
             ).addField(
               "Permissions requises:",
               Text.code(command.permissions.join("\n"))
+            )
+          )
+      }
+      if (command.botPermissions) {
+        if (
+          command.botPermissions.some((permission) => {
+            return !message.guild?.me?.hasPermission(permission, {
+              checkAdmin: true,
+              checkOwner: true,
+            })
+          })
+        )
+          return message.channel.send(
+            Embed.error(
+              "Je n'ai pas les permissions nécessaires à l'utilisation cette commande."
+            ).addField(
+              "Permissions requises:",
+              Text.code(command.botPermissions.join("\n"))
             )
           )
       }

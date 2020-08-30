@@ -113,6 +113,9 @@ export default class Command {
   get permissions() {
     return this.options.permissions
   }
+  get botPermissions() {
+    return this.options.botPermissions
+  }
   get users() {
     return this.options.users
   }
