@@ -51,22 +51,22 @@ new Event({
     } catch (error) {
       const status = JSON.parse(error.message) as GroupStatus[]
       const indexed = status.find((s) => s.validatedIndex)
+
+      const groupStatusErrorToYAML = (group: GroupStatus) => {
+        return group.argumentStatus
+          .map((argumentStatus) => {
+            return `${argumentStatus.name}: ${argumentStatus.status}${
+              argumentStatus.description
+                ? " # " + argumentStatus.description
+                : ""
+            }`
+          })
+          .join("\n")
+      }
+
       if (indexed) {
         return await message.channel.send(
-          Embed.error(
-            Text.code(
-              indexed.argumentStatus
-                .map((argumentStatus) => {
-                  return `${argumentStatus.name}: ${argumentStatus.status}${
-                    argumentStatus.description
-                      ? " # " + argumentStatus.description
-                      : ""
-                  }`
-                })
-                .join("\n"),
-              "yaml"
-            )
-          )
+          Embed.error(Text.code(groupStatusErrorToYAML(indexed), "yaml"))
             .setAuthorName("Un ou plusieurs arguments sont manquants")
             .setFooter(
               `Please type "${prefix}help ${content
@@ -79,14 +79,7 @@ new Event({
         Embed.error(
           status
             .map((groupStatus) => {
-              return Text.code(
-                groupStatus.argumentStatus
-                  .map((argumentStatus) => {
-                    return `${argumentStatus.name}: ${argumentStatus.status}`
-                  })
-                  .join("\n"),
-                "yaml"
-              )
+              return Text.code(groupStatusErrorToYAML(groupStatus), "yaml")
             })
             .join(" ")
         )

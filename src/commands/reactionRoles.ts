@@ -15,7 +15,7 @@ new Command({
     {
       create: {
         index: true,
-        description: "Create reaction-role message",
+        description: "New reaction-role message",
         type: /create|new|make/i,
       },
       channel: {
@@ -26,6 +26,7 @@ new Command({
     {
       remove: {
         index: true,
+        description: "Remove RR message or emoji",
         type: /del(?:ete)?|rm|remove/i,
       },
       reactionRoleID: { type: Types.snowflake },
@@ -37,7 +38,7 @@ new Command({
     {
       add: {
         index: true,
-        description: "Add reaction to reaction-rôle message",
+        description: "New reaction-role emoji",
         type: /add|react/i,
       },
       reactionRoleID: { type: Types.snowflake },
@@ -47,7 +48,7 @@ new Command({
     {
       edit: {
         index: true,
-        description: "Edit content of reaction-rôle message",
+        description: "Edit reaction-role message",
         type: /[eé]dit/i,
       },
       reactionRoleID: { type: Types.snowflake },
