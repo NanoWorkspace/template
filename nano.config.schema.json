@@ -93,6 +93,10 @@
       "description": "The base prefix of your bot.",
       "type": "string"
     },
+    "debug": {
+      "description": "Run as debug mode for development.",
+      "type": "boolean"
+    },
     "token": {
       "description": "The Discord API token of your bot.",
       "type": "string"

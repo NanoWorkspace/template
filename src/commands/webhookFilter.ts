@@ -22,7 +22,7 @@ new Command({
   call: async ({ message, args: { actionIndex, user } }) => {
     if (!message.guild) return
 
-    if (!user && actionIndex === 0) {
+    if (!user && actionIndex !== 0) {
       await message.channel.send(
         Embed.error("Vous devez entrer un num d'utilisateur Twitter.")
       )

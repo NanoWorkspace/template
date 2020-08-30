@@ -177,6 +177,8 @@ export default class Command {
         error = false
 
         for (const name in group) {
+          if (!group.hasOwnProperty(name)) break
+
           const {
             type,
             default: _default,
@@ -187,15 +189,17 @@ export default class Command {
           } = group[name]
 
           const argumentStatus: CommandArgumentStatus = {
-            name,
             status: "given",
             description,
+            name,
           }
 
           if (typeof type === "function") {
-            const { arg, rest } = await type(content, message)
-            args[name] = arg
-            content = rest === undefined ? content : rest
+            const result = await type(content, message)
+            if (result.arg !== null) {
+              args[name] = result.arg
+              content = result.rest as string
+            }
           } else if (Array.isArray(type)) {
             let i = 0
             for (const option of type) {
@@ -215,7 +219,7 @@ export default class Command {
             }
           }
 
-          if (args[name] === null || args[name] === undefined) {
+          if (args[name] === undefined && args[name + "Index"] === undefined) {
             if (_default !== undefined) {
               args[name] = _default
               argumentStatus.status = "default value"

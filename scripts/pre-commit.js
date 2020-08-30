@@ -3,8 +3,20 @@ const path = require("path")
 const chalk = require("chalk")
 
 const PACKAGE = require("../package.json")
+const NANO_CONFIG = require("../nano.config.json")
 const ROOT = path.join(__dirname, "..")
 const PROMISES = []
+
+async function updateNanoConfig() {
+  if (NANO_CONFIG.debug) {
+    NANO_CONFIG.debug = false
+    await fs.writeFile(
+      path.join(ROOT, "nano.config.json"),
+      JSON.stringify(NANO_CONFIG)
+    )
+    console.log(chalk.blueBright("UPDATED"), "nano.config.json")
+  }
+}
 
 async function updatePackage() {
   {
@@ -47,7 +59,7 @@ async function updateReadme() {
   console.log(chalk.blueBright("UPDATED"), "readme.md")
 }
 
-PROMISES.push(updatePackage(), updateReadme())
+PROMISES.push(updateNanoConfig(), updatePackage(), updateReadme())
 
 Promise.all(PROMISES)
   .then(() => {

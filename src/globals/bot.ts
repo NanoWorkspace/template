@@ -7,6 +7,7 @@ Logger.load("file", __filename)
 export interface NanoConfig {
   prefix: string
   token?: string
+  debug?: boolean
   clientOptions?: Discord.ClientOptions
   embedTemplates?: EmbedTemplates
 }

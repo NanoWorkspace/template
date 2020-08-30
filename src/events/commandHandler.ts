@@ -41,6 +41,8 @@ new Event({
       }
     }
 
+    if (Globals.bot.debug) prefix = Globals.client.user?.id || prefix
+
     // command handler test
     const { command, rest } = Command.resolve(content)
     if (!command) return
