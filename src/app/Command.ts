@@ -37,6 +37,8 @@ export interface CommandArgument {
   optional?: true
   default?: any
   defaultIndex?: number
+  description?: string
+  index?: boolean
   type: CommandArgumentType
 }
 
@@ -50,6 +52,19 @@ export type CommandArgumentType =
   | RegExp
   | (string | number | RegExp)[]
   | Array<string | number | RegExp>
+
+export interface GroupStatus {
+  index?: CommandArgument
+  validatedIndex?: boolean
+  argumentStatus: CommandArgumentStatus[]
+  aborted?: boolean
+}
+
+export interface CommandArgumentStatus {
+  name: string
+  status: string
+  description?: string
+}
 
 export default class Command {
   /** Contains timestamps of last commands usage for each user */
@@ -129,7 +144,7 @@ export default class Command {
         groups = [this.args]
       }
 
-      const errorMessages: string[][] = []
+      const status: GroupStatus[] = []
       let error = false
 
       const scalar = function (
@@ -155,14 +170,27 @@ export default class Command {
       }
 
       for (const group of groups) {
-        const groupErrorMessage: string[] = []
+        const groupStatus: GroupStatus = {
+          argumentStatus: [],
+        }
         const groupIndex = groups.indexOf(group)
         error = false
 
         for (const name in group) {
-          const { type, default: _default, defaultIndex, optional } = group[
-            name
-          ]
+          const {
+            type,
+            default: _default,
+            defaultIndex,
+            optional,
+            index: argIsIndex,
+            description,
+          } = group[name]
+
+          const argumentStatus: CommandArgumentStatus = {
+            name,
+            status: "given",
+            description,
+          }
 
           if (typeof type === "function") {
             const { arg, rest } = await type(content, message)
@@ -190,14 +218,23 @@ export default class Command {
           if (args[name] === null || args[name] === undefined) {
             if (_default !== undefined) {
               args[name] = _default
+              argumentStatus.status = "default value"
             } else if (defaultIndex !== undefined) {
               args[name + "Index"] = defaultIndex
+              argumentStatus.status = "default index"
             } else if (optional) {
               args[name] = null
+              argumentStatus.status = "optional"
             } else {
               error = true
-              groupErrorMessage.push(name)
+              argumentStatus.status = "missing"
             }
+          }
+
+          groupStatus.argumentStatus.push(argumentStatus)
+
+          if (!error && argIsIndex) {
+            groupStatus.validatedIndex = true
           }
 
           // if error, clean args and break
@@ -205,19 +242,19 @@ export default class Command {
             if (groupIndex < groups.length - 1) {
               args = {}
               content = baseContent
-              groupErrorMessage.push("# aborted")
+              groupStatus.aborted = true
               break
             } else {
               // last group
             }
           }
         }
-        errorMessages.push(groupErrorMessage)
+        status.push(groupStatus)
 
         // if last group is good, break
         if (!error) break
       }
-      if (error) throw new Error(JSON.stringify(errorMessages))
+      if (error) throw new Error(JSON.stringify(status))
     }
     return args
   }

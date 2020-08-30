@@ -13,14 +13,21 @@ new Command({
   channelType: "guild",
   args: [
     {
-      create: { type: /create|new|make/i },
+      create: {
+        index: true,
+        description: "Create reaction-role message",
+        type: /create|new|make/i,
+      },
       channel: {
         optional: true,
         type: Types.channel,
       },
     },
     {
-      remove: { type: /del(?:ete)?|rm|remove/i },
+      remove: {
+        index: true,
+        type: /del(?:ete)?|rm|remove/i,
+      },
       reactionRoleID: { type: Types.snowflake },
       emoji: {
         optional: true,
@@ -28,13 +35,21 @@ new Command({
       },
     },
     {
-      add: { type: /add|react/i },
+      add: {
+        index: true,
+        description: "Add reaction to reaction-rôle message",
+        type: /add|react/i,
+      },
       reactionRoleID: { type: Types.snowflake },
       role: { type: Types.role },
       emoji: { type: Types.emoji },
     },
     {
-      edit: { type: /[eé]dit/i },
+      edit: {
+        index: true,
+        description: "Edit content of reaction-rôle message",
+        type: /[eé]dit/i,
+      },
       reactionRoleID: { type: Types.snowflake },
       text: { type: Types.text },
     },

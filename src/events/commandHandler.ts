@@ -1,7 +1,7 @@
 import Globals from "../app/Globals"
 import Text from "../utils/Text"
 import Embed from "../app/Embed"
-import Command from "../app/Command"
+import Command, { GroupStatus } from "../app/Command"
 import Event from "../app/Event"
 import Logger from "../app/Logger"
 
@@ -49,19 +49,48 @@ new Event({
     try {
       args = await command.parseArgs(message, rest || "")
     } catch (error) {
-      const errorMessages = JSON.parse(error.message) as string[][]
+      const status = JSON.parse(error.message) as GroupStatus[]
+      const indexed = status.find((s) => s.validatedIndex)
+      if (indexed) {
+        return await message.channel.send(
+          Embed.error(
+            Text.code(
+              indexed.argumentStatus
+                .map((argumentStatus) => {
+                  return `${argumentStatus.name}: ${argumentStatus.status}${
+                    argumentStatus.description
+                      ? " # " + argumentStatus.description
+                      : ""
+                  }`
+                })
+                .join("\n"),
+              "yaml"
+            )
+          )
+            .setAuthorName("Un ou plusieurs arguments sont manquants")
+            .setFooter(
+              `Please type "${prefix}help ${content
+                .replace(rest as string, "")
+                .trim()}" for usage detail.`
+            )
+        )
+      }
       return await message.channel.send(
         Embed.error(
-          Text.code(
-            "MISSING ARGUMENTS:\n" +
-              errorMessages.map((group) => `- ${group.join(" ")}`).join("\n"),
-            "yaml"
-          )
+          status
+            .map((groupStatus) => {
+              return Text.code(
+                groupStatus.argumentStatus
+                  .map((argumentStatus) => {
+                    return `${argumentStatus.name}: ${argumentStatus.status}`
+                  })
+                  .join("\n"),
+                "yaml"
+              )
+            })
+            .join(" ")
         )
-          .setAuthor(
-            `Command Argument Error (${command.name})`,
-            Globals.client.user?.displayAvatarURL()
-          )
+          .setAuthorName("Un ou plusieurs arguments sont manquants")
           .setFooter(
             `Please type "${prefix}help ${content
               .replace(rest as string, "")

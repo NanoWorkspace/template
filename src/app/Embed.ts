@@ -33,7 +33,15 @@ class Embed extends Discord.MessageEmbed {
     this.setTemplate("default", description)
   }
 
-  setTemplate(templateName: string, description?: string): Embed {
+  setAuthorName(name: Discord.StringResolvable): this {
+    return super.setAuthor(name, this.author?.iconURL, this.author?.url)
+  }
+
+  setFooterText(text: Discord.StringResolvable): this {
+    return super.setFooter(text, this.footer?.iconURL)
+  }
+
+  setTemplate(templateName: string, description?: string): this {
     const template = Embed.templates[templateName.toLowerCase()]
 
     if (template) {

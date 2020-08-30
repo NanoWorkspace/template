@@ -14,7 +14,10 @@ new Command({
     action: {
       type: ["list", "add", /rm|remove|del(?:ete)?/i],
     },
-    user: { type: Types.rest },
+    user: {
+      optional: true,
+      type: Types.rest,
+    },
   },
   call: async ({ message, args: { actionIndex, user } }) => {
     if (!message.guild) return
