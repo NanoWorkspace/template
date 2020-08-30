@@ -11,6 +11,7 @@ new Event({
   caller: "on",
   call: async (message) => {
     if (
+      !Globals.custom.databaseReady ||
       message.system ||
       !message.author ||
       message.author.bot ||

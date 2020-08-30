@@ -9,6 +9,8 @@ new Event({
     Globals.client.guilds.cache.forEach((guild) => {
       Globals.db.ensureGuild(guild)
     })
+    Globals.custom.databaseReady = true
+    Globals.client.emit("databaseReady")
   },
 })
 

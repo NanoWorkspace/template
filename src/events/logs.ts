@@ -5,7 +5,7 @@ import Event from "../app/Event"
 import Command from "../app/Command"
 
 new Event({
-  name: "nanoReady",
+  name: "databaseReady",
   caller: "once",
   description: "Log globals info on nano is ready",
   call: () => {
