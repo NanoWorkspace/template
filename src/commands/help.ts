@@ -103,7 +103,7 @@ new Command({
                     return Text.code(groupToString(group), "yaml")
                   })
                   .join(" ")
-              : (Text.code(groupToString(command.args)), "yaml"),
+              : Text.code(groupToString(command.args), "yaml"),
             false
           )
 
