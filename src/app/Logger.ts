@@ -1,13 +1,37 @@
 import chalk from "chalk"
-import Discord from "discord.js"
 
 // todo: allow custom template for logs
 
-const bot = require("../../nano.config.json")
+const config = require("../../nano.config.json")
 
 abstract class Logger {
   static space() {
     console.log("")
+  }
+
+  static auto(...values: any[]) {
+    console.log(
+      ...values.map((value, index, src) => {
+        if (typeof value === "string") {
+          if (index === 0) {
+            if (value.includes("Error")) {
+              return chalk.blackBright.bgRed.bold(" " + value + " ")
+            } else {
+              return chalk.green(value)
+            }
+          } else if (index === 1 && src[0].includes("Error")) {
+            return chalk.redBright(value)
+          } else if (index === src.length - 1 || /\.$/.test(value)) {
+            return chalk.grey(value)
+          } else if (/^[A-Z]+$/.test(value)) {
+            return chalk.cyanBright(value)
+          } else if (/^[a-z]{,5}$/.test(value)) {
+            return chalk.yellowBright(value)
+          }
+        }
+        return value
+      })
+    )
   }
 
   static log(title: string, ...values: any[]) {
@@ -35,26 +59,9 @@ abstract class Logger {
     console.log(
       chalk.green("ready"),
       "Try me with the",
-      chalk.magentaBright(`${bot.prefix}help`),
+      chalk.magentaBright(`${config.prefix}help`),
       "command!"
     )
-  }
-
-  static mod(guild: Discord.Guild, ...values: (number | string)[]) {
-    console.log(chalk.cyanBright("log"), values[0], ...values.map(chalk.gray))
-    require("../globals/db")
-      .getGuild(guild)
-      .then(({ logChannel }: any) => {
-        if (logChannel instanceof Discord.TextChannel) {
-          logChannel
-            .send(
-              require("./Embed")
-                .log(values.slice(1).join("\n"))
-                .setTitle(String(values[0]))
-            )
-            .catch(this.error)
-        }
-      })
   }
 }
 

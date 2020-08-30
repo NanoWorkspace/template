@@ -7,7 +7,7 @@ import Command from "../app/Command"
 new Event({
   name: "databaseReady",
   caller: "once",
-  description: "Log globals info on nano is ready",
+  description: "Log globals info on database is ready",
   call: () => {
     // events
     Logger.space()
