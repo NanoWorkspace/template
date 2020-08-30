@@ -15,6 +15,10 @@ export interface EmbedTemplates {
 class Embed extends Discord.MessageEmbed {
   static templates = bot.embedTemplates || ({} as EmbedTemplates)
 
+  // static byMessageEmbed(embed: Discord.MessageEmbed): Embed {
+  //
+  // }
+
   static log(description?: string) {
     return new Embed().setTemplate("log", description)
   }

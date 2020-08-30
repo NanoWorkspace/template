@@ -1,7 +1,9 @@
+import Discord from "discord.js"
 import Globals from "../app/Globals"
 import Time from "../utils/Time"
 import Event from "../app/Event"
 import Logger from "../app/Logger"
+import Embed from "../app/Embed"
 
 new Event({
   name: "message",
@@ -13,51 +15,70 @@ new Event({
       // waiting embed loading
       await Time.wait(10000)
 
+      let newEmbeds: Discord.MessageEmbed[] = []
+
       // twitter
       if (/^https?:\/\/twitter\.com/.test(message.content)) {
-        const embed = message.embeds[0]
+        const embeds = message.embeds
 
         if (!message.deleted) return
 
-        try {
-          if (!embed)
-            return Globals.client.emit(
-              "webhookFilter",
-              message,
-              "failed to fetch embed"
-            )
-
-          if (/^@\S+/.test(embed.description || ""))
-            return Globals.client.emit(
-              "webhookFilter",
-              message,
-              "is a response tweet"
-            )
-
-          if (embed.author) {
-            const tweetUserMatch = /\(@(.+)\)/.exec(String(embed.author.name))
-            const tweetUser = tweetUserMatch ? tweetUserMatch[1] : null
-            if (
-              !tweetUser ||
-              Globals.db
-                .get(message.guild.id, "authorizedTwitterUsers")
-                .every((user: string) => user !== tweetUser)
-            ) {
+        for (const embed of embeds) {
+          try {
+            if (!embed) {
               Globals.client.emit(
                 "webhookFilter",
                 message,
-                "unauthorized tweet user"
+                "failed to fetch embed"
               )
+              break
             }
-          } else {
-            Globals.client.emit(
-              "webhookFilter",
-              message,
-              "not author in tweet embed"
-            )
+
+            if (/^@\S+/.test(embed.description || "")) {
+              Globals.client.emit(
+                "webhookFilter",
+                message,
+                "is a response tweet"
+              )
+              break
+            }
+
+            if (embed.author) {
+              const tweetUserMatch = /\(@(.+)\)/.exec(String(embed.author.name))
+              const tweetUser = tweetUserMatch ? tweetUserMatch[1] : null
+              if (
+                !tweetUser ||
+                Globals.db
+                  .get(message.guild.id, "authorizedTwitterUsers")
+                  .every((user: string) => user !== tweetUser)
+              ) {
+                Globals.client.emit(
+                  "webhookFilter",
+                  message,
+                  "unauthorized tweet user"
+                )
+                break
+              }
+            } else {
+              Globals.client.emit(
+                "webhookFilter",
+                message,
+                "not author in tweet embed"
+              )
+              break
+            }
+
+            newEmbeds.push(embed)
+          } catch (error) {
+            Logger.error(error, "in Webhook Filter event")
           }
-        } catch (error) {
-          Logger.error(error, "in Webhook Filter event")
+        }
+
+        if (embeds.length < newEmbeds.length) {
+          await message.delete()
+          for (const embed of newEmbeds) {
+            await message.channel.send(new Discord.MessageEmbed(embed))
+          }
         }
       }
     }
@@ -68,8 +89,7 @@ new Event({
   name: "webhookFilter",
   caller: "on",
   description: "Delete webhook on filter",
-  call: async (message, reason) => {
+  call: (message, reason) => {
     Logger.log("Webhook filtered", { reason })
-    await message.delete()
   },
 })
