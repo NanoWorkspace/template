@@ -50,26 +50,46 @@ new Command({
             return Object.keys(group)
               .map((name) => {
                 const arg = group[name]
-                const hooks: boolean =
+                const isOptional: boolean =
                   arg.optional ||
                   arg.default !== undefined ||
                   arg.defaultIndex !== undefined
-                return `- ${hooks ? "[" : ""}${name}: ${
+                return `${
+                  arg.index
+                    ? arg.description
+                      ? `# ${arg.description}\n`
+                      : ""
+                    : ""
+                }${isOptional ? "~" : "-"} ${name}: ${
                   arg.typeName ||
                   (typeof arg.type === "function"
                     ? getKeyOf(arg.type, Types) || "?"
                     : Array.isArray(arg.type)
-                    ? "enum"
+                    ? "[" +
+                      arg.type
+                        .map((t) => {
+                          return typeof t === "string" || typeof t === "number"
+                            ? String(t)
+                            : typeof t === "function"
+                            ? getKeyOf(t, Types)
+                            : t.source || "?"
+                        })
+                        .join(",") +
+                      "]"
                     : arg.type instanceof RegExp
                     ? `/${arg.type.source}/`
                     : String(arg.type))
-                }${arg.default !== undefined ? `=${arg.default}` : ""}${
+                }${arg.default !== undefined ? ` = ${arg.default}` : ""}${
                   arg.defaultIndex !== undefined
                     ? // @ts-ignore
-                      `=${arg.type[arg.defaultIndex]}`
+                      ` = ${arg.type[arg.defaultIndex]}`
                     : ""
-                }${hooks ? "]" : ""}${
-                  arg.description ? ` # ${arg.description}` : ""
+                }${
+                  arg.index
+                    ? ""
+                    : arg.description
+                    ? ` # ${arg.description}`
+                    : ""
                 }`
               })
               .join("\n")
@@ -77,19 +97,22 @@ new Command({
 
           embed.addField(
             "arguments:",
-            Text.code(
-              "# arg: type\n# [optional: type]\n# [optional: type=defaultValue]\n\n",
-              "yaml"
-            ) +
-              " " +
-              (Array.isArray(command.args)
-                ? command.args
-                    .map((group, index) => {
-                      return Text.code(groupToString(group), "yaml")
-                    })
-                    .join(" ")
-                : (Text.code(groupToString(command.args)), "yaml")),
+            Array.isArray(command.args)
+              ? command.args
+                  .map((group, index) => {
+                    return Text.code(groupToString(group), "yaml")
+                  })
+                  .join(" ")
+              : (Text.code(groupToString(command.args)), "yaml"),
             false
+          )
+
+          embed.addField(
+            "args docs:",
+            Text.code(
+              "- arg: type # normal\n~ arg: type # optional\n~ arg: type = default # with default\n- arg: [type1,type2,type3] # enumerator\n\n",
+              "yaml"
+            )
           )
         }
         if (command.examples)
@@ -101,6 +124,12 @@ new Command({
           embed.addField(
             "permissions:",
             Text.code(command.permissions.join("\n")),
+            true
+          )
+        if (command.botPermissions)
+          embed.addField(
+            "bot permissions:",
+            Text.code(command.botPermissions.join("\n")),
             true
           )
         if (command.users)

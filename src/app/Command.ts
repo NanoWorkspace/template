@@ -38,7 +38,9 @@ export interface CommandArgument {
   default?: any
   defaultIndex?: number
   description?: string
+  /** Is displayed on help-menu, use this if real type isn't UX */
   typeName?: string
+  /** Define if argument is a group identifier */
   index?: boolean
   type: CommandArgumentType
 }
