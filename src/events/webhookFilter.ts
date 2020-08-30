@@ -1,6 +1,7 @@
 import Globals from "../app/Globals"
 import Time from "../utils/Time"
 import Event from "../app/Event"
+import Logger from "../app/Logger"
 
 new Event({
   name: "message",
@@ -10,18 +11,21 @@ new Event({
     // webhook filter
     if (message.webhookID && message.guild) {
       // waiting embed loading
-      await Time.wait(5000)
+      await Time.wait(10000)
 
       // twitter
-      if (message.content.startsWith("http://twitter.com")) {
+      if (/^https?:\/\/twitter\.com/.test(message.content)) {
         const embed = message.embeds[0]
 
         if (!message.deleted) return
 
         try {
-          if (!embed || /^@\S+/.test(embed.description || "")) {
-            await message.delete()
-          } else if (embed.author) {
+          if (!embed) return await message.delete()
+
+          if (/^@\S+/.test(embed.description || ""))
+            return await message.delete()
+
+          if (embed.author) {
             const tweetUserMatch = /\(@(.+)\)/.exec(String(embed.author.name))
             const tweetUser = tweetUserMatch ? tweetUserMatch[1] : null
             if (
@@ -35,7 +39,9 @@ new Event({
           } else {
             await message.delete()
           }
-        } catch (error) {}
+        } catch (error) {
+          Logger.error(error, "in Webhook Filter event")
+        }
       }
     }
   },

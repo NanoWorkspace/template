@@ -27,10 +27,13 @@ new Event({
         content = message.content.replace(prefix, "").trim()
       }
     } else {
+      let basePrefix = Globals.bot.prefix
       if (message.guild) {
         prefix = Globals.db.get(message.guild.id, "prefix")
       }
-      if (message.content.startsWith(prefix)) {
+      if (message.content.startsWith(basePrefix)) {
+        content = message.content.replace(basePrefix, "").trim()
+      } else if (message.content.startsWith(prefix)) {
         content = message.content.replace(prefix, "").trim()
       } else {
         return
