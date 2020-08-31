@@ -13,6 +13,7 @@ export default class Paginator extends Events.EventEmitter {
   static paginations: Paginator[] = []
 
   private pageIndex = 0
+  private deactivation: NodeJS.Timeout
   messageID: string | undefined
   emojis: PaginatorEmojis = {
     previous: "◀️",
@@ -41,6 +42,7 @@ export default class Paginator extends Events.EventEmitter {
     if (customEmojis) {
       Object.assign(this.emojis, customEmojis)
     }
+    this.deactivation = this.resetDeactivation()
     channel.send(this.currentPage).then((message) => {
       this.messageID = message.id
     })
@@ -93,7 +95,17 @@ export default class Paginator extends Events.EventEmitter {
             this.pageIndex = this.pages.length - 1
           }
       }
+      clearTimeout(this.deactivation)
+      this.deactivation = this.resetDeactivation()
     }
+  }
+
+  resetDeactivation() {
+    return setTimeout(async () => {
+      if (!this.messageID) return
+      const message = await this.channel.messages.fetch(this.messageID)
+      if (message) Paginator.deleteByMessage(message)
+    }, this.idlTime)
   }
 
   static getByMessage(message: Discord.Message): Paginator | undefined {
