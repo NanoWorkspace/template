@@ -105,12 +105,13 @@ new Command({
             }
           }),
         4
-      ).map((fields) => {
+      ).map((fields, index, all) => {
         return Embed.default(
           `Voici une liste des ${reactionRoleMessages.size} Reaction-Role messages de ce serveur.`
         )
           .setAuthorName("Reaction-Role Manager - List")
           .addFields(fields)
+          .setFooterText(`Page: ${index + 1} sur ${all.length}`)
       })
       return new Paginator(embeds, message.channel, (reaction, user) => {
         return user === message.author
