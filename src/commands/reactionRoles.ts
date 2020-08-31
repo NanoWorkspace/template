@@ -104,7 +104,7 @@ new Command({
               inline: false,
             }
           }),
-        10
+        4
       ).map((fields) => {
         return Embed.default(
           `Voici une liste des ${reactionRoleMessages.size} Reaction-Role messages de ce serveur.`

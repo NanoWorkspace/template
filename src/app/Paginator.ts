@@ -55,6 +55,7 @@ export default class Paginator extends Events.EventEmitter {
         await message.react(this.emojis[key as keyof PaginatorEmojis])
       }
     })
+    Paginator.paginations.push(this)
   }
 
   get currentPage(): Discord.MessageEmbed | string {
@@ -89,11 +90,9 @@ export default class Paginator extends Events.EventEmitter {
       switch (currentKey) {
         case "start":
           this.pageIndex = 0
-          this.refresh()
           break
         case "end":
           this.pageIndex = this.pages.length - 1
-          this.refresh()
           break
         case "next":
           this.pageIndex++
@@ -107,8 +106,10 @@ export default class Paginator extends Events.EventEmitter {
             this.pageIndex = this.pages.length - 1
           }
       }
+      this.refresh()
       clearTimeout(this.deactivation)
       this.deactivation = this.resetDeactivation()
+      reaction.users.remove(user as Discord.User).catch()
     }
   }
 
