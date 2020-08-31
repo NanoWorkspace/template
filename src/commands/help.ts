@@ -47,7 +47,7 @@ new Command({
             return null
           }
 
-          // todo: transform arrayOf function into "...[type,type2,etc]"
+          // todo: transform arrayFrom function into "...[type,type2,etc]"
 
           function groupToString(group: CommandArgumentGroup) {
             return Object.keys(group)

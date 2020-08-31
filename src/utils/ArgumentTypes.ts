@@ -154,13 +154,16 @@ export function arrayFrom(
       for (const type of types) {
         if (typeof type === "function") {
           result = await type(content, message)
-          if (result.arg !== null) {
-            content = result.rest as string
-            output.push(result.arg)
-            break
-          }
+        } else if (type instanceof RegExp) {
+          result = await justByRegex(type, content)
+        } else if (typeof type === "string" || typeof type === "number") {
+          result = await scalar(type, content)
         }
-        // todo: manage other type than "function" of CommandArgumentType.
+        if (result.arg !== null) {
+          content = result.rest as string
+          output.push(result.arg)
+          break
+        }
       }
     } while (result.arg !== null)
     return { arg: output, rest: content.trim() }
@@ -233,6 +236,19 @@ async function discordMentionable(
   return {
     arg: null,
   }
+}
+
+function scalar(
+  value: string | number,
+  content: string
+): { arg: any; rest?: string } {
+  if (content.startsWith(String(value))) {
+    return {
+      arg: value,
+      rest: content.replace(String(value), ""),
+    }
+  }
+  return { arg: null }
 }
 
 function justByRegex(
