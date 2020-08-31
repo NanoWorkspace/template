@@ -38,7 +38,7 @@ export default class Paginator extends Events.EventEmitter {
       | Discord.NewsChannel,
     public filter: (
       reaction: Discord.MessageReaction,
-      user: Discord.User
+      user: Discord.User | Discord.PartialUser
     ) => boolean,
     public idlTime: number = 60000,
     customEmojis?: Partial<PaginatorEmojis>
@@ -72,7 +72,10 @@ export default class Paginator extends Events.EventEmitter {
     }
   }
 
-  handleReaction(reaction: Discord.MessageReaction, user: Discord.User) {
+  handleReaction(
+    reaction: Discord.MessageReaction,
+    user: Discord.User | Discord.PartialUser
+  ) {
     if (!this.filter(reaction, user)) return
     const { emoji } = reaction
     const emojiID = emoji.id || emoji.name

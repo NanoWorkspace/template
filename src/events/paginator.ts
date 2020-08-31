@@ -12,7 +12,7 @@ new Event({
     if (guild) {
       const paginator = Paginator.getByMessage(message)
       if (paginator) {
-        paginator.handleReaction(messageReaction)
+        paginator.handleReaction(messageReaction, user)
       }
     }
   },
