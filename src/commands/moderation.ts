@@ -34,6 +34,7 @@ new Command({
   permissions: ["BAN_MEMBERS"],
   botPermissions: ["BAN_MEMBERS"],
   description: "Ban a member",
+  category: "mod",
   moderator: true,
   call: async ({ message, args: { member } }) => {
     if (!member)

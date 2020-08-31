@@ -7,6 +7,7 @@ import Embed from "../app/Embed"
 new Command({
   name: "Embed Utils",
   pattern: /e(?:mbed)?/i,
+  category: "general",
   description: "Gère la création et la décomposition d'embeds.",
   examples: [
     "[Make a JSON embed for copying here as argument](https://leovoel.github.io/embed-visualizer/)",

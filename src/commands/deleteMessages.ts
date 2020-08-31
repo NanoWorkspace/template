@@ -7,6 +7,7 @@ new Command({
   name: "Message Deleter",
   pattern: /rm|remove|del(?:ete)?|clea[nr]|purge|prune/,
   description: "Efface un certain nombre de messages dans le salon actuel.",
+  category: "admin",
   cooldown: 5000,
   channelType: "guild",
   permissions: ["MANAGE_MESSAGES"],

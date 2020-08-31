@@ -5,6 +5,7 @@ import Types from "../utils/ArgumentTypes"
 
 new Command({
   name: "Auto-role Manager",
+  category: "admin",
   pattern: /ar|autorole/i,
   description:
     "Gère l'ajout de rôles automatiques pour les bots et les utilisateurs.",

@@ -6,6 +6,7 @@ import Types from "../utils/ArgumentTypes"
 new Command({
   name: "Search Engine",
   pattern: /se?(?:arch)?/i,
+  category: "general",
   description: "Create a link to a search engine from your search.",
   args: {
     searchEngine: {

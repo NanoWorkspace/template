@@ -9,6 +9,7 @@ new Command({
   description:
     "Gère l'ajout d'utilisateurs dont les tweet webhooks sont autorisés.",
   channelType: "guild",
+  category: "admin",
   admin: true,
   args: {
     action: {

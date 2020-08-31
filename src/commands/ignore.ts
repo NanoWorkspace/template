@@ -8,6 +8,7 @@ new Command({
   pattern: /ign?(?:ore)?/i,
   description: `Gère les utilisateurs et les salons ignorés par ${Globals.bot.name}.`,
   admin: true,
+  category: "admin",
   channelType: "guild",
   args: [
     {

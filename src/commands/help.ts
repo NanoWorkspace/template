@@ -8,6 +8,7 @@ import Text from "../utils/Text"
 new Command({
   name: "Help Menu",
   pattern: /h(?:[aeu]?lp)?/i,
+  category: "general",
   description: "Affiche les commandes existantes.",
   args: { command: { type: Types.command, optional: true } },
   call: async ({ message, args }) => {

@@ -8,6 +8,7 @@ new Command({
   pattern: /pr[eé]fix/i,
   description: `Change le prefix de ${Globals.bot.name} pour ce serveur.`,
   channelType: "guild",
+  category: "admin",
   admin: true,
   args: [
     {

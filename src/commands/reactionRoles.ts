@@ -11,6 +11,7 @@ new Command({
   pattern: /rr|rero|reaction[\s-]?role/i,
   description: "Gère la création et la suppression de réaction-rôles",
   admin: true,
+  category: "admin",
   channelType: "guild",
   args: [
     {
