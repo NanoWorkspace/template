@@ -5,6 +5,7 @@ import Embed from "../app/Embed"
 import ReactionRoleMessage from "../app/ReactionRoleMessage"
 import Globals from "../app/Globals"
 import Text from "../utils/Text"
+import Paginator from "../app/Paginator"
 
 new Command({
   name: "Reaction-Roles Manager",
@@ -84,29 +85,36 @@ new Command({
       const reactionRoleMessages = ReactionRoleMessage.getByGuild(
         message.guild as Discord.Guild
       )
-      const embed = Embed.default(
-        `Voici une liste des 10 plus récents Reaction-Role messages de ce serveur (sur ${reactionRoleMessages.size})`
-      ).setAuthorName("Reaction-Role Manager - List")
-      reactionRoleMessages
-        .array()
-        .reverse()
-        .slice(0, 10)
-        .forEach((rrm) => {
-          embed.addField(
-            `ID: ${rrm.id}`,
-            Text.code(
-              [
-                `Channel name: ${rrm.channel.name}`,
-                `Channel ID: ${rrm.channel.id}`,
-                `Message ID: ${rrm.options.messageID}`,
-                `Reaction roles: ${rrm.reactionRoles.length}`,
-              ].join("\n"),
-              "yaml"
-            ),
-            false
-          )
-        })
-      return await message.channel.send(embed)
+      const embeds = Paginator.divider<Discord.EmbedFieldData>(
+        reactionRoleMessages
+          .array()
+          .reverse()
+          .map((rrm) => {
+            return {
+              name: `ID: ${rrm.id}`,
+              value: Text.code(
+                [
+                  `Channel name: ${rrm.channel.name}`,
+                  `Channel ID: ${rrm.channel.id}`,
+                  `Message ID: ${rrm.options.messageID}`,
+                  `Reaction roles: ${rrm.reactionRoles.length}`,
+                ].join("\n"),
+                "yaml"
+              ),
+              inline: false,
+            }
+          }),
+        10
+      ).map((fields) => {
+        return Embed.default(
+          `Voici une liste des ${reactionRoleMessages.size} Reaction-Role messages de ce serveur.`
+        )
+          .setAuthorName("Reaction-Role Manager - List")
+          .addFields(fields)
+      })
+      return new Paginator(embeds, message.channel, (reaction, user) => {
+        return user === message.author
+      })
     }
 
     let reactionRoleMessage: ReactionRoleMessage | null = null

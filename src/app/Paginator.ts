@@ -1,5 +1,5 @@
 import Events from "events"
-import Discord, { MessageReaction } from "discord.js"
+import Discord from "discord.js"
 
 /** As Snowflakes or icons */
 export interface PaginatorEmojis {
@@ -25,16 +25,22 @@ export default class Paginator extends Events.EventEmitter {
   /**
    * @constructor
    * @param pages - Array of pages
-   * @param {TextChannel} channel - Channel where send the paginator message
+   * @param {TextChannel | DMChannel | NewsChannel} channel - Channel where send the paginator message
    * @param {Function} filter - Used to filter what reactionMessage is valid
    * @param {number} idlTime - Time between last action and paginator deactivation in milliseconds. (default: 1 min)
    * @param {Partial<PaginatorEmojis>} customEmojis - Custom emojis to overwrite
    */
   constructor(
     public pages: (Discord.MessageEmbed | string)[],
-    public channel: Discord.TextChannel,
-    public filter: (reaction: MessageReaction) => boolean,
-    private idlTime: number = 60000,
+    public channel:
+      | Discord.TextChannel
+      | Discord.DMChannel
+      | Discord.NewsChannel,
+    public filter: (
+      reaction: Discord.MessageReaction,
+      user: Discord.User
+    ) => boolean,
+    public idlTime: number = 60000,
     customEmojis?: Partial<PaginatorEmojis>
   ) {
     super()
@@ -43,8 +49,11 @@ export default class Paginator extends Events.EventEmitter {
       Object.assign(this.emojis, customEmojis)
     }
     this.deactivation = this.resetDeactivation()
-    channel.send(this.currentPage).then((message) => {
+    channel.send(this.currentPage).then(async (message) => {
       this.messageID = message.id
+      for (const key of ["start", "previous", "next", "end"]) {
+        await message.react(this.emojis[key as keyof PaginatorEmojis])
+      }
     })
   }
 
@@ -63,8 +72,8 @@ export default class Paginator extends Events.EventEmitter {
     }
   }
 
-  handleReaction(reaction: MessageReaction) {
-    if (!this.filter(reaction)) return
+  handleReaction(reaction: Discord.MessageReaction, user: Discord.User) {
+    if (!this.filter(reaction, user)) return
     const { emoji } = reaction
     const emojiID = emoji.id || emoji.name
     let currentKey: keyof PaginatorEmojis | null = null
@@ -101,11 +110,16 @@ export default class Paginator extends Events.EventEmitter {
   }
 
   resetDeactivation() {
-    return setTimeout(async () => {
-      if (!this.messageID) return
-      const message = await this.channel.messages.fetch(this.messageID)
-      if (message) Paginator.deleteByMessage(message)
-    }, this.idlTime)
+    return setTimeout(() => this.deactivate().catch(), this.idlTime)
+  }
+
+  async deactivate() {
+    if (!this.messageID) return
+    const message = await this.channel.messages.fetch(this.messageID)
+    if (message) {
+      await message.reactions.removeAll()
+      Paginator.deleteByMessage(message)
+    }
   }
 
   static getByMessage(message: Discord.Message): Paginator | undefined {
@@ -118,5 +132,16 @@ export default class Paginator extends Events.EventEmitter {
     this.paginations = this.paginations.filter((paginator) => {
       return paginator.messageID !== message.id
     })
+  }
+
+  static divider<T>(items: T[], itemCountByDivision: number): T[][] {
+    const divided: T[][] = []
+    const divisionCount = Math.ceil(items.length / itemCountByDivision)
+    for (let i = 0; i < divisionCount; i++) {
+      divided.push(
+        items.slice(itemCountByDivision * i, itemCountByDivision * (i + 1))
+      )
+    }
+    return divided
   }
 }

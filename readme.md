@@ -63,3 +63,8 @@ A Discord bot template in TypeScript
   start: "npm run build && node .",
 }
 ```
+
+## 5. Future features
+
+- Implement hot reloading with Gulp.
+- Setup modular style instead of handler style (or in parallel).
