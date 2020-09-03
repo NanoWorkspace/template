@@ -2,7 +2,7 @@
   "name": "nano-template",
   "author": "ghom",
   "license": "ISC",
-  "version": "v1.10.1-beta",
+  "version": "v1.10.2-beta",
   "description": "Discord bot in TypeScript.",
   "main": "dist/index.js",
   "prettier": {
@@ -17,7 +17,7 @@
     "build": "git rm -r --ignore-unmatch -f ./dist && npm run prettier && tsc",
     "start": "npm run build && node .",
     "precommit": "node scripts/pre-commit && npm run prettier && git add *",
-    "commit": "git commit -m \"patch to v1.10.1-beta\"",
+    "commit": "git commit -m \"patch to v1.10.2-beta\"",
     "push": "npm run commit && git push origin master"
   },
   "keywords": [
