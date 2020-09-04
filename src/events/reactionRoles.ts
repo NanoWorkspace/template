@@ -1,11 +1,12 @@
 import Discord from "discord.js"
 import Event from "../app/Event"
 import ReactionRoleMessage from "../app/ReactionRoleMessage"
+import Globals from "../app/Globals"
 
 new Event({
   name: "messageDelete",
   caller: "on",
-  description: "Delete reaction-rôle message associated on message delete",
+  description: "Delete reaction-role message on message delete",
   call: async (message) => {
     ReactionRoleMessage.getByMessage(message as Discord.Message)?.delete()
   },
@@ -14,7 +15,7 @@ new Event({
 new Event({
   name: "messageReactionAdd",
   caller: "on",
-  description: "Give a role to a member on message reaction add",
+  description: "Give role to member on message reaction add",
   call: async (messageReaction, user) => {
     if (user.bot) return
     const guild = messageReaction.message.guild
@@ -29,7 +30,7 @@ new Event({
 new Event({
   name: "messageReactionRemove",
   caller: "on",
-  description: "Remove a role from a member on message reaction remove",
+  description: "Remove role from member on message reaction remove",
   call: async (messageReaction, user) => {
     if (user.bot) return
     const guild = messageReaction.message.guild
@@ -37,6 +38,24 @@ new Event({
       const role = await ReactionRoleMessage.fetchRole(guild, messageReaction)
       const member = guild.members.cache.get(user.id)
       if (member && role) await member.roles.remove(role).catch()
+    }
+  },
+})
+
+new Event({
+  name: "roleDelete",
+  caller: "on",
+  description: "Remove reaction-role on role delete",
+  call: async (role) => {
+    for (const [, rrm] of ReactionRoleMessage.getByGuild(role.guild)) {
+      for (const reactionRole of rrm.reactionRoles) {
+        if (reactionRole.role === role) {
+          await rrm.remove(reactionRole.emoji)
+        }
+      }
+      if (rrm.reactionRoles.length === 0) {
+        await rrm.delete()
+      }
     }
   },
 })
