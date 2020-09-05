@@ -8,7 +8,7 @@ export type EventName = keyof CustomEvents
 export type EventParams<K extends EventName> = CustomEvents[K]
 
 export interface CustomEvents extends Discord.ClientEvents {
-  nanoReady: []
+  modulesReady: []
   databaseReady: []
   webhookFilter: [Discord.Message, string]
 }

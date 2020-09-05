@@ -1,8 +1,8 @@
 import Discord from "discord.js"
 import bot from "./bot"
 import Logger from "../app/Logger"
-import fs from "fs"
 import path from "path"
+import File from "../utils/File"
 
 Logger.load("file", __filename)
 
@@ -20,20 +20,30 @@ client.once("ready", async () => {
   }
   Object.assign(bot, app)
 
-  fs.readdirSync(path.join(__dirname, "..", "commands")).forEach((fileName) => {
-    require(path.join(__dirname, "..", "commands", fileName))
-  })
+  await File.forEachFile(
+    [path.join(__dirname, "..", "modules")],
+    (filePath) => {
+      const fineName = path.basename(filePath)
+      if (fineName === "module.js") require(filePath)
+    }
+  )
 
-  fs.readdirSync(path.join(__dirname, "..", "events")).forEach((fileName) => {
-    require(path.join(__dirname, "..", "events", fileName))
-  })
+  // todo remove handlers for commands and events
+  await File.forEachFile(
+    [
+      path.join(__dirname, "..", "events"),
+      path.join(__dirname, "..", "commands"),
+    ],
+    (filePath) => {
+      if (filePath.endsWith(".js")) require(filePath)
+    }
+  )
 
-  client.emit("nanoReady")
+  client.emit("modulesReady")
 })
 
 client.on("raw", (packet) => {
-  if (!["MESSAGE_REACTION_ADD", "MESSAGE_REACTION_REMOVE"].includes(packet.t))
-    return
+  if (!/^MESSAGE_REACTION_(?:ADD|REMOVE)$/.test(packet.t)) return
 
   const channel = client.channels.cache.get(
     packet.d.channel_id
@@ -53,11 +63,11 @@ client.on("raw", (packet) => {
       const user = client.users.cache.get(packet.d.user_id) as Discord.User
       reaction.users.cache.set(packet.d.user_id, user)
 
-      switch (packet.t) {
-        case "MESSAGE_REACTION_ADD":
+      switch (packet.t.split("_")[2]) {
+        case "ADD":
           client.emit("messageReactionAdd", reaction, user)
           break
-        case "MESSAGE_REACTION_REMOVE":
+        case "REMOVE":
           client.emit("messageReactionRemove", reaction, user)
           break
       }

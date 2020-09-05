@@ -1,6 +1,6 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "$id": "https://raw.githubusercontent.com/CamilleAbella/NanoTemplate/master/nano.config.schema.json",
+  "$id": "https://raw.githubusercontent.com/CamilleAbella/NanoTemplate/master/assets/schemas/nano.config.schema.json",
   "title": "Nano Config",
   "description": "Configuration file for bots that use Nano template.",
   "type": "object",

@@ -2,9 +2,9 @@ import Event from "../app/Event"
 import Globals from "../app/Globals"
 
 new Event({
-  name: "nanoReady",
+  name: "modulesReady",
   caller: "once",
-  description: "Prepare database on nano is ready",
+  description: "Prepare database on nano modules are ready",
   call: () => {
     Globals.client.guilds.cache.forEach((guild) => {
       Globals.db.ensureGuild(guild)

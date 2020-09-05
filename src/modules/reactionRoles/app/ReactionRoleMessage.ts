@@ -1,20 +1,9 @@
+import ReactionRole from "./ReactionRole"
 import Discord from "discord.js"
-import Globals from "./Globals"
-import Logger from "./Logger"
+import Globals from "../../../app/Globals"
+import db from "../utils/db"
 
-Logger.load("file", __filename)
-
-export interface ReactionRoleMessageOptions {
-  id: string
-  channelID: string
-  messageID: string
-  reactionRoles: ReactionRoleOptions[]
-}
-
-export interface ReactionRoleOptions {
-  roleID: string
-  emojiID: string
-}
+import * as types from "../utils/types"
 
 export default class ReactionRoleMessage {
   id: Discord.Snowflake
@@ -23,7 +12,7 @@ export default class ReactionRoleMessage {
   reactionRoles: ReactionRole[]
   guild: Discord.Guild
 
-  constructor(public options: ReactionRoleMessageOptions) {
+  constructor(public options: types.ReactionRoleMessageOptions) {
     this.id = options.id
     this.channel = Globals.client.channels.cache.get(
       options.channelID
@@ -34,10 +23,6 @@ export default class ReactionRoleMessage {
       (rr) => new ReactionRole(rr, this)
     )
     this.guild = this.channel.guild
-  }
-
-  get key(): string {
-    return ReactionRoleMessage.keyFromID(this.id)
   }
 
   async edit(value: string | Discord.MessageEmbedOptions) {
@@ -55,11 +40,11 @@ export default class ReactionRoleMessage {
 
   async add(emoji: Discord.EmojiResolvable, role: Discord.Role) {
     const message = await this.fetchMessage(true)
-    const options: ReactionRoleOptions = {
+    const options: types.ReactionRoleOptions = {
       roleID: role.id,
       emojiID: ReactionRoleMessage.emojiToID(emoji),
     }
-    Globals.db.push(this.guild.id, options, `${this.key}.reactionRoles`)
+    db.push(this.guild.id, options, `${this.id}.reactionRoles`)
     this.reactionRoles.push(new ReactionRole(options, this))
     await message.react(emoji)
   }
@@ -67,12 +52,13 @@ export default class ReactionRoleMessage {
   async remove(emoji: Discord.EmojiResolvable) {
     const message = await this.fetchMessage()
     const emojiID = ReactionRoleMessage.emojiToID(emoji)
-    Globals.db.remove(
+    db.remove(
       this.guild.id,
-      (value: ReactionRoleOptions) => {
+      // @ts-ignore
+      (value: types.ReactionRoleOptions) => {
         return value.emojiID === emojiID
       },
-      `${this.key}.reactionRoles`
+      `${this.id}.reactionRoles`
     )
     this.reactionRoles = this.reactionRoles.filter((rr) => rr.emoji !== emoji)
     await message.reactions.cache.get(emojiID)?.remove()
@@ -80,7 +66,7 @@ export default class ReactionRoleMessage {
 
   async delete() {
     const message = await this.fetchMessage()
-    Globals.db.delete(this.guild.id, this.key)
+    db.delete(this.guild.id, this.id)
     await message.delete()
   }
 
@@ -88,18 +74,18 @@ export default class ReactionRoleMessage {
     guild: Discord.Guild,
     id: Discord.Snowflake
   ): ReactionRoleMessage | null {
-    const options = Globals.db.get(guild.id, ReactionRoleMessage.keyFromID(id))
-    return options ? new ReactionRoleMessage(options) : null
+    const options = db.get(guild.id, id)
+    return options ? new ReactionRoleMessage(options as any) : null
   }
 
-  static set(guild: Discord.Guild, options: ReactionRoleMessageOptions) {
-    Globals.db.set(guild.id, options, ReactionRoleMessage.keyFromID(options.id))
+  static set(guild: Discord.Guild, options: types.ReactionRoleMessageOptions) {
+    db.set(guild.id, options, options.id)
   }
 
   static getByGuild(
     guild: Discord.Guild
   ): Discord.Collection<Discord.Snowflake, ReactionRoleMessage> {
-    const data = Globals.db.get(guild.id, "reactionRoleMessages")
+    const data = db.get(guild.id)
     const collection: Discord.Collection<
       Discord.Snowflake,
       ReactionRoleMessage
@@ -141,27 +127,7 @@ export default class ReactionRoleMessage {
     return null
   }
 
-  static keyFromID(id: Discord.Snowflake) {
-    return `reactionRoleMessages.${id}`
-  }
-
   static emojiToID(emoji: Discord.EmojiResolvable): string {
     return emoji instanceof Discord.Emoji ? emoji.id || emoji.name : emoji
-  }
-}
-
-export class ReactionRole {
-  role: Discord.Role
-  emoji: Discord.EmojiResolvable
-
-  constructor(
-    public options: ReactionRoleOptions,
-    public reactionRoleMessage: ReactionRoleMessage
-  ) {
-    this.role = reactionRoleMessage.channel.guild.roles.cache.get(
-      options.roleID
-    ) as Discord.Role
-    this.emoji =
-      Globals.client.emojis.cache.get(options.emojiID) || options.emojiID
   }
 }

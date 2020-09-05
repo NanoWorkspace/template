@@ -2,7 +2,6 @@ import Enmap from "enmap"
 import Discord from "discord.js"
 import Logger from "../app/Logger"
 import bot from "./bot"
-import { ReactionRoleMessageOptions } from "../app/ReactionRoleMessage"
 
 Logger.load("file", __filename)
 
@@ -19,7 +18,6 @@ interface GuildData {
     bot: Discord.Snowflake[]
   }
   authorizedTwitterUsers: string[]
-  reactionRoleMessages: { [k: string]: ReactionRoleMessageOptions }
 }
 
 class Database extends Enmap {
@@ -37,7 +35,6 @@ class Database extends Enmap {
         bot: [],
       },
       authorizedTwitterUsers: [],
-      reactionRoleMessages: {},
     }
     this.ensure(guild.id, data)
   }

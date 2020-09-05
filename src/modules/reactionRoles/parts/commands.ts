@@ -1,11 +1,11 @@
+import Command from "../../../app/Command"
+import Types from "../../../utils/ArgumentTypes"
 import Discord from "discord.js"
-import Types from "../utils/ArgumentTypes"
-import Command from "../app/Command"
-import Embed from "../app/Embed"
+import Paginator from "../../../app/Paginator"
+import Text from "../../../utils/Text"
+import Embed from "../../../app/Embed"
+import Globals from "../../../app/Globals"
 import ReactionRoleMessage from "../app/ReactionRoleMessage"
-import Globals from "../app/Globals"
-import Text from "../utils/Text"
-import Paginator from "../app/Paginator"
 
 new Command({
   name: "Reaction-Roles Manager",

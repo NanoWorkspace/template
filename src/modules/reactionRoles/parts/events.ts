@@ -1,7 +1,6 @@
 import Discord from "discord.js"
-import Event from "../app/Event"
+import Event from "../../../app/Event"
 import ReactionRoleMessage from "../app/ReactionRoleMessage"
-import Globals from "../app/Globals"
 
 new Event({
   name: "messageDelete",
