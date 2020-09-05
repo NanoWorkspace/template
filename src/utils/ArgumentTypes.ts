@@ -210,24 +210,24 @@ async function discordMentionable(
 
   // Try name
   // @ts-ignore
-  const { arg: txt } = await text(content)
-  if (txt) {
+  const txt = await text(content)
+  if (txt.arg) {
     if (collection === "users") {
       item = message.client.users.cache.find((u) => {
-        return u.username.toLowerCase().includes(txt.toLowerCase())
+        return u.username.toLowerCase().includes(txt.arg.toLowerCase())
       })
     } else {
       // @ts-ignore
       item = message.guild?.[collection]?.cache.find((i) => {
         return (i.displayName || i.name)
           .toLowerCase()
-          .includes(txt.toLowerCase())
+          .includes(txt.arg.toLowerCase())
       })
     }
     if (item) {
       return {
         arg: item,
-        rest: content.replace(txt, "").trim(),
+        rest: txt.rest,
       }
     }
   }

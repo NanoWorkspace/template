@@ -32,11 +32,18 @@ new Event({
       if (message.guild) {
         prefix = Globals.db.get(message.guild.id, "prefix")
       }
-      if (Globals.bot.debug) prefix = Globals.client.user?.id || prefix
+      if (Globals.bot.debug || process.env.DEBUG?.toLowerCase() === "true") {
+        prefix = "n?"
+      }
+      const mention = new RegExp(`^<@[&!]?${Globals.client.user?.id}>`)
+
       if (message.content.startsWith(basePrefix)) {
         content = message.content.replace(basePrefix, "").trim()
       } else if (message.content.startsWith(prefix)) {
         content = message.content.replace(prefix, "").trim()
+      } else if (mention.test(message.content)) {
+        content = message.content.replace(mention, "").trim()
+        if (content.length === 0) content = "help"
       } else {
         return
       }

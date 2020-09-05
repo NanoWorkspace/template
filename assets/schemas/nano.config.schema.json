@@ -94,11 +94,11 @@
       "type": "string"
     },
     "debug": {
-      "description": "Run as debug mode for development.",
+      "description": "Run as debug mode for development. (or put it in .env file)",
       "type": "boolean"
     },
     "token": {
-      "description": "The Discord API token of your bot.",
+      "description": "The Discord API token of your bot. (or put it in .env file)",
       "type": "string"
     },
     "clientOptions": {

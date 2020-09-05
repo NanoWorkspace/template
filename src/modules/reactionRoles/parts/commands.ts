@@ -6,6 +6,7 @@ import Text from "../../../utils/Text"
 import Embed from "../../../app/Embed"
 import Globals from "../../../app/Globals"
 import ReactionRoleMessage from "../app/ReactionRoleMessage"
+import db from "../utils/db"
 
 new Command({
   name: "Reaction-Roles Manager",
@@ -25,6 +26,10 @@ new Command({
         optional: true,
         type: Types.channel,
       },
+      data: {
+        optional: true,
+        type: Types.json,
+      },
     },
     {
       remove: {
@@ -33,7 +38,7 @@ new Command({
         typeName: "[delete,remove]",
         type: /del(?:ete)?|rm|remove/i,
       },
-      reactionRoleID: { type: Types.snowflake },
+      reactionRoleMessageID: { type: Types.snowflake },
       emoji: {
         optional: true,
         type: Types.emoji,
@@ -45,7 +50,7 @@ new Command({
         description: "New reaction-role emoji",
         type: /add|react/i,
       },
-      reactionRoleID: { type: Types.snowflake },
+      reactionRoleMessageID: { type: Types.snowflake },
       role: { type: Types.role },
       emoji: { type: Types.emoji },
     },
@@ -55,7 +60,7 @@ new Command({
         description: "Edit reaction-role message",
         type: /[eé]dit/i,
       },
-      reactionRoleID: { type: Types.snowflake },
+      reactionRoleMessageID: { type: Types.snowflake },
       edition: { type: [Types.json, Types.text] },
     },
     {
@@ -65,19 +70,29 @@ new Command({
         type: /list|ls/i,
       },
     },
+    {
+      backup: {
+        index: true,
+        description: "Extract RR JSON data",
+        type: /backup|save|json|get|inspect/i,
+      },
+      reactionRoleMessageID: { type: Types.snowflake },
+    },
   ],
   async call({
     message,
     args: {
       create,
+      data,
       remove,
       add,
+      backup,
       channel,
       role,
       edit,
       emoji,
       edition,
-      reactionRoleID,
+      reactionRoleMessageID,
       list,
     },
   }) {
@@ -113,6 +128,13 @@ new Command({
           .addFields(fields)
           .setFooterText(`Page: ${index + 1} sur ${all.length}`)
       })
+      if (embeds.length === 1) {
+        return await message.channel.send(embeds[0])
+      } else if (embeds.length === 0) {
+        return await message.channel.send(
+          new Embed("Ils n'y a aucun reaction-role-message sur ce serveur")
+        )
+      }
       return new Paginator(embeds, message.channel, (reaction, user) => {
         return user === message.author
       })
@@ -120,15 +142,15 @@ new Command({
 
     let reactionRoleMessage: ReactionRoleMessage | null = null
 
-    if (reactionRoleID) {
+    if (reactionRoleMessageID) {
       reactionRoleMessage = ReactionRoleMessage.get(
         message.guild as Discord.Guild,
-        reactionRoleID
+        reactionRoleMessageID
       ) as ReactionRoleMessage
 
       if (!reactionRoleMessage)
         return await message.channel.send(
-          Embed.error("reactionRoleID inconnu.")
+          Embed.error("reactionRoleMessageID inconnu.")
         )
     }
 
@@ -145,12 +167,21 @@ new Command({
         ? await channel.send(embed)
         : await message.channel.send(embed)
 
-      ReactionRoleMessage.set(message.guild as Discord.Guild, {
-        id,
-        channelID: msg.channel.id,
-        messageID: msg.id,
-        reactionRoles: [],
-      })
+      if (data) {
+        data.id = id
+        data.channelID = msg.channel.id
+        data.messageID = msg.id
+      }
+
+      await ReactionRoleMessage.set(
+        message.guild as Discord.Guild,
+        data || {
+          id,
+          channelID: msg.channel.id,
+          messageID: msg.id,
+          reactionRoles: [],
+        }
+      )
     } else if (remove) {
       if (emoji) {
         // remove reactionRole
@@ -173,6 +204,20 @@ new Command({
         await reactionRoleMessage?.edit(edition)
       } catch (error) {
         return await message.channel.send(Embed.error(error.message))
+      }
+    } else if (backup) {
+      if (message.guild) {
+        const data = db.get(message.guild.id, reactionRoleMessageID)
+        if (data) {
+          return await message.channel.send(
+            new Embed(Text.code(JSON.stringify(data), "json"))
+          )
+        } else
+          return await message.channel.send(
+            Embed.error(
+              `Le **reactionRoleMessageID** entré est inexistant sur ce serveur.`
+            )
+          )
       }
     }
     await message.channel.send(Embed.success())

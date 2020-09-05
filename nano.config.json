@@ -1,6 +1,5 @@
 {
   "$schema": "https://raw.githubusercontent.com/CamilleAbella/NanoTemplate/master/assets/schemas/nano.config.schema.json",
-  "debug": false,
   "prefix": "nano ",
   "clientOptions": { "disableMentions": "everyone" },
   "embedTemplates": {

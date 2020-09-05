@@ -78,8 +78,18 @@ export default class ReactionRoleMessage {
     return options ? new ReactionRoleMessage(options as any) : null
   }
 
-  static set(guild: Discord.Guild, options: types.ReactionRoleMessageOptions) {
+  static async set(
+    guild: Discord.Guild,
+    options: types.ReactionRoleMessageOptions
+  ) {
     db.set(guild.id, options, options.id)
+    const channel = Globals.client.channels.cache.get(
+      options.channelID
+    ) as Discord.TextChannel
+    const message = await channel.messages.fetch(options.messageID)
+    for (const rro of options.reactionRoles) {
+      await message.react(rro.emojiID)
+    }
   }
 
   static getByGuild(
