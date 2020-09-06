@@ -2,8 +2,8 @@
   "name": "nano-template",
   "author": "ghom",
   "license": "ISC",
-  "version": "v1.10.5-beta",
-  "description": "Discord bot in TypeScript.",
+  "version": "1.0.0",
+  "description": "Discord bot template in TypeScript.",
   "main": "dist/index.js",
   "prettier": {
     "trailingComma": "es5",
@@ -13,19 +13,19 @@
     "useTabs": false
   },
   "scripts": {
-    "prettier": "prettier src scripts package.json nano.config.json assets/schemas/nano.config.schema.json readme.md tsconfig.json --write",
+    "prettier": "prettier src package.json nano.config.json readme.md tsconfig.json --write",
     "build": "git rm -r --ignore-unmatch -f ./dist && npm run prettier && tsc",
     "start": "npm run build && node .",
-    "precommit": "node scripts/pre-commit && npm run prettier && git add *",
-    "commit": "git commit -m \"patch to v1.10.5-beta\"",
+    "precommit": "npm run prettier && git add *",
+    "commit": "git commit -m continue",
     "push": "npm run commit && git push origin master"
   },
   "keywords": [
     "discord.js",
     "bot",
     "typescript",
-    "handler",
-    "command-handler"
+    "template",
+    "nano-bot"
   ],
   "devDependencies": {
     "@types/node": "^14.0.27",
@@ -34,11 +34,7 @@
     "typescript": "4.0.2"
   },
   "dependencies": {
-    "better-sqlite3": "7.1.0",
-    "chalk": "4.1.0",
-    "discord.js": "12.3.1",
-    "dotenv": "8.2.0",
-    "enmap": "5.6.1",
+    "nano-bot": "^1.0.0",
     "querystring": "0.2.0"
   }
 }
