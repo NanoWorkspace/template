@@ -2,7 +2,7 @@
 
 ![GitHub forks](https://img.shields.io/github/forks/CamilleAbella/NanoTemplate?color=black&logo=github&style=for-the-badge) ![GitHub stars](https://img.shields.io/github/stars/CamilleAbella/NanoTemplate?color=black&logo=github&style=for-the-badge) ![GitHub watchers](https://img.shields.io/github/watchers/CamilleAbella/NanoTemplate?color=black&logo=github&style=for-the-badge)
 
-# Nano (なの) Template ![](https://raw.githubusercontent.com/CamilleAbella/Nano/master/assets/images/logo.png)
+# Nano (なの) Module ![](https://raw.githubusercontent.com/CamilleAbella/Nano/master/assets/images/logo.png)
 
 ![GitHub top language](https://img.shields.io/github/languages/top/CamilleAbella/NanoTemplate?color=%23BDB76B&style=plastic)
 [![GitHub search todo](https://img.shields.io/github/search/CamilleAbella/NanoTemplate/todo?color=%23BDB76B&label=todo%20count&style=plastic)](https://github.com/CamilleAbella/NanoTemplate/search?l=TypeScript&q=todo)

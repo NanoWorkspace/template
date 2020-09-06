@@ -1,5 +1,0 @@
-{
-  "$schema": "https://raw.githubusercontent.com/CamilleAbella/NanoTemplate/master/assets/schemas/nano.module.schema.json",
-  "name": "Reaction Role Manager",
-  "description": "Manage reaction-roles and reaction-role-messages"
-}

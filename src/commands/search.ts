@@ -1,9 +1,7 @@
+import Nano from "nano-bot/src"
 import querystring from "querystring"
-import Command from "../app/Command"
-import Embed from "../app/Embed"
-import Types from "../utils/ArgumentTypes"
 
-new Command({
+new Nano.Command({
   name: "Search Engine",
   pattern: /se?(?:arch)?/i,
   category: "general",
@@ -22,12 +20,12 @@ new Command({
         /porn(?:hub)?|ph/,
       ],
     },
-    search: { type: Types.rest },
+    search: { type: Nano.Utils.ArgumentTypes.rest },
   },
   call: async ({ message, args: { searchEngineIndex, search } }) => {
     if (!search)
       return await message.channel.send(
-        Embed.error("Vous devez entrer une recherche...")
+        Nano.Embed.error("Vous devez entrer une recherche...")
       )
 
     let baseUrl = "https://www.google.com/search"

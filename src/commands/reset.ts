@@ -1,15 +1,13 @@
-import Command from "../app/Command"
-import Globals from "../app/Globals"
-import Embed from "../app/Embed"
+import Nano from "nano-bot/src"
 
-new Command({
+new Nano.Command({
   name: "Reset Database",
   pattern: /reset|erase/i,
   description: "Erase the database and restart the bot.",
   botOwner: true,
   call: async ({ message }) => {
-    Globals.db.deleteAll()
-    await message.channel.send(Embed.success())
+    Nano.Globals.db.deleteAll()
+    await message.channel.send(Nano.Embed.success())
     process.exit(0)
   },
 })

@@ -1,7 +1,6 @@
-import Event from "../app/Event"
-import Paginator from "../app/Paginator"
+import Nano from "nano-bot/src"
 
-new Event({
+new Nano.Event({
   name: "messageReactionAdd",
   caller: "on",
   description: "Trigger paginator on message reaction add",
@@ -10,7 +9,7 @@ new Event({
     const message = messageReaction.message
     const guild = message.guild
     if (guild) {
-      const paginator = Paginator.getByMessage(message)
+      const paginator = Nano.Paginator.getByMessage(message)
       if (paginator) {
         paginator.handleReaction(messageReaction, user)
       }
@@ -18,14 +17,14 @@ new Event({
   },
 })
 
-new Event({
+new Nano.Event({
   name: "messageDelete",
   caller: "on",
   description: "Trigger paginator on message reaction add",
   call: async (message) => {
     const guild = message.guild
     if (guild) {
-      Paginator.deleteByMessage(message)
+      Nano.Paginator.deleteByMessage(message)
     }
   },
 })

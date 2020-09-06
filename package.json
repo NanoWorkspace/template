@@ -34,7 +34,8 @@
     "typescript": "4.0.2"
   },
   "dependencies": {
-    "nano-bot": "^1.0.0",
+    "@ghom/nano-bot": "^1.10.10-beta",
+    "@ghom/nano-reactionrole": "^1.0.1",
     "querystring": "0.2.0"
   }
 }

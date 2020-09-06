@@ -1,11 +1,10 @@
-import Command from "../app/Command"
-import Embed from "../app/Embed"
+import Nano from "nano-bot/src"
 
-new Command({
+new Nano.Command({
   name: "Kick Member",
   pattern: /kick|k/i,
   args: {
-    member: { type: Command.types.member },
+    member: { type: Nano.Command.types.member },
   },
   permissions: ["KICK_MEMBERS"],
   botPermissions: ["KICK_MEMBERS"],
@@ -14,22 +13,22 @@ new Command({
   call: async ({ message, args: { member } }) => {
     if (!member)
       return await message.channel.send(
-        Embed.error("Vous devez cibler un membre à kick du serveur.")
+        Nano.Embed.error("Vous devez cibler un membre à kick du serveur.")
       )
 
     await member.kick()
 
     await message.channel.send(
-      Embed.success(`**${member.user.tag}** a été kick.`)
+      Nano.Embed.success(`**${member.user.tag}** a été kick.`)
     )
   },
 })
 
-new Command({
+new Nano.Command({
   name: "Ban Member",
   pattern: /ban/i,
   args: {
-    member: { type: Command.types.member },
+    member: { type: Nano.Command.types.member },
   },
   permissions: ["BAN_MEMBERS"],
   botPermissions: ["BAN_MEMBERS"],
@@ -39,13 +38,13 @@ new Command({
   call: async ({ message, args: { member } }) => {
     if (!member)
       return await message.channel.send(
-        Embed.error("Vous devez cibler un membre à ban du serveur.")
+        Nano.Embed.error("Vous devez cibler un membre à ban du serveur.")
       )
 
     await member.ban()
 
     await message.channel.send(
-      Embed.success(`**${member.user.tag}** a été ban.`)
+      Nano.Embed.success(`**${member.user.tag}** a été ban.`)
     )
   },
 })

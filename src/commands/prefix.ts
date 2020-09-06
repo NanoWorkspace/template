@@ -1,12 +1,9 @@
-import Command from "../app/Command"
-import Globals from "../app/Globals"
-import Embed from "../app/Embed"
-import Types from "../utils/ArgumentTypes"
+import Nano from "nano-bot/src"
 
-new Command({
+new Nano.Command({
   name: "Prefix Manager",
   pattern: /pr[eé]fix/i,
-  description: `Change le prefix de ${Globals.bot.name} pour ce serveur.`,
+  description: `Change le prefix de ${Nano.Globals.bot.name} pour ce serveur.`,
   channelType: "guild",
   category: "admin",
   admin: true,
@@ -18,19 +15,19 @@ new Command({
     },
     {
       newPrefix: {
-        type: Types.text,
+        type: Nano.Utils.ArgumentTypes.text,
       },
     },
   ],
   call: async ({ message, args: { reset, newPrefix } }) => {
     if (!message.guild) return
 
-    if (reset) newPrefix = Globals.bot.prefix
+    if (reset) newPrefix = Nano.Globals.bot.prefix
 
-    Globals.db.set(message.guild.id, newPrefix, "prefix")
+    Nano.Globals.db.set(message.guild.id, newPrefix, "prefix")
 
     await message.channel.send(
-      Embed.success(
+      Nano.Embed.success(
         `Le préfixe a bien été modifié sur ce serveur.\nNouveau préfixe: \`${newPrefix}\``
       )
     )

@@ -1,11 +1,7 @@
 import Discord from "discord.js"
-import Globals from "../app/Globals"
-import Time from "../utils/Time"
-import Event from "../app/Event"
-import Logger from "../app/Logger"
-import Embed from "../app/Embed"
+import Nano from "nano-bot/src"
 
-new Event({
+new Nano.Event({
   name: "message",
   description: "Filter webhooks on message create",
   caller: "on",
@@ -13,7 +9,7 @@ new Event({
     // webhook filter
     if (message.webhookID && message.guild) {
       // waiting embed loading
-      await Time.wait(10000)
+      await Nano.Utils.Time.wait(10000)
 
       let newEmbeds: Discord.MessageEmbed[] = []
 
@@ -26,7 +22,7 @@ new Event({
         for (const embed of embeds) {
           try {
             if (!embed) {
-              Globals.client.emit(
+              Nano.Globals.client.emit(
                 "webhookFilter",
                 message,
                 "failed to fetch embed"
@@ -35,7 +31,7 @@ new Event({
             }
 
             if (/^@\S+/.test(embed.description || "")) {
-              Globals.client.emit(
+              Nano.Globals.client.emit(
                 "webhookFilter",
                 message,
                 "is a response tweet"
@@ -48,11 +44,11 @@ new Event({
               const tweetUser = tweetUserMatch ? tweetUserMatch[1] : null
               if (
                 !tweetUser ||
-                Globals.db
+                Nano.Globals.db
                   .get(message.guild.id, "authorizedTwitterUsers")
                   .every((user: string) => user !== tweetUser)
               ) {
-                Globals.client.emit(
+                Nano.Globals.client.emit(
                   "webhookFilter",
                   message,
                   "unauthorized tweet user"
@@ -60,7 +56,7 @@ new Event({
                 break
               }
             } else {
-              Globals.client.emit(
+              Nano.Globals.client.emit(
                 "webhookFilter",
                 message,
                 "not author in tweet embed"
@@ -70,7 +66,7 @@ new Event({
 
             newEmbeds.push(embed)
           } catch (error) {
-            Logger.error(error, "in Webhook Filter event")
+            Nano.Logger.error(error, "in Webhook Filter event")
           }
         }
 
@@ -85,11 +81,11 @@ new Event({
   },
 })
 
-new Event({
+new Nano.Event({
   name: "webhookFilter",
   caller: "on",
   description: "Delete webhook on filter",
   call: (message, reason) => {
-    Logger.log("Webhook filtered", { reason })
+    Nano.Logger.log("Webhook filtered", { reason })
   },
 })

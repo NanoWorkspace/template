@@ -1,9 +1,6 @@
-import Globals from "../app/Globals"
-import Embed from "../app/Embed"
-import Command from "../app/Command"
-import Types from "../utils/ArgumentTypes"
+import Nano from "nano-bot/src"
 
-new Command({
+new Nano.Command({
   name: "Auto-role Manager",
   category: "admin",
   pattern: /ar|autorole/i,
@@ -14,7 +11,7 @@ new Command({
   args: {
     bot: {
       default: false,
-      type: Types.boolean,
+      type: Nano.Utils.ArgumentTypes.boolean,
     },
     action: {
       typeName: "[list,add,remove]",
@@ -22,14 +19,14 @@ new Command({
     },
     role: {
       optional: true,
-      type: Types.role,
+      type: Nano.Utils.ArgumentTypes.role,
     },
   },
   call: async ({ message, args: { isBot, actionIndex, role } }) => {
     if (!message.guild) return
 
     if (actionIndex === 0 && !role) {
-      await message.channel.send(Embed.error("Vous devez cibler un rôle."))
+      await message.channel.send(Nano.Embed.error("Vous devez cibler un rôle."))
       return
     }
 
@@ -37,28 +34,28 @@ new Command({
 
     switch (actionIndex) {
       case 1:
-        Globals.db.push(message.guild.id, role.id, "autoRoles." + type)
+        Nano.Globals.db.push(message.guild.id, role.id, "autoRoles." + type)
         await message.channel.send(
-          Embed.success(
+          Nano.Embed.success(
             `Le rôle **${role.name}** a bien été ajouté à la liste des rôles automatiques pour les **${type}s**.`
           )
         )
         break
 
       case 2:
-        Globals.db.remove(message.guild.id, role.id, "autoRoles." + type)
+        Nano.Globals.db.remove(message.guild.id, role.id, "autoRoles." + type)
         await message.channel.send(
-          Embed.success(
+          Nano.Embed.success(
             `Le rôle **${role.name}** a bien été retiré de la liste des rôles automatiques pour les **${type}s**.`
           )
         )
         break
 
       case 0:
-        const embed = new Embed()
+        const embed = new Nano.Embed()
           .setTitle(`Liste des rôles automatiques pour les ${type}s`)
           .setDescription(
-            Globals.db
+            Nano.Globals.db
               .get(message.guild.id, "autoRoles." + type)
               .map((r: string) => {
                 return message.guild?.roles.resolve(r)?.toString()
@@ -71,7 +68,7 @@ new Command({
 
       default:
         await message.channel.send(
-          Embed.error(
+          Nano.Embed.error(
             "Vous devez préciser une action entre `add`, `remove` et `list`."
           )
         )
