@@ -1,5 +1,5 @@
+import Nano from "@ghom/nano-bot"
 import Discord from "discord.js"
-import Nano from "nano-bot/src"
 
 new Nano.Event({
   name: "message",

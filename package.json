@@ -3,7 +3,7 @@
   "author": "ghom",
   "license": "ISC",
   "version": "1.0.0",
-  "description": "Discord bot template in TypeScript.",
+  "description": "Discord bot template in TypeScript using Nano.",
   "main": "dist/index.js",
   "prettier": {
     "trailingComma": "es5",

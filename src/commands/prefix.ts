@@ -1,4 +1,4 @@
-import Nano from "nano-bot/src"
+import Nano from "@ghom/nano-bot"
 
 new Nano.Command({
   name: "Prefix Manager",

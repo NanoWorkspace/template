@@ -1,4 +1,4 @@
-import Nano from "nano-bot/src"
+import Nano from "@ghom/nano-bot"
 import Discord from "discord.js"
 
 new Nano.Command({
@@ -17,9 +17,9 @@ new Nano.Command({
       },
       items: {
         typeName: "...[user,channel]",
-        type: Nano.Command.types.arrayFrom(
-          Nano.Command.types.user,
-          Nano.Command.types.channel
+        type: Nano.Utils.ArgumentTypes.arrayFrom(
+          Nano.Utils.ArgumentTypes.user,
+          Nano.Utils.ArgumentTypes.channel
         ),
       },
     },

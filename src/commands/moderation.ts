@@ -1,10 +1,10 @@
-import Nano from "nano-bot/src"
+import Nano from "@ghom/nano-bot"
 
 new Nano.Command({
   name: "Kick Member",
   pattern: /kick|k/i,
   args: {
-    member: { type: Nano.Command.types.member },
+    member: { type: Nano.Utils.ArgumentTypes.member },
   },
   permissions: ["KICK_MEMBERS"],
   botPermissions: ["KICK_MEMBERS"],
@@ -28,7 +28,7 @@ new Nano.Command({
   name: "Ban Member",
   pattern: /ban/i,
   args: {
-    member: { type: Nano.Command.types.member },
+    member: { type: Nano.Utils.ArgumentTypes.member },
   },
   permissions: ["BAN_MEMBERS"],
   botPermissions: ["BAN_MEMBERS"],
