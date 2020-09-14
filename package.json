@@ -18,7 +18,7 @@
     "start": "npm run build && node .",
     "precommit": "npm run prettier && git add *",
     "commit": "git commit -m continue",
-    "push": "npm run commit && git push origin master"
+    "push": "npm run commit && git push origin modular"
   },
   "keywords": [
     "discord.js",
