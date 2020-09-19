@@ -2,7 +2,7 @@
 
 ![GitHub forks](https://img.shields.io/github/forks/CamilleAbella/NanoTemplate?color=black&logo=github&style=for-the-badge) ![GitHub stars](https://img.shields.io/github/stars/CamilleAbella/NanoTemplate?color=black&logo=github&style=for-the-badge) ![GitHub watchers](https://img.shields.io/github/watchers/CamilleAbella/NanoTemplate?color=black&logo=github&style=for-the-badge)
 
-# Nano (なの) Template ![](https://raw.githubusercontent.com/CamilleAbella/Nano/master/assets/images/logo.png)
+# Nano (なの) Module ![](https://raw.githubusercontent.com/CamilleAbella/Nano/master/assets/images/logo.png)
 
 ![GitHub top language](https://img.shields.io/github/languages/top/CamilleAbella/NanoTemplate?color=%23BDB76B&style=plastic)
 [![GitHub search todo](https://img.shields.io/github/search/CamilleAbella/NanoTemplate/todo?color=%23BDB76B&label=todo%20count&style=plastic)](https://github.com/CamilleAbella/NanoTemplate/search?l=TypeScript&q=todo)
@@ -15,39 +15,33 @@ A Discord bot template in TypeScript
 
 ## Dependencies
 
-![better-sqlite3](https://img.shields.io/github/package-json/dependency-version/CamilleAbella/NanoTemplate/better-sqlite3?color=orange&style=plastic)
-![chalk](https://img.shields.io/github/package-json/dependency-version/CamilleAbella/NanoTemplate/chalk?color=orange&style=plastic)
-![discord.js](https://img.shields.io/github/package-json/dependency-version/CamilleAbella/NanoTemplate/discord.js?color=orange&style=plastic)
-![dotenv](https://img.shields.io/github/package-json/dependency-version/CamilleAbella/NanoTemplate/dotenv?color=orange&style=plastic)
-![enmap](https://img.shields.io/github/package-json/dependency-version/CamilleAbella/NanoTemplate/enmap?color=orange&style=plastic)
 ![querystring](https://img.shields.io/github/package-json/dependency-version/CamilleAbella/NanoTemplate/querystring?color=orange&style=plastic)
 
 ## Template usage
 
 ### 1. Clone the project
 
-- Replace the `Nano` word by your own bot name and run it:  
-  `git clone --depth 0 -b master https://github.com/CamilleAbella/NanoTemplate.git Nano`
+- Follow the [Use this template](https://github.com/CamilleAbella/NanoTemplate/generate) link.
+- Clone your new repository as your project name.
 
 ### 2. Prepare project
 
 1. Go to your folder project and run `npm i`.
 2. Make a `.env` file and place your token inside like this: `TOKEN=Your_Discord_App_Token`.
-3. Open `nano.config.json` as Nano Config using `nano.config.schema.json` json-schema from your IDE.
-4. Adjust properties in `nano.config.json`.
-5. Create and link your own GitHub repository.
+3. Adjust properties in `nano.config.json`.
 
 ### 3. Code your bot in TypeScript
 
-- Please do not code in the `index.ts`.
+- Place in the `index.ts` the Nano imports (modules and core in order).
 - Please hard keep the existing files.
 - Please keep the existing commands and events too.
-- Please use `src/app/Embed.ts` class to make embeds.
+- Please use `Nano.Embed` class to make embeds.
 - Add your own commands in `src/commands/`.
 - Add your own events in `src/events/`.
-- Check the other commands and events for examples.
-- The Discord client is in the `src/app/Globals.ts` file as `client`.
-- The ApplicationClient is fetched in the `src/app/Globals.ts` file as `bot`.
+- Add your own modules in `src/modules/`.
+- Check the other commands, events and modules for examples.
+- The Discord client is in the `Nano.Globals` file as `client`.
+- The ApplicationClient is fetched in the `Nano.Globals` file as `bot`.
 
 ### 4. Scripts explanation
 
@@ -67,4 +61,3 @@ A Discord bot template in TypeScript
 ## 5. Future features
 
 - Implement hot reloading with Gulp.
-- Setup modular style instead of handler style (or in parallel).

@@ -1,12 +1,10 @@
+import Nano from "@ghom/nano-bot"
 import Discord from "discord.js"
-import Command from "../app/Command"
-import Embed from "../app/Embed"
-import Globals from "../app/Globals"
 
-new Command({
+new Nano.Command({
   name: "Ignore Manager",
   pattern: /ign?(?:ore)?/i,
-  description: `Gère les utilisateurs et les salons ignorés par ${Globals.bot.name}.`,
+  description: `Gère les utilisateurs et les salons ignorés par ${Nano.Globals.bot.name}.`,
   admin: true,
   category: "admin",
   channelType: "guild",
@@ -19,9 +17,9 @@ new Command({
       },
       items: {
         typeName: "...[user,channel]",
-        type: Command.types.arrayFrom(
-          Command.types.user,
-          Command.types.channel
+        type: Nano.Utils.ArgumentTypes.arrayFrom(
+          Nano.Utils.ArgumentTypes.user,
+          Nano.Utils.ArgumentTypes.channel
         ),
       },
     },
@@ -35,17 +33,17 @@ new Command({
     const guild = message.guild as Discord.Guild
 
     if (list) {
-      const ignoredChannels = Globals.db.get(
+      const ignoredChannels = Nano.Globals.db.get(
         guild.id,
         "ignoredChannels"
       ) as Discord.TextChannel[]
-      const ignoredUsers = Globals.db.get(
+      const ignoredUsers = Nano.Globals.db.get(
         guild.id,
         "ignoredUsers"
       ) as Discord.User[]
 
       return await message.channel.send(
-        Embed.default("Voici la liste des ignorés.")
+        Nano.Embed.default("Voici la liste des ignorés.")
           .addField("Users", ignoredUsers.join(" "))
           .addField("Channels", ignoredChannels.join(" "))
       )
@@ -60,6 +58,6 @@ new Command({
       )
     }
 
-    await message.channel.send(Embed.success())
+    await message.channel.send(Nano.Embed.success())
   },
 })

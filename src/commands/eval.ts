@@ -1,29 +1,29 @@
-import Command from "../app/Command"
-import Embed from "../app/Embed"
-const Globals = require("../app/Globals")
-const Types = require("../utils/ArgumentTypes")
-const Text = require("../utils/Text")
+import Nano from "@ghom/nano-bot"
 
-new Command({
+new Nano.Command({
   name: "Eval JS",
   pattern: /eval|js/i,
   description: "Exécute un bout de code en back-end.",
   botOwner: true,
-  args: { code: { type: Types.code } },
+  args: { code: { type: Nano.Utils.ArgumentTypes.code } },
   async call({ message, args: { code } }) {
     const { guild, channel, client } = message
-    const embed = new Embed()
+    const embed = new Nano.Embed()
     try {
       let result = await eval(`async () => {${code}}`)()
 
       if (result !== undefined) {
-        await channel.send(Embed.success(Text.code(String(result))))
+        await channel.send(
+          Nano.Embed.success(Nano.Utils.Text.code(String(result)))
+        )
       } else {
-        await channel.send(Embed.success("Le code a bien été exécuté."))
+        await channel.send(Nano.Embed.success("Le code a bien été exécuté."))
       }
     } catch (error) {
       await channel.send(
-        Embed.error(Text.code(error.name + ": " + error.message))
+        Nano.Embed.error(
+          Nano.Utils.Text.code(error.name + ": " + error.message)
+        )
       )
     }
   },

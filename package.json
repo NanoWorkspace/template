@@ -3,7 +3,7 @@
   "author": "ghom",
   "license": "ISC",
   "version": "1.0.0",
-  "description": "Discord bot template in TypeScript.",
+  "description": "Discord bot template in TypeScript using Nano.",
   "main": "dist/index.js",
   "prettier": {
     "trailingComma": "es5",
@@ -18,7 +18,7 @@
     "start": "npm run build && node .",
     "precommit": "npm run prettier && git add *",
     "commit": "git commit -m continue",
-    "push": "npm run commit && git push origin master"
+    "push": "npm run commit && git push origin modular"
   },
   "keywords": [
     "discord.js",
@@ -34,7 +34,9 @@
     "typescript": "4.0.2"
   },
   "dependencies": {
-    "nano-bot": "^1.0.0",
+    "@ghom/nano-bot": "^1.10.10-beta",
+    "@ghom/nano-reactionrole": "^1.0.1",
+    "@ghom/nano-autorole": "^1.0.0",
     "querystring": "0.2.0"
   }
 }
