@@ -2,6 +2,7 @@ import Nano from "@ghom/nano-bot"
 import Discord from "discord.js"
 
 new Nano.Command({
+  id: "embed",
   name: "Embed Utils",
   pattern: /e(?:mbed)?/i,
   category: "general",

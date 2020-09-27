@@ -1,6 +1,7 @@
 import Nano from "@ghom/nano-bot"
 
 new Nano.Command({
+  id: "kick",
   name: "Kick Member",
   pattern: /kick|k/i,
   args: {
@@ -25,6 +26,7 @@ new Nano.Command({
 })
 
 new Nano.Command({
+  id: "ban",
   name: "Ban Member",
   pattern: /ban/i,
   args: {

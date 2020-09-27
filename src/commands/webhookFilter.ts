@@ -1,6 +1,7 @@
 import Nano from "@ghom/nano-bot"
 
 new Nano.Command({
+  id: "webhookFilter",
   name: "Tweet Webhook Filter",
   pattern: /tw(?:eet|itter)?/i,
   description:

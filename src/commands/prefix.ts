@@ -1,6 +1,7 @@
 import Nano from "@ghom/nano-bot"
 
 new Nano.Command({
+  id: "prefix",
   name: "Prefix Manager",
   pattern: /pr[eé]fix/i,
   description: `Change le prefix de ${Nano.Globals.bot.name} pour ce serveur.`,

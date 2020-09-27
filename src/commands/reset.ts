@@ -1,6 +1,7 @@
 import Nano from "@ghom/nano-bot"
 
 new Nano.Command({
+  id: "reset",
   name: "Reset Database",
   pattern: /reset|erase/i,
   description: "Erase the database and restart the bot.",

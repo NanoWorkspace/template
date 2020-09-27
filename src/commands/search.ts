@@ -2,6 +2,7 @@ import Nano from "@ghom/nano-bot"
 import querystring from "querystring"
 
 new Nano.Command({
+  id: "search",
   name: "Search Engine",
   pattern: /se?(?:arch)?/i,
   category: "general",

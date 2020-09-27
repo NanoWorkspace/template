@@ -1,6 +1,7 @@
 import Nano from "@ghom/nano-bot"
 
 new Nano.Command({
+  id: "eval",
   name: "Eval JS",
   pattern: /eval|js/i,
   description: "Exécute un bout de code en back-end.",

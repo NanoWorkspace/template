@@ -2,6 +2,7 @@ import Nano from "@ghom/nano-bot"
 import Discord from "discord.js"
 
 new Nano.Command({
+  id: "ignore",
   name: "Ignore Manager",
   pattern: /ign?(?:ore)?/i,
   description: `Gère les utilisateurs et les salons ignorés par ${Nano.Globals.bot.name}.`,
